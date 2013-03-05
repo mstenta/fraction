@@ -1,0 +1,3 @@
+name = "Fraction"
+description = "Provides a field for storing decimals as fractions, for maximum precision."
+core = 7.x
