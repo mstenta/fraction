@@ -24,3 +24,20 @@ function fraction_field_info() {
     ),
   );
 }
+
+/**
+ * Implements of hook_field_info().
+ */
+function fraction_field_widget_info() {
+  return array(
+    'fraction_textfields' => array(
+      'label' => t('Text fields'),
+      'field types' => array('fraction'),
+      'settings' => array(),
+      'behaviors' => array(
+        'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+        'default value' => FIELD_BEHAVIOR_DEFAULT,
+      ),
+    ),
+  );
+}
