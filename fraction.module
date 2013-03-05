@@ -19,7 +19,7 @@ function fraction_field_info() {
       'description' => t('This field stores a decimal in fraction form (with a numerator and denominator) for maximum precision.'),
       'settings' => array(),
       'instance_settings' => array(),
-      'default_widget' => 'fraction_textfields',
+      'default_widget' => 'fraction_default',
       'default_formatter' => 'fraction_fixed',
     ),
   );
@@ -30,8 +30,8 @@ function fraction_field_info() {
  */
 function fraction_field_widget_info() {
   return array(
-    'fraction_textfields' => array(
-      'label' => t('Text fields'),
+    'fraction_default' => array(
+      'label' => t('Numerator and denominator'),
       'field types' => array('fraction'),
       'settings' => array(),
       'behaviors' => array(
