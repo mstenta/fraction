@@ -9,3 +9,18 @@
  * Drupal hooks
  * **************************************************************/
 
+/**
+ * Implements of hook_field_info().
+ */
+function fraction_field_info() {
+  return array(
+    'fraction' => array(
+      'label' => t('Fraction'),
+      'description' => t('This field stores a decimal in fraction form (with a numerator and denominator) for maximum precision.'),
+      'settings' => array(),
+      'instance_settings' => array(),
+      'default_widget' => 'fraction_textfields',
+      'default_formatter' => 'fraction_default',
+    ),
+  );
+}
