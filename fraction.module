@@ -25,6 +25,22 @@ function fraction_field_info() {
   );
 }
 
+
+/**
+ * Implements hook_field_validate().
+ */
+function fraction_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+
+}
+
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function fraction_field_is_empty($item, $field) {
+  return empty($item['numerator']) || empty($item['denominator']);
+}
+
 /**
  * Implements of hook_field_info().
  */
