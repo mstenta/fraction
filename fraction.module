@@ -20,7 +20,7 @@ function fraction_field_info() {
       'settings' => array(),
       'instance_settings' => array(),
       'default_widget' => 'fraction_textfields',
-      'default_formatter' => 'fraction_default',
+      'default_formatter' => 'fraction_fixed',
     ),
   );
 }
@@ -38,6 +38,19 @@ function fraction_field_widget_info() {
         'multiple values' => FIELD_BEHAVIOR_DEFAULT,
         'default value' => FIELD_BEHAVIOR_DEFAULT,
       ),
+    ),
+  );
+}
+
+/**
+ * Implements of hook_field_info().
+ */
+function fraction_field_formatter_info() {
+  return array(
+    'fraction_fixed' => array(
+      'label' => t('Fixed precision'),
+      'field types' => array('fraction'),
+      'settings' => array('precision' => 2),
     ),
   );
 }
