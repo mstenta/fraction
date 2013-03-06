@@ -75,3 +75,48 @@ function fraction_field_formatter_info() {
     ),
   );
 }
+
+/***************************************************************
+ * Utility functions
+ * *************************************************************/
+
+/**
+ * Convert a fraction to a decimal with a fixed precision.
+ *
+ * @param $numerator
+ *   The fraction's numerator.
+ * @param $denominator
+ *   The fraction's denominator.
+ * @param $precision
+ *   The number of decimal places to include in the returned value.
+ *
+ * @return
+ *   Returns a string value representing the fraction in decimal form.
+ *
+ */
+function fraction_to_decimal($numerator, $denominator, $precision = 2) {
+  return round($numerator / $denominator, $precision);
+}
+
+/**
+ * Convert a decimal value into a numerator and denominator.
+ *
+ * @param $value
+ *   The decimal value to be converted.
+ *
+ * @return
+ *   An array with 'numerator' and 'denominator' keys.
+ */
+function fraction_from_decimal($value) {
+
+  // Calculate the precision by counting the number of decimal places.
+  $precision = drupal_strlen(drupal_substr(strrchr($value, '.'), 1));
+
+  // Create the denominator by raising 10 to the power of the precision.
+  $fraction['denominator'] = pow(10, $precision);
+
+  // Calculate the numerator by multiplying the value by the denominator.
+  $fraction['numerator'] = $value * $fraction['denominator'];
+
+  return $fraction;
+}
