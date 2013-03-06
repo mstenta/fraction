@@ -7,7 +7,7 @@
 
 /***************************************************************
  * Drupal hooks
- * **************************************************************/
+ * *************************************************************/
 
 /**
  * Implements of hook_field_info().
@@ -20,7 +20,7 @@ function fraction_field_info() {
       'settings' => array(),
       'instance_settings' => array(),
       'default_widget' => 'fraction_default',
-      'default_formatter' => 'fraction_fixed',
+      'default_formatter' => 'fraction_default',
     ),
   );
 }
@@ -63,6 +63,11 @@ function fraction_field_widget_info() {
  */
 function fraction_field_formatter_info() {
   return array(
+    'fraction_default' => array(
+      'label' => t('Fraction'),
+      'field types' => array('fraction'),
+      'settings' => array(),
+    ),
     'fraction_fixed' => array(
       'label' => t('Fixed precision'),
       'field types' => array('fraction'),
