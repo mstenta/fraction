@@ -50,6 +50,49 @@ function fraction_field_widget_info() {
 }
 
 /**
+ * Implements hook_field_widget_form().
+ */
+function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $numerator = isset($items[$delta]['numerator']) ? $items[$delta]['numerator'] : '';
+  $denominator = isset($items[$delta]['denominator']) ? $items[$delta]['denominator'] : '';
+
+  switch ($instance['widget']['type']) {
+
+    // Default fraction widget: two textfields (numerator and denominator).
+    case 'fraction_default':
+      $element['#type'] = 'fieldset';
+      $element['numerator'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Numerator'),
+        '#default_value' => $numerator,
+        '#element_validate' => array('element_validate_integer_positive'),
+        '#size' => 15,
+      );
+      $element['denominator'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Denominator'),
+        '#default_value' => $denominator,
+        '#element_validate' => array('element_validate_integer_positive'),
+        '#size' => 15,
+      );
+      break;
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_field_widget_error().
+ */
+function fraction_field_widget_error($element, $error, $form, &$form_state) {
+  switch ($error['error']) {
+    case 'fraction':
+      form_error($element, $error['message']);
+      break;
+  }
+}
+
+/**
  * Implements of hook_field_info().
  */
 function fraction_field_formatter_info() {
