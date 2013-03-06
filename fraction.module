@@ -198,10 +198,15 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
  *
  * @return
  *   Returns a string value representing the fraction in decimal form.
- *
+ *   Returns zero if the denominator is empty.
  */
 function fraction_to_decimal($numerator, $denominator, $precision = 2) {
-  return round($numerator / $denominator, $precision);
+  if (!empty($denominator)) {
+    return round($numerator / $denominator, $precision);
+  }
+  else {
+    return 0;
+  }
 }
 
 /**
