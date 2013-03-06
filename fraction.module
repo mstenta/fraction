@@ -110,6 +110,78 @@ function fraction_field_formatter_info() {
   );
 }
 
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function fraction_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  $summary = '';
+
+  if ($display['type'] == 'fraction_fixed') {
+    $summary = t('Precision: @precision', array('@precision' => $settings['precision']));
+  }
+
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function fraction_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  $element = array();
+
+  if ($display['type'] == 'fraction_fixed') {
+    $element['precision'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Decimal precision'),
+      '#description' => t('Specify the number of digits after the decimal place to display.'),
+      '#default_value' => $settings['precision'],
+      '#required' => TRUE,
+      '#element_validate' => array('element_validate_integer_positive'),
+    );
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function fraction_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $settings = $display['settings'];
+  $element = array();
+
+  switch ($display['type']) {
+
+    // This formatter simply outputs the field as a fraction ([numerator]/[denominator]).
+    case 'fraction_default':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+          '#type' => 'markup',
+          '#markup' => $item['numerator'] . '/' . $item['denominator'],
+        );
+      }
+      break;
+
+    // This formatter outputs the field as a decimal value with a fixed precision.
+    case 'fraction_fixed':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+          '#type' => 'markup',
+          '#markup' => fraction_to_decimal($item['numerator'], $item['denominator'], $settings['precision']),
+        );
+      }
+      break;
+  }
+
+  return $element;
+}
+
 /***************************************************************
  * Utility functions
  * *************************************************************/
