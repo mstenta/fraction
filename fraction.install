@@ -21,7 +21,7 @@ function fraction_field_schema($field) {
       'denominator' => array(
         'description' => 'Fraction denominator value',
         'type' => 'int',
-        'size' => 'big',
+        'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 1,
       ),
