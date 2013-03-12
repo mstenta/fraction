@@ -47,7 +47,7 @@ function fraction_field_widget_info() {
       ),
     ),
     'fraction_decimal' => array(
-      'label' => t('Decimal field'),
+      'label' => t('Decimal'),
       'field types' => array('fraction'),
       'settings' => array('precision' => 2),
       'behaviors' => array(
@@ -165,8 +165,8 @@ function fraction_field_formatter_info() {
       'field types' => array('fraction'),
       'settings' => array(),
     ),
-    'fraction_fixed' => array(
-      'label' => t('Fixed precision'),
+    'fraction_decimal' => array(
+      'label' => t('Decimal'),
       'field types' => array('fraction'),
       'settings' => array('precision' => 2),
     ),
@@ -182,7 +182,7 @@ function fraction_field_formatter_settings_summary($field, $instance, $view_mode
 
   $summary = '';
 
-  if ($display['type'] == 'fraction_fixed') {
+  if ($display['type'] == 'fraction_decimal') {
     $summary = t('Precision: @precision', array('@precision' => $settings['precision']));
   }
 
@@ -198,7 +198,7 @@ function fraction_field_formatter_settings_form($field, $instance, $view_mode, $
 
   $element = array();
 
-  if ($display['type'] == 'fraction_fixed') {
+  if ($display['type'] == 'fraction_decimal') {
     $element['precision'] = array(
       '#type' => 'textfield',
       '#title' => t('Decimal precision'),
@@ -232,7 +232,7 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
       break;
 
     // This formatter outputs the field as a decimal value with a fixed precision.
-    case 'fraction_fixed':
+    case 'fraction_decimal':
       foreach ($items as $delta => $item) {
         $element[$delta] = array(
           '#type' => 'markup',
