@@ -46,7 +46,37 @@ function fraction_field_widget_info() {
         'default value' => FIELD_BEHAVIOR_DEFAULT,
       ),
     ),
+    'fraction_decimal' => array(
+      'label' => t('Decimal field'),
+      'field types' => array('fraction'),
+      'settings' => array('precision' => 2),
+      'behaviors' => array(
+        'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+        'default value' => FIELD_BEHAVIOR_DEFAULT,
+      ),
+    ),
   );
+}
+
+/**
+ * Implements hook_field_widget_settings_form().
+ */
+function fraction_field_widget_settings_form($field, $instance) {
+  $form = array();
+  $widget = $instance['widget'];
+  $defaults = field_info_widget_settings($widget['type']);
+  $settings = array_merge($defaults, $widget['settings']);
+
+  if ($widget['type'] == 'fraction_decimal') {
+    $form['precision'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Precision'),
+      '#description' => t('Specify the number of digits after the decimal place to display when converting the fraction to a decimal.'),
+      '#default_value' => $settings['precision'],
+    );
+  }
+
+  return $form;
 }
 
 /**
@@ -55,6 +85,8 @@ function fraction_field_widget_info() {
 function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   $numerator = isset($items[$delta]['numerator']) ? $items[$delta]['numerator'] : '';
   $denominator = isset($items[$delta]['denominator']) ? $items[$delta]['denominator'] : '';
+
+  $settings = $instance['widget']['settings'];
 
   switch ($instance['widget']['type']) {
 
@@ -76,9 +108,40 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
         '#size' => 15,
       );
       break;
+
+    // Decimal widget: a single textfield that accepts a decimal number.
+    case 'fraction_decimal':
+      $element += array(
+        '#type' => 'fieldset',
+        '#element_validate' => array('_fraction_decimal_widget_validate'),
+      );
+      $element['value'] = array(
+        '#type' => 'textfield',
+        '#default_value' => fraction_to_decimal($numerator, $denominator, $settings['precision']),
+        '#element_validate' => array('element_validate_number'),
+        '#size' => 15,
+      );
+      break;
   }
 
   return $element;
+}
+
+/**
+ * Validation function for the fraction_decimal widget to convert the decimal to a fraction.
+ */
+function _fraction_decimal_widget_validate($element, &$form_state) {
+
+  // Search through the form values to find the current field value.
+  $parents = $element['#parents'];
+  array_pop($parents);
+  $values = drupal_array_get_nested_value($form_state['values'], $parents);
+
+  // Convert the value to a fraction.
+  $fraction = fraction_from_decimal($values[0]['value']);
+
+  // Set the numerator and denominator values for the form.
+  form_set_value($element, $fraction, $form_state);
 }
 
 /**
