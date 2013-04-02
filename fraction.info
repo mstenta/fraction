@@ -1,3 +1,5 @@
 name = "Fraction"
 description = "Provides a field for storing decimals as fractions, for maximum precision."
 core = 7.x
+
+files[] = views/handlers/fraction_handler_sort_decimal.inc

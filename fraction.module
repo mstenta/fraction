@@ -246,6 +246,20 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
 }
 
 /***************************************************************
+ * Views API hooks
+ * *************************************************************/
+
+/**
+ * Implements hook_views_api().
+ */
+function fraction_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'fraction') . '/views',
+  );
+}
+
+/***************************************************************
  * Utility functions
  * *************************************************************/
 
