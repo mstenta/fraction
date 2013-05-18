@@ -47,6 +47,12 @@ function fraction_field_views_data_alter(&$result, $field, $module) {
         'handler' => 'fraction_handler_sort_decimal',
         'additional fields' => $numerator_column['sort']['additional fields'],
       );
+
+      // Allow filtering by the MySQL decimal equivalent of the fraction.
+      $result[$table_name][$column_name]['filter'] = array(
+        'handler' => 'fraction_handler_filter_decimal',
+        'additional fields' => $numerator_column['filter']['additional fields'],
+      );
     }
   }
 }
