@@ -35,6 +35,11 @@ function fraction_field_views_data_alter(&$result, $field, $module) {
       }
       $field_column = $result[$table_name][$field_name];
 
+      // Override the field handler so that we can provide our own custom
+      // click sort method (that uses the fraction's decimal equivalent).
+      $result[$table_name][$field_name]['field']['handler'] = 'fraction_handler_field';
+      $result[$table_name][$field_name]['field']['additional fields'] = $additional_fields;
+
       // Create a new decimal column with custom sort and filter handlers.
       $column_name = $field['field_name'] . '_decimal';
       $result[$table_name][$column_name] = array(
