@@ -28,3 +28,4 @@ function fraction_field_schema($field) {
     ),
   );
 }
+

@@ -348,3 +348,4 @@ function fraction_bcround($number, $precision = 0) {
   }
   return bcsub($number, '0.' . str_repeat('0', $precision) . '5', $precision);
 }
+
