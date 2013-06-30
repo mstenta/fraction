@@ -163,7 +163,7 @@ function fraction_field_formatter_info() {
     'fraction_default' => array(
       'label' => t('Fraction'),
       'field types' => array('fraction'),
-      'settings' => array(),
+      'settings' => array('separator' => '/'),
     ),
     'fraction_decimal' => array(
       'label' => t('Decimal'),
@@ -182,7 +182,11 @@ function fraction_field_formatter_settings_summary($field, $instance, $view_mode
 
   $summary = '';
 
-  if ($display['type'] == 'fraction_decimal') {
+  if ($display['type'] == 'fraction_default') {
+    $summary = t('Separator: @separator', array('@separator' => $settings['separator']));
+  }
+
+  elseif ($display['type'] == 'fraction_decimal') {
     $summary = t('Precision: @precision', array('@precision' => $settings['precision']));
   }
 
@@ -198,7 +202,21 @@ function fraction_field_formatter_settings_form($field, $instance, $view_mode, $
 
   $element = array();
 
-  if ($display['type'] == 'fraction_decimal') {
+  if ($display['type'] == 'fraction_default') {
+
+    // Numerator and denominator separator.
+    $element['separator'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Separator'),
+      '#description' => t('Specify the separator to display between the numerator and denominator.'),
+      '#default_value' => $settings['separator'],
+      '#required' => TRUE,
+    );
+  }
+
+  elseif ($display['type'] == 'fraction_decimal') {
+
+    // Decimal precision.
     $element['precision'] = array(
       '#type' => 'textfield',
       '#title' => t('Decimal precision'),
@@ -226,7 +244,7 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
       foreach ($items as $delta => $item) {
         $element[$delta] = array(
           '#type' => 'markup',
-          '#markup' => $item['numerator'] . '/' . $item['denominator'],
+          '#markup' => $item['numerator'] . $settings['separator'] . $item['denominator'],
         );
       }
       break;
