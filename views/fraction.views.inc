@@ -28,11 +28,20 @@ function fraction_field_views_data_alter(&$result, $field, $module) {
   foreach ($field['storage']['details']['sql'] as $type => $tables) {
     foreach ($tables as $table_name => $columns) {
 
-      // Create an alias to the field column.
+      // Determine the field name.
       $field_name = $field['field_name'];
       if ($type == FIELD_LOAD_REVISION) {
         $field_name .= '-revision_id';
       }
+
+      // Skip if the field does not exist in the result.
+      // For example, entities without revisions will not have a revision field
+      // in the result, even though they have a revision field in the schema.
+      if (empty($result[$table_name][$field_name])) {
+        continue;
+      }
+
+      // Create an alias to the field column.
       $field_column = $result[$table_name][$field_name];
 
       // Override the field handler so that we can provide our own custom
