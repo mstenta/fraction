@@ -6,6 +6,13 @@
  */
 
 /***************************************************************
+ * Constants
+ * *************************************************************/
+
+// Default decimal precision.
+define('FRACTION_DEFAULT_PRECISION', 2);
+
+/***************************************************************
  * Drupal hooks
  * *************************************************************/
 
@@ -295,7 +302,7 @@ function fraction_views_api() {
  *   Returns a string value representing the fraction in decimal form.
  *   Returns zero if the denominator is empty.
  */
-function fraction_to_decimal($numerator, $denominator, $precision = 2) {
+function fraction_to_decimal($numerator, $denominator, $precision = FRACTION_DEFAULT_PRECISION) {
   if (!empty($denominator)) {
 
     // Divide the numerator by the denominator (using bcmath if available).
