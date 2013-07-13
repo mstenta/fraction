@@ -11,7 +11,7 @@
 class fraction_handler_field extends views_handler_field_field {
 
   /**
-   * Called to determine what to tell the clicksorter.
+   * Use a query formula for click sorting.
    */
   function click_sort($order) {
 
@@ -24,6 +24,18 @@ class fraction_handler_field extends views_handler_field_field {
 
     // Add the orderby.
     $this->query->add_orderby(NULL, $formula, $order, $this->table_alias . '_decimal');
+  }
+
+  /**
+   * Remove the 'click_sort_column' option.
+   */
+  function options_form(&$form, &$form_state) {
+
+    // Inherit the parent options form.
+    parent::options_form($form, $form_state);
+
+    // Remove the 'click_sort_column' form element.
+    unset($form['click_sort_column']);
   }
 }
 
