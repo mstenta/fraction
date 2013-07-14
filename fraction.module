@@ -307,7 +307,7 @@ function fraction_to_decimal($numerator, $denominator, $precision = FRACTION_DEF
 
     // Divide the numerator by the denominator (using bcmath if available).
     if (function_exists('bcdiv')) {
-      return fraction_bcround(bcdiv($numerator, $denominator, $precision), $precision);
+      return fraction_bcround(bcdiv($numerator, $denominator, $precision + 1), $precision);
     }
     else {
       return round($numerator / $denominator, $precision);
