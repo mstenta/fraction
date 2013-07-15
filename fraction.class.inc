@@ -89,6 +89,25 @@ class Fraction {
   }
 
   /**
+   * Return a string representation of the fraction.
+   *
+   * @param $separator
+   *   The separator to place between the numerator and denominator.
+   *
+   * @return
+   *   Returns a string with the numerator, separator, and denominator.
+   */
+  public function toString($separator = '/') {
+
+    // Get the numerator and denominator.
+    $numerator = $this->getNumerator();
+    $denominator = $this->getDenominator();
+
+    // Concatenate with the separator and return.
+    return $numerator . $separator . $denominator;
+  }
+
+  /**
    * Calculate the decimal equivalent of the fraction.
    *
    * @param $precision
