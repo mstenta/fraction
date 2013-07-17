@@ -13,6 +13,37 @@
 define('FRACTION_DEFAULT_PRECISION', 2);
 
 /***************************************************************
+ * Utility functions
+ * *************************************************************/
+
+/**
+ * Fraction factory function.
+ *
+ * @param $numerator
+ *   The fraction's numerator.
+ * @param $denominator
+ *   The fraction's denominator.
+ *
+ * Returns a new fraction object.
+ */
+function fraction($numerator = 0, $denominator = 1) {
+  return new Fraction($numerator, $denominator);
+}
+
+/**
+ * Convert a decimal value into a fraction object.
+ *
+ * @param $value
+ *   The decimal value to be converted.
+ *
+ * @return
+ *   Returns a new fraction object.
+ */
+function fraction_from_decimal($value) {
+  return fraction()->fromDecimal($value);
+}
+
+/***************************************************************
  * Drupal hooks
  * *************************************************************/
 
@@ -282,95 +313,5 @@ function fraction_views_api() {
     'api' => 3,
     'path' => drupal_get_path('module', 'fraction') . '/views',
   );
-}
-
-/***************************************************************
- * Utility functions
- * *************************************************************/
-
-/**
- * Convert a fraction to a decimal with a fixed precision.
- *
- * @param $numerator
- *   The fraction's numerator.
- * @param $denominator
- *   The fraction's denominator.
- * @param $precision
- *   The number of decimal places to include in the returned value.
- *
- * @return
- *   Returns a string value representing the fraction in decimal form.
- *   Returns zero if the denominator is empty.
- */
-function fraction_to_decimal($numerator, $denominator, $precision = FRACTION_DEFAULT_PRECISION) {
-  if (!empty($denominator)) {
-
-    // Divide the numerator by the denominator (using bcmath if available).
-    if (function_exists('bcdiv')) {
-      return fraction_bcround(bcdiv($numerator, $denominator, $precision + 1), $precision);
-    }
-    else {
-      return round($numerator / $denominator, $precision);
-    }
-  }
-  else {
-    return 0;
-  }
-}
-
-/**
- * Convert a decimal value into a numerator and denominator.
- *
- * @param $value
- *   The decimal value to be converted.
- *
- * @return
- *   An array with 'numerator' and 'denominator' keys.
- */
-function fraction_from_decimal($value) {
-
-  // Calculate the precision by counting the number of decimal places.
-  $precision = drupal_strlen(drupal_substr(strrchr($value, '.'), 1));
-
-  // Create the denominator by raising 10 to the power of the precision.
-  if (function_exists('bcpow')) {
-    $denominator = bcpow(10, $precision);
-  }
-  else {
-    $denominator = pow(10, $precision);
-  }
-
-  // Calculate the numerator by multiplying the value by the denominator.
-  if (function_exists('bcmul')) {
-    $numerator = bcmul($value, $denominator);
-  }
-  else {
-    $numerator = $value * $denominator;
-  }
-
-  // Return the numerator and denominator in an array.
-  return array(
-    'numerator' => $numerator,
-    'denominator' => $denominator,
-  );
-}
-
-/**
- * Function for rounding decimals that are represented as strings (such as those returned
- * from bcmath functions).
- *
- * @param $number
- *   The number to round.
- * @param $precision
- *   The number of decimal places to round to.
- *
- * @return
- *   Returns the rounded number as a string.
- */
-function fraction_bcround($number, $precision = 0) {
-  if ($number[0] != '-') {
-    return bcadd($number, '0.' . str_repeat('0', $precision) . '5', $precision);
-  }
-  return bcsub($number, '0.' . str_repeat('0', $precision) . '5', $precision);
 }
 
