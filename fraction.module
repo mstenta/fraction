@@ -303,6 +303,25 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
   return $element;
 }
 
+/**
+ * Implements hook_field_load().
+ */
+function fraction_field_load($entity_type, $entities, $field, $instances, $langcode, &$items, $age) {
+
+  // Iterate through entities and their items.
+  foreach ($entities as $id => $entity) {
+    foreach ($items[$id] as $delta => $item) {
+
+      // Load the numerator and denominator values.
+      $numerator = $items[$id][$delta]['numerator'];
+      $denominator = $items[$id][$delta]['denominator'];
+
+      // Create a new Fraction object and add it to the field.
+      $items[$id][$delta]['fraction'] = fraction($numerator, $denominator);
+    }
+  }
+}
+
 /***************************************************************
  * Views API hooks
  * *************************************************************/
