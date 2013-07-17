@@ -62,6 +62,15 @@ class Fraction {
       $value = 1;
     }
 
+    // Normalize negative fractions.
+    // If the denominator is negative, invert the signs for both numbers.
+    if ($value < 0) {
+      $numerator = $this->getNumerator();
+      $numerator = $numerator * -1;
+      $this->setNumerator($numerator);
+      $value = $value * -1;
+    }
+
     // Cast the value as a string and save it.
     $this->denominator = (string) $value;
 

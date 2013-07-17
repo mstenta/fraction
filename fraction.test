@@ -58,6 +58,17 @@ class FractionUnitTestCase extends DrupalWebTestCase {
     $message = 'A fraction of 1/0 should return 0/1 (avoid division by zero).';
     $this->assertEqual($result, '0/1', $message);
 
+    // Test normalization of negative fractions.
+    $result = fraction(-1, 2)->toString();
+    $message = 'A fraction of -1/2 should normalize to -1/2.';
+    $this->assertEqual($result, '-1/2', $message);
+    $result = fraction(1, -2)->toString();
+    $message = 'A fraction of 1/-2 should normalize to -1/2.';
+    $this->assertEqual($result, '-1/2', $message);
+    $result = fraction(-1, -2)->toString();
+    $message = 'A fraction of -1/-2 should normalize to 1/2.';
+    $this->assertEqual($result, '1/2', $message);
+
     // Test converting a fraction to a decimal.
     $result = fraction(1, 2)->toDecimal(1);
     $message = 'A fraction of 1/2 should return a decimal of 0.5 (with precision 1)';
