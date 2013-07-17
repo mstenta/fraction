@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * @file
+ * Fraction tests
+ */
+
+/**
+ * Provides tests for the Fraction class.
+ */
+class FractionUnitTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Fraction tests',
+      'description' => 'Test that the Fraction class works properly.',
+      'group' => 'Fraction',
+    );
+  }
+  public function setUp() {
+    parent::setUp('fraction');
+  }
+
+  /**
+   * Test the Fraction class and it's methods.
+   */
+  function testFraction() {
+
+    // Test creation of a fraction.
+    $fraction = fraction(1, 2);
+    $numerator = $fraction->getNumerator();
+    $denominator = $fraction->getDenominator();
+    $message = 'A fraction of 1/2 should return a numerator of 1.';
+    $this->assertEqual($numerator, '1', $message);
+    $message = 'A fraction of 1/2 should return a denominator of 2.';
+    $this->assertEqual($denominator, '2', $message);
+
+    // Test creation of an empty fraction.
+    $fraction = fraction();
+    $numerator = $fraction->getNumerator();
+    $denominator = $fraction->getDenominator();
+    $message = 'An empty fraction should return a numerator of 0.';
+    $this->assertEqual($numerator, '0', $message);
+    $message = 'An empty fraction should return a denominator of 1.';
+    $this->assertEqual($denominator, '1', $message);
+
+    // Test returning a fraction as a string.
+    $result = fraction(1, 2)->toString();
+    $message = 'A fraction with a numerator of 1 and a denominator of 2 should return a string of "1/2".';
+    $this->assertEqual($result, '1/2', $message);
+
+    // Test returning a fraction as a string with a different separator.
+    $result = fraction(1, 2)->toString(':');
+    $message = 'A fraction with a numerator of 1 and a denominator of 2 should return a string of "1:2" (when a colon separator is specified).';
+    $this->assertEqual($result, '1:2', $message);
+
+    // Test division by zero.
+    $result = fraction(1, 0)->toString();
+    $message = 'A fraction of 1/0 should return 0/1 (avoid division by zero).';
+    $this->assertEqual($result, '0/1', $message);
+
+    // Test converting a fraction to a decimal.
+    $result = fraction(1, 2)->toDecimal(1);
+    $message = 'A fraction of 1/2 should return a decimal of 0.5 (with precision 1)';
+    $this->assertEqual($result, '0.5', $message);
+
+    // Test decimal precision (rounding up).
+    $result = fraction(1, 2)->toDecimal(0);
+    $message = 'A fraction of 1/2 with no precision should round to 1.';
+    $this->assertEqual($result, '1', $message);
+
+    // Test decimal precision (rounding down).
+    $result = fraction(2, 5)->toDecimal(0);
+    $message = 'A fraction of 2/5 with no precision should round to 0.';
+    $this->assertEqual($result, '0', $message);
+
+    // Test creation of a fraction from a decimal.
+    $result = fraction()->fromDecimal(0.5)->toString();
+    $message = 'The fromDecimal() method should create a fraction of 5/10 from a decimal of 0.5.';
+    $this->assertEqual($result, '5/10', $message);
+  }
+}
+
