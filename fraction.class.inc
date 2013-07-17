@@ -185,6 +185,75 @@ class Fraction {
   }
 
   /**
+   * Calculate the fraction's greatest common divisor using Euclid's algorithm.
+   *
+   * @return
+   *   Returns the greatest common divisor.
+   */
+  public function gcd() {
+
+    // Get the numerator and denominator.
+    $numerator = $this->getNumerator();
+    $denominator = $this->getDenominator();
+
+    // Make sure both numbers are positive.
+    $a = str_replace('-', '', $numerator);
+    $b = str_replace('-', '', $denominator);
+
+    // Euclid's algorithm gives us the greatest common divisor.
+    // Use BCMath's modulus function if available.
+    if (function_exists('bcmod')) {
+      while ($b != 0) {
+        $t = $b;
+        $b = bcmod($a, $b);
+        $a = $t;
+      }
+    }
+    else {
+      while ($b != 0) {
+        $t = $b;
+        $b = $a % $b;
+        $a = $t;
+      }
+    }
+
+    return $a;
+  }
+
+  /**
+   * Reduce the fraction to its simplest form.
+   *
+   * @return
+   *   Returns this object.
+   */
+  public function reduce() {
+
+    // Get the numerator and denominator.
+    $numerator = $this->getNumerator();
+    $denominator = $this->getDenominator();
+
+    // Calculate the greatest common divisor.
+    $gcd = $this->gcd();
+
+    // Divide the numerator and denominator by the gcd.
+    // Use BCMath division if available.
+    if (function_exists('bcdiv')) {
+      $numerator = bcdiv($numerator, $gcd);
+      $denominator = bcdiv($denominator, $gcd);
+    }
+    else {
+      $numerator = $numerator / $gcd;
+      $denominator = $denominator / $gcd;
+    }
+
+    // Save the numerator and denominator.
+    $this->setNumerator($numerator);
+    $this->setDenominator($denominator);
+
+    return $this;
+  }
+
+  /**
    * BCMath decimal rounding function.
    *
    * @param $value

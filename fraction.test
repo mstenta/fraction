@@ -88,6 +88,16 @@ class FractionUnitTestCase extends DrupalWebTestCase {
     $result = fraction()->fromDecimal(0.5)->toString();
     $message = 'The fromDecimal() method should create a fraction of 5/10 from a decimal of 0.5.';
     $this->assertEqual($result, '5/10', $message);
+
+    // Test calculation of greatest common divisor.
+    $result = fraction(5, 10)->gcd();
+    $message = 'The greatest common divisor of 1/2 is 5.';
+    $this->assertEqual($result, '5', $message);
+
+    // Test reduction of a fraction to its simplest form.
+    $result = fraction(5, 10)->reduce()->toString();
+    $message = 'A fraction of 5/10 should be reducible to 1/2.';
+    $this->assertEqual($result, '1/2', $message);
   }
 }
 
