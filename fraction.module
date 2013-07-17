@@ -10,7 +10,7 @@
  * *************************************************************/
 
 // Default decimal precision.
-define('FRACTION_DEFAULT_PRECISION', 2);
+define('FRACTION_PRECISION_DEFAULT', 2);
 
 /***************************************************************
  * Utility functions
@@ -87,7 +87,7 @@ function fraction_field_widget_info() {
     'fraction_decimal' => array(
       'label' => t('Decimal'),
       'field types' => array('fraction'),
-      'settings' => array('precision' => 2),
+      'settings' => array('precision' => FRACTION_PRECISION_DEFAULT),
       'behaviors' => array(
         'multiple values' => FIELD_BEHAVIOR_DEFAULT,
         'default value' => FIELD_BEHAVIOR_DEFAULT,
@@ -206,7 +206,7 @@ function fraction_field_formatter_info() {
     'fraction_decimal' => array(
       'label' => t('Decimal'),
       'field types' => array('fraction'),
-      'settings' => array('precision' => 2),
+      'settings' => array('precision' => FRACTION_PRECISION_DEFAULT),
     ),
   );
 }
