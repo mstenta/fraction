@@ -155,7 +155,7 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
       );
       $element['value'] = array(
         '#type' => 'textfield',
-        '#default_value' => fraction_to_decimal($numerator, $denominator, $settings['precision']),
+        '#default_value' => fraction($numerator, $denominator)->toDecimal($settings['precision']),
         '#element_validate' => array('element_validate_number'),
         '#size' => 15,
       );
@@ -177,9 +177,11 @@ function _fraction_decimal_widget_validate($element, &$form_state) {
 
   // Convert the value to a fraction.
   $fraction = fraction_from_decimal($values[0]['value']);
+  $values['numerator'] = $fraction->getNumerator();
+  $values['denominator'] = $fraction->getDenominator();
 
   // Set the numerator and denominator values for the form.
-  form_set_value($element, $fraction, $form_state);
+  form_set_value($element, $values, $form_state);
 }
 
 /**
@@ -282,7 +284,7 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
       foreach ($items as $delta => $item) {
         $element[$delta] = array(
           '#type' => 'markup',
-          '#markup' => $item['numerator'] . $settings['separator'] . $item['denominator'],
+          '#markup' => fraction($item['numerator'], $item['denominator'])->toString($settings['separator']),
         );
       }
       break;
@@ -292,7 +294,7 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
       foreach ($items as $delta => $item) {
         $element[$delta] = array(
           '#type' => 'markup',
-          '#markup' => fraction_to_decimal($item['numerator'], $item['denominator'], $settings['precision']),
+          '#markup' => fraction($item['numerator'], $item['denominator'])->toDecimal($settings['precision']),
         );
       }
       break;
