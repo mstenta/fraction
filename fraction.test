@@ -98,6 +98,36 @@ class FractionUnitTestCase extends DrupalWebTestCase {
     $result = fraction(5, 10)->reduce()->toString();
     $message = 'A fraction of 5/10 should be reducible to 1/2.';
     $this->assertEqual($result, '1/2', $message);
+
+    // Test fraction addition.
+    $result = fraction(1, 2)->add(fraction(1, 3))->toString();
+    $message = '1/2 + 1/3 = 5/6';
+    $this->assertEqual($result, '5/6', $message);
+
+    // Test fraction subtraction.
+    $result = fraction(2, 3)->subtract(fraction(1, 7))->toString();
+    $message = '2/3 - 1/7 = 11/21';
+    $this->assertEqual($result, '11/21', $message);
+
+    // Test fraction multiplication.
+    $result = fraction(2, 5)->multiply(fraction(1, 4))->toString();
+    $message = '2/5 * 1/4 = 2/20';
+    $this->assertEqual($result, '2/20', $message);
+
+    // Test fraction division.
+    $result = fraction(5, 7)->divide(fraction(1, 5))->toString();
+    $message = '5/7 / 1/5 = 25/7';
+    $this->assertEqual($result, '25/7', $message);
+
+    // Test fraction reciprocation.
+    $result = fraction(1, 2)->reciprocate()->toString();
+    $message = 'The reciprocal of 1/2 is 2/1.';
+    $this->assertEqual($result, '2/1', $message);
+
+    // Test that reciprocation of a zero numerator does not result in division by zero.
+    $result = fraction(0, 1)->reciprocate()->toString();
+    $message = 'The reciprocal of 0/1 is 0/1 (avoid division by zero).';
+    $this->assertEqual($result, '0/1', $message);
   }
 }
 

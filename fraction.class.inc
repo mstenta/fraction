@@ -254,6 +254,168 @@ class Fraction {
   }
 
   /**
+   * Reciprocate the fraction.
+   *
+   * @return
+   *   Returns this object.
+   */
+  public function reciprocate() {
+
+    // Get the numerator and denominator, but flipped.
+    $numerator = $this->getDenominator();
+    $denominator = $this->getNumerator();
+
+    // Save the numerator and denominator.
+    $this->setNumerator($numerator);
+    $this->setDenominator($denominator);
+
+    return $this;
+  }
+
+  /**
+   * Add another fraction to this one.
+   *
+   * @param Fraction $fraction
+   *   Another fraction object to add to this one.
+   *
+   * @return
+   *   Returns this object.
+   */
+  public function add(Fraction $fraction) {
+
+    // Get the numerator and denominator of each fraction.
+    $numerator1 = $this->getNumerator();
+    $denominator1 = $this->getDenominator();
+    $numerator2 = $fraction->getNumerator();
+    $denominator2 = $fraction->getDenominator();
+
+    // Calculate the sum of the two fractions.
+    // Use BCMath if available.
+    if (function_exists('bcmul') && function_exists('bcadd')) {
+      $denominator = bcmul($denominator1, $denominator2);
+      $numerator = bcadd(bcmul($numerator1, $denominator2), bcmul($numerator2, $denominator1));
+    }
+    else {
+      $denominator = $denominator1 * $denominator2;
+      $numerator = $numerator1 * $denominator2 + $numerator2 * $denominator1;
+    }
+
+    // Save the numerator and denominator.
+    $this->setNumerator($numerator);
+    $this->setDenominator($denominator);
+
+    return $this;
+  }
+
+  /**
+   * Subtract another fraction from this one.
+   *
+   * @param Fraction $fraction
+   *   Another fraction object to subtract this one.
+   *
+   * @return
+   *   Returns this object.
+   */
+  function subtract(Fraction $fraction) {
+
+    // Get the numerator and denominator of each fraction.
+    $numerator1 = $this->getNumerator();
+    $denominator1 = $this->getDenominator();
+    $numerator2 = $fraction->getNumerator();
+    $denominator2 = $fraction->getDenominator();
+
+    // Calculate the difference of the two fractions.
+    // Use BCMath if available.
+    if (function_exists('bcmul') && function_exists('bcsub')) {
+      $denominator = bcmul($denominator1, $denominator2);
+      $numerator = bcsub(bcmul($numerator1, $denominator2), bcmul($numerator2, $denominator1));
+    }
+    else {
+      $denominator = $denominator1 * $denominator2;
+      $numerator = $numerator1 * $denominator2 - $numerator2 * $denominator1;
+    }
+
+    // Save the numerator and denominator.
+    $this->setNumerator($numerator);
+    $this->setDenominator($denominator);
+
+    return $this;
+  }
+
+  /**
+   * Multiply this fraction with another one.
+   *
+   * @param Fraction $fraction
+   *   Another fraction object to multiply with.
+   *
+   * @return
+   *   Returns this object.
+   */
+  function multiply(Fraction $fraction) {
+
+    // Get the numerator and denominator of each fraction.
+    $numerator1 = $this->getNumerator();
+    $denominator1 = $this->getDenominator();
+    $numerator2 = $fraction->getNumerator();
+    $denominator2 = $fraction->getDenominator();
+
+    // Calculate the product of the two fractions.
+    // Use BCMath if available.
+    if (function_exists('bcmul')) {
+      $numerator = bcmul($numerator1, $numerator2);
+      $denominator = bcmul($denominator1, $denominator2);
+    }
+    else {
+      $numerator = $numerator1 * $numerator2;
+      $denominator = $denominator1 * $denominator2;
+    }
+
+    // Save the numerator and denominator.
+    $this->setNumerator($numerator);
+    $this->setDenominator($denominator);
+
+    return $this;
+  }
+
+  /**
+   * Divide this fraction by another one.
+   *
+   * @param Fraction $fraction
+   *   Another fraction object to divide by.
+   *
+   * @return
+   *   Returns this object.
+   */
+  function divide(Fraction $fraction) {
+
+    // Reciprocate the fraction.
+    $fraction->reciprocate();
+
+    // Get the numerator and denominator of each fraction.
+    $numerator1 = $this->getNumerator();
+    $denominator1 = $this->getDenominator();
+    $numerator2 = $fraction->getNumerator();
+    $denominator2 = $fraction->getDenominator();
+
+    // Calculate the quotient of the two fractions.
+    // Use BCMath if available.
+    if (function_exists('bcmul')) {
+      $numerator = bcmul($numerator1, $numerator2);
+      $denominator = bcmul($denominator1, $denominator2);
+    }
+    else {
+      $numerator = $numerator1 * $numerator2;
+      $denominator = $denominator1 * $denominator2;
+    }
+
+    // Save the numerator and denominator.
+    $this->setNumerator($numerator);
+    $this->setDenominator($denominator);
+
+    return $this;
+  }
+
+  /**
    * BCMath decimal rounding function.
    *
    * @param $value
