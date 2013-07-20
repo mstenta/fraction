@@ -235,27 +235,35 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
   $settings = $display['settings'];
   $element = array();
 
-  switch ($display['type']) {
+  // Iterate through the items.
+  foreach ($items as $delta => $item) {
 
-    // This formatter simply outputs the field as a fraction ([numerator]/[denominator]).
-    case 'fraction_default':
-      foreach ($items as $delta => $item) {
+    // Merge the item with default values, in case it's empty.
+    $defaults = array(
+      'numerator' => 0,
+      'denominator' => 1,
+    );
+    $item = array_merge($defaults, $item);
+
+    // Build markup based on display type.
+    switch ($display['type']) {
+
+      // This formatter simply outputs the field as a fraction ([numerator]/[denominator]).
+      case 'fraction_default':
         $element[$delta] = array(
           '#type' => 'markup',
           '#markup' => fraction($item['numerator'], $item['denominator'])->toString($settings['separator']),
         );
-      }
-      break;
+        break;
 
-    // This formatter outputs the field as a decimal value with a fixed precision.
-    case 'fraction_decimal':
-      foreach ($items as $delta => $item) {
+      // This formatter outputs the field as a decimal value with a fixed precision.
+      case 'fraction_decimal':
         $element[$delta] = array(
           '#type' => 'markup',
           '#markup' => fraction($item['numerator'], $item['denominator'])->toDecimal($settings['precision']),
         );
-      }
-      break;
+        break;
+    }
   }
 
   return $element;
