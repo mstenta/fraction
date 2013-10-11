@@ -2,9 +2,14 @@
 
 /**
  * @file
- * Fraction class
+ * Definition of Drupal\fraction\Fraction.
  */
 
+namespace Drupal\fraction;
+
+/**
+ * A simple class for representing and acting upon a fraction.
+ */
 class Fraction {
 
   /**
