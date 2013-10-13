@@ -130,7 +130,7 @@ class Fraction {
    * @return
    *   Returns the decimal equivalent of the fraction as a PHP string.
    */
-  public function toDecimal($precision = FRACTION_PRECISION_DEFAULT) {
+  public function toDecimal($precision = 2) {
 
     // Get the numerator and denominator.
     $numerator = $this->getNumerator();

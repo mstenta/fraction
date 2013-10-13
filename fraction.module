@@ -5,19 +5,7 @@
  * Fraction
  */
 
-/***************************************************************
- * Includes
- * *************************************************************/
-
-// Include the Fraction Field API functions.
-require_once __DIR__ . '/fraction.field.inc';
-
-/***************************************************************
- * Constants
- * *************************************************************/
-
-// Default decimal precision.
-define('FRACTION_PRECISION_DEFAULT', 2);
+use Drupal\fraction\Fraction;
 
 /***************************************************************
  * Utility functions
