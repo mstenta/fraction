@@ -37,18 +37,3 @@ function fraction($numerator = 0, $denominator = 1) {
 function fraction_from_decimal($value) {
   return fraction()->fromDecimal($value);
 }
-
-/***************************************************************
- * Views API hooks
- * *************************************************************/
-
-/**
- * Implements hook_views_api().
- */
-function fraction_views_api() {
-  return array(
-    'api' => 3,
-    'path' => drupal_get_path('module', 'fraction') . '/views',
-  );
-}
-
