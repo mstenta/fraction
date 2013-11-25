@@ -80,7 +80,7 @@ class FractionDecimalWidget extends FractionWidget {
     // Add a 'decimal' textfield for capturing the decimal value.
     $element['decimal'] = array(
       '#type' => 'textfield',
-      '#default_value' => fraction($items[$delta]->numerator, $items[$delta]->denominator)->toDecimal($precision),
+      '#default_value' => $items[$delta]->fraction->toDecimal($precision),
       '#size' => 15,
     );
 

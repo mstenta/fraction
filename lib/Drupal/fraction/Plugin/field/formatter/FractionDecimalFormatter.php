@@ -74,7 +74,7 @@ class FractionDecimalFormatter extends FractionFormatter {
 
       // Output fraction as a decimal with a fixed precision.
       $elements[$delta] = array(
-        '#markup' => fraction($item->numerator, $item->denominator)->toDecimal($precision),
+        '#markup' => $item->fraction->toDecimal($precision),
       );
     }
 

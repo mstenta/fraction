@@ -74,7 +74,7 @@ class FractionFormatter extends FormatterBase {
 
       // Output fraction as a string.
       $elements[$delta] = array(
-        '#markup' => fraction($item->numerator, $item->denominator)->toString($separator),
+        '#markup' => $item->fraction->toString($separator),
       );
     }
 

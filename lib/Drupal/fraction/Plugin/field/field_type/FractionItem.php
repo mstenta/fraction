@@ -45,6 +45,13 @@ class FractionItem extends ConfigFieldItemBase {
         'type' => 'integer',
         'label' => t('Denominator value'),
       );
+      static::$propertyDefinitions['fraction'] = array(
+        'type' => 'fraction',
+        'label' => t('Fraction'),
+        'description' => t('A fraction object instance.'),
+        'computed' => TRUE,
+        'class' => '\Drupal\fraction\FractionProperty',
+      );
     }
     return static::$propertyDefinitions;
   }
