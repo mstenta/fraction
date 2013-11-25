@@ -164,7 +164,7 @@ class Fraction {
   public function fromDecimal($value) {
 
     // Calculate the precision by counting the number of decimal places.
-    $precision = drupal_strlen(drupal_substr(strrchr($value, '.'), 1));
+    $precision = strlen(substr(strrchr($value, '.'), 1));
 
     // Create the denominator by raising 10 to the power of the precision.
     if (function_exists('bcpow')) {
