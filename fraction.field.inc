@@ -17,8 +17,58 @@ function fraction_field_info() {
       'instance_settings' => array(),
       'default_widget' => 'fraction_default',
       'default_formatter' => 'fraction_default',
+      // Entity API integration.
+      'property_type' => 'field_item_fraction',
+      'property_callbacks' => array('fraction_property_info_callback'),
     ),
   );
+}
+
+/**
+ * Callback to alter the property info of fraction fields.
+ *
+ * @see fraction_field_info().
+ */
+function fraction_property_info_callback(&$info, $entity_type, $field, $instance, $field_type) {
+  $name = $field['field_name'];
+  $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$name];
+  $property['type'] = ($field['cardinality'] != 1) ? 'list<field_item_fraction>' : 'field_item_fraction';
+  $property['getter callback'] = 'entity_metadata_field_verbatim_get';
+  $property['setter callback'] = 'entity_metadata_field_verbatim_set';
+  $property['auto creation'] = 'fraction_default_values';
+  $property['property info'] = fraction_data_property_info();
+  unset($property['query callback']);
+}
+
+function fraction_default_values() {
+  return array(
+    'numerator' => 0,
+    'denominator' => 100,
+  );
+}
+
+/**
+ * Defines info for the properties of the fraction field data structure.
+ */
+function fraction_data_property_info($name = NULL) {
+  // Build an array of basic property information for the fraction field.
+  $properties = array(
+    'numerator' => array(
+      'label' => t('Numerator'),
+    ),
+    'denominator' => array(
+      'label' => t('Denominator'),
+    ),
+  );
+  foreach ($properties as &$property) {
+    $property += array(
+      'type' => 'integer',
+      'description' => !empty($name) ? t('!label of field %name', array('!label' => $property['label'], '%name' => $name)) : '',
+      'getter callback' => 'entity_property_verbatim_get',
+      'setter callback' => 'entity_property_verbatim_set',
+    );
+  }
+  return $properties;
 }
 
 /**

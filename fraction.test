@@ -6,18 +6,24 @@
  */
 
 /**
+ * Base class for all test cases.
+ */
+abstract class FractionBaseTestCase extends DrupalWebTestCase {
+  public function setUp(array $modules = array()) {
+    parent::setUp(array_merge($modules, array('fraction')));
+  }
+}
+
+/**
  * Provides tests for the Fraction class.
  */
-class FractionUnitTestCase extends DrupalWebTestCase {
+class FractionUnitTestCase extends FractionBaseTestCase {
   public static function getInfo() {
     return array(
-      'name' => 'Fraction tests',
+      'name' => 'Fraction unit tests',
       'description' => 'Test that the Fraction class works properly.',
       'group' => 'Fraction',
     );
-  }
-  public function setUp() {
-    parent::setUp('fraction');
   }
 
   /**
@@ -131,3 +137,68 @@ class FractionUnitTestCase extends DrupalWebTestCase {
   }
 }
 
+class FractionEntityTestCase extends FractionBaseTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Fraction Entity integration tests',
+      'description' => 'Tests that Fraction integrates with Entity well.',
+      'group' => 'Fraction',
+      'dependencies' => array('entity'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp(array('entity', 'fraction_entity_test'));
+  }
+
+  public function testEntityIntegration() {
+    // Initial data.
+    $fraction_first = fraction_from_decimal('20.15');
+    $fraction_second = fraction_from_decimal('14.28');
+    // Create an entity.
+    $entity = entity_create('fraction_entity_test', array(
+      'title' => t('Title of Fraction Entity Test'),
+      'type' => 'fraction_entity_test_bundle',
+    ));
+    $entity_wrapped = entity_metadata_wrapper('fraction_entity_test', $entity);
+    $entity_wrapped->fraction_field = array(
+      'numerator' => $fraction_first->getNumerator(),
+      'denominator' => $fraction_first->getDenominator(),
+    );
+    $entity_wrapped->save();
+    // Check the value of fraction field.
+    $entity_created = reset(entity_load('fraction_entity_test', array($entity_wrapped->id->value())));
+    $entity_created_wrapped = entity_metadata_wrapper('fraction_entity_test', $entity_created);
+    $fraction_first_created = fraction()
+      ->setNumerator($entity_created_wrapped->fraction_field->numerator->value())
+      ->setDenominator($entity_created_wrapped->fraction_field->denominator->value());
+    $this->assertEqual($fraction_first->toDecimal(), $fraction_first_created->toDecimal(),
+      t('Expected value !expected equals real !real',
+        array(
+          '!expected' => $fraction_first->toDecimal(),
+          '!real' => $fraction_first_created->toDecimal(),
+        )
+      )
+    );
+    // Update the value of fraction field.
+    $entity_wrapped->fraction_field = array(
+      'numerator' => $fraction_second->getNumerator(),
+      'denominator' => $fraction_second->getDenominator(),
+    );
+    $entity_wrapped->save();
+    // Check the value of fraction field.
+    $entity_updated = reset(entity_load('fraction_entity_test', array($entity_wrapped->id->value())));
+    $entity_updated_wrapped = entity_metadata_wrapper('fraction_entity_test', $entity_updated);
+    $fraction_second_updated = fraction()
+      ->setNumerator($entity_updated_wrapped->fraction_field->numerator->value())
+      ->setDenominator($entity_updated_wrapped->fraction_field->denominator->value());
+    $this->assertEqual($fraction_second->toDecimal(), $fraction_second_updated->toDecimal(),
+      t('Expected value !expected equals real !real',
+        array(
+          '!expected' => $fraction_second->toDecimal(),
+          '!real' => $fraction_second_updated->toDecimal(),
+        )
+      )
+    );
+  }
+}

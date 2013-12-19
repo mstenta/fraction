@@ -1,0 +1,8 @@
+name = "Fraction Entity Test"
+description = "Helper module for testing Fraction Entity integration."
+core = 7.x
+
+dependencies[] = entity
+dependencies[] = fraction
+
+files[] = fraction_entity_test.inc
