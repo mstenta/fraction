@@ -216,7 +216,10 @@ function fraction_field_formatter_info() {
     'fraction_decimal' => array(
       'label' => t('Decimal'),
       'field types' => array('fraction'),
-      'settings' => array('precision' => FRACTION_PRECISION_DEFAULT),
+      'settings' => array(
+        'precision' => FRACTION_PRECISION_DEFAULT,
+        'auto_precision' => TRUE,
+      ),
     ),
   );
 }
@@ -235,7 +238,8 @@ function fraction_field_formatter_settings_summary($field, $instance, $view_mode
   }
 
   elseif ($display['type'] == 'fraction_decimal') {
-    $summary = t('Precision: @precision', array('@precision' => $settings['precision']));
+    $auto_precision = !empty($settings['auto_precision']) ? 'On' : 'Off';
+    $summary = t('Precision: @precision, Auto-precision: @auto_precision', array('@precision' => $settings['precision'], '@auto_precision' => $auto_precision));
   }
 
   return $summary;
@@ -268,10 +272,18 @@ function fraction_field_formatter_settings_form($field, $instance, $view_mode, $
     $element['precision'] = array(
       '#type' => 'textfield',
       '#title' => t('Decimal precision'),
-      '#description' => t('Specify the number of digits after the decimal place to display.'),
+      '#description' => t('Specify the number of digits after the decimal place to display. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
       '#default_value' => $settings['precision'],
       '#required' => TRUE,
       '#element_validate' => array('element_validate_integer_positive'),
+    );
+
+    // Auto precision.
+    $element['auto_precision'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Auto precision'),
+      '#description' => t('Automatically determine the maximum precision if the fraction has a base-10 denominator. For example, 1/100 would have a precision of 2, 1/1000 would have a precision of 3, etc.'),
+      '#default_value' => $settings['auto_precision'],
     );
   }
 
@@ -306,11 +318,12 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
         );
         break;
 
-      // This formatter outputs the field as a decimal value with a fixed precision.
+      // This formatter outputs the field as a decimal value with a fixed or automatic precision.
       case 'fraction_decimal':
+        $auto_precision = !empty($settings['auto_precision']) ? TRUE : FALSE;
         $element[$delta] = array(
           '#type' => 'markup',
-          '#markup' => fraction($item['numerator'], $item['denominator'])->toDecimal($settings['precision']),
+          '#markup' => fraction($item['numerator'], $item['denominator'])->toDecimal($settings['precision'], $auto_precision),
         );
         break;
     }
