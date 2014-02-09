@@ -98,6 +98,11 @@ class FractionTest extends UnitTestCase {
     $message = 'A fraction of 2/5 with no precision should round to 0.';
     $this->assertEquals($result, '0', $message);
 
+    // Test decimal automatic precision.
+    $result = $this->fraction(1, 1000)->toDecimal(2, TRUE);
+    $message = 'A fraction of 1/1000 with precision 2 and auto-precision enabled should round to 0.001.';
+    $this->assertEquals($result, '0.001', $message);
+
     // Test creation of a fraction from a decimal.
     $result = $this->fraction()->fromDecimal(0.5)->toString();
     $message = 'The fromDecimal() method should create a fraction of 5/10 from a decimal of 0.5.';

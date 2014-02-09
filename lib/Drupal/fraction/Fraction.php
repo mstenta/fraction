@@ -126,15 +126,32 @@ class Fraction {
    *
    * @param $precision
    *   The desired decimal precision.
+   * @param $auto_precision
+   *   Boolean, whether or not the precision should be automatically calculated.
+   *   This option provides more precision when you need it, and less when you
+   *   don't. If set to TRUE, it will try to determine the maximum precision
+   *   (this only works if the denominator is base 10). If the resulting
+   *   precision is greater than $precision, it will be used instead.
    *
    * @return
    *   Returns the decimal equivalent of the fraction as a PHP string.
    */
-  public function toDecimal($precision = 2) {
+  public function toDecimal($precision = 2, $auto_precision = FALSE) {
 
     // Get the numerator and denominator.
     $numerator = $this->getNumerator();
     $denominator = $this->getDenominator();
+
+    // If auto precision is on and the denominator is base-10, figure out the
+    // maximum precision.
+    if ($auto_precision && $denominator % 10 == 0) {
+
+      // Max precision is the number of zeroes in the base-10 denominator.
+      $max_precision = strlen($denominator) - 1;
+
+      // Use the greater of the two precisions.
+      $precision = ($max_precision > $precision) ? $max_precision : $precision;
+    }
 
     // Divide the numerator by the denominator (using BCMath if available).
     if (function_exists('bcdiv')) {
