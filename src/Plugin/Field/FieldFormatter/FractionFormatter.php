@@ -30,7 +30,7 @@ class FractionFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, array &$form_state) {
+  public function settingsForm(array $form, FormStateInterface $form_state) {
 
     // Numerator and denominator separator.
     $elements['separator'] = array(

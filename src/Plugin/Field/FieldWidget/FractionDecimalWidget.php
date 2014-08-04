@@ -29,7 +29,7 @@ class FractionDecimalWidget extends FractionWidget {
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, array &$form_state) {
+  public function settingsForm(array $form, FormStateInterface $form_state) {
 
     // Decimal precision.
     $elements['precision'] = array(
@@ -60,7 +60,7 @@ class FractionDecimalWidget extends FractionWidget {
   /**
    * {@inheritdoc}
    */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, array &$form_state) {
+  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
 
     // Pass the element through the parent's formElement method.
     $element = parent::formElement($items, $delta, $element, $form, $form_state);

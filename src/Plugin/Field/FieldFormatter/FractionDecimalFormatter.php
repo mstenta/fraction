@@ -29,7 +29,7 @@ class FractionDecimalFormatter extends FractionFormatter {
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, array &$form_state) {
+  public function settingsForm(array $form, FormStateInterface $form_state) {
 
     // Decimal precision.
     $elements['precision'] = array(
