@@ -19,13 +19,19 @@ use Drupal\Core\Form\FormStateInterface;
  *   label = @Translation("Fraction"),
  *   field_types = {
  *     "fraction"
- *   },
- *   settings = {
- *     "separator" = "/",
  *   }
  * )
  */
 class FractionFormatter extends FormatterBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return array(
+      'separator' => '/',
+    ) + parent::defaultSettings();
+  }
 
   /**
    * {@inheritdoc}

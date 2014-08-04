@@ -18,13 +18,19 @@ use Drupal\Core\Form\FormStateInterface;
  *   label = @Translation("Decimal"),
  *   field_types = {
  *     "fraction"
- *   },
- *   settings = {
- *     "precision" = "2",
  *   }
  * )
  */
 class FractionDecimalFormatter extends FractionFormatter {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return array(
+      'precision' => 2,
+    ) + parent::defaultSettings();
+  }
 
   /**
    * {@inheritdoc}
