@@ -7,10 +7,10 @@
 
 namespace Drupal\fraction\Plugin\Field\FieldType;
 
-use Drupal\Core\Entity\Annotation\FieldType;
-use Drupal\Core\Annotation\Translation;
-use Drupal\field\FieldInterface;
-use Drupal\field\Plugin\Type\FieldType\ConfigFieldItemBase;
+use Drupal\Core\Field\FieldItemBase;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\TypedData\DataDefinition;
+use Drupal\Core\TypedData\MapDataDefinition;
 
 /**
  * Plugin implementation of the 'fraction' field type.
@@ -23,7 +23,7 @@ use Drupal\field\Plugin\Type\FieldType\ConfigFieldItemBase;
  *   default_formatter = "fraction"
  * )
  */
-class FractionItem extends ConfigFieldItemBase {
+class FractionItem extends FieldItemBase {
 
   /**
    * Definitions of the contained properties.
@@ -59,7 +59,7 @@ class FractionItem extends ConfigFieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public static function schema(FieldInterface $field) {
+  public static function schema(FieldStorageDefinitionInterface $field_definition) {
     return array(
       'columns' => array(
         'numerator' => array(

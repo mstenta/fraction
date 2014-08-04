@@ -7,13 +7,8 @@
 
 namespace Drupal\fraction\Plugin\Field\FieldWidget;
 
-use Drupal\field\Annotation\FieldWidget;
-use Drupal\Core\Annotation\Translation;
-use Drupal\Core\Entity\Field\FieldItemListInterface;
-use Drupal\fraction\Plugin\field\widget\FractionWidget;
-use Symfony\Component\Validator\ConstraintViolationInterface;
-use Drupal\Component\Utility\NestedArray;
-use Drupal\fraction\Fraction;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Plugin implementation of the 'fraction_decimal' widget.

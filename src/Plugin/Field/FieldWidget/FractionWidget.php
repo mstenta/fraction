@@ -7,10 +7,9 @@
 
 namespace Drupal\fraction\Plugin\Field\FieldWidget;
 
-use Drupal\field\Annotation\FieldWidget;
-use Drupal\Core\Annotation\Translation;
-use Drupal\Core\Entity\Field\FieldItemListInterface;
-use Drupal\field\Plugin\Type\Widget\WidgetBase;
+use Drupal\Core\Field\WidgetBase;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Plugin implementation of the 'fraction' widget.
