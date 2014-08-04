@@ -109,7 +109,7 @@ class FractionDecimalWidget extends FractionWidget {
         'numerator' => $fraction->getNumerator(),
         'denominator' => $fraction->getDenominator(),
       );
-      form_set_value($element, $values, $form_state);
+      $form_state->setValueForElement($element, $values);
     }
   }
 }
