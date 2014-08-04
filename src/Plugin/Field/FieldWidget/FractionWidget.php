@@ -58,7 +58,7 @@ class FractionWidget extends WidgetBase {
 
     // If the denominator is empty, but the numerator isn't, print an error.
     if (empty($element['denominator']['#value']) && !empty($element['numerator']['#value'])) {
-      form_error($element['denominator'], t('The denominator of a fraction cannot be zero or empty (if a numerator is provided).'));
+      $form_state->setErrorByName('denominator', t('The denominator of a fraction cannot be zero or empty (if a numerator is provided).'));
     }
   }
 }
