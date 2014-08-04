@@ -85,4 +85,3 @@ class FractionFormatter extends FormatterBase {
     return $elements;
   }
 }
-

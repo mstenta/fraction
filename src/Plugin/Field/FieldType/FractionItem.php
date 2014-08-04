@@ -81,4 +81,3 @@ class FractionItem extends FieldItemBase {
     return empty($numerator) || empty($denominator);
   }
 }
-
