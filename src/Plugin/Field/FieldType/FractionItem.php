@@ -35,30 +35,6 @@ class FractionItem extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions() {
-    if (!isset(static::$propertyDefinitions)) {
-      static::$propertyDefinitions['numerator'] = array(
-        'type' => 'integer',
-        'label' => t('Numerator value'),
-      );
-      static::$propertyDefinitions['denominator'] = array(
-        'type' => 'integer',
-        'label' => t('Denominator value'),
-      );
-      static::$propertyDefinitions['fraction'] = array(
-        'type' => 'fraction',
-        'label' => t('Fraction'),
-        'description' => t('A fraction object instance.'),
-        'computed' => TRUE,
-        'class' => '\Drupal\fraction\FractionProperty',
-      );
-    }
-    return static::$propertyDefinitions;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
     return array(
       'columns' => array(
@@ -78,6 +54,22 @@ class FractionItem extends FieldItemBase {
         ),
       ),
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
+    $property_definitions['numerator'] = DataDefinition::create('integer')
+      ->setLabel(t('Numerator value'));
+    $property_definitions['denominator'] = DataDefinition::create('integer')
+      ->setLabel(t('Denominator value'));
+    $property_definitions['fraction'] = MapDataDefinition::create()
+      ->setLabel(t('Fraction'))
+      ->setDescription(t('A fraction object instance.'))
+      ->setComputed(TRUE)
+      ->setClass('\Drupal\fraction\FractionProperty');
+    return $property_definitions;
   }
 
   /**
