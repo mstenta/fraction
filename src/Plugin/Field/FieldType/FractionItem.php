@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\fraction\Plugin\field\field_type\FractionItem.
+ * Contains \Drupal\fraction\Plugin\Field\FieldType\FractionItem.
  */
 
-namespace Drupal\fraction\Plugin\field\field_type;
+namespace Drupal\fraction\Plugin\Field\FieldType;
 
 use Drupal\Core\Entity\Annotation\FieldType;
 use Drupal\Core\Annotation\Translation;

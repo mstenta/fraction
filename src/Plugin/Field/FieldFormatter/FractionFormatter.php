@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Definition of Drupal\fraction\Plugin\field\formatter\FractionFormatter.
+ * Definition of Drupal\fraction\Plugin\Field\FieldFormatter\FractionFormatter.
  */
 
-namespace Drupal\fraction\Plugin\field\formatter;
+namespace Drupal\fraction\Plugin\Field\FieldFormatter;
 
 use Drupal\field\Annotation\FieldFormatter;
 use Drupal\Core\Annotation\Translation;

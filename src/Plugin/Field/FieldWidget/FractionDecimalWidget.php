@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Definition of Drupal\fraction\Plugin\field\widget\FractionDecimalWidget.
+ * Definition of Drupal\fraction\Plugin\Field\FieldWidget\FractionDecimalWidget.
  */
 
-namespace Drupal\fraction\Plugin\field\widget;
+namespace Drupal\fraction\Plugin\Field\FieldWidget;
 
 use Drupal\field\Annotation\FieldWidget;
 use Drupal\Core\Annotation\Translation;
