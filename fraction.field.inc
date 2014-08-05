@@ -159,7 +159,7 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
         '#type' => 'textfield',
         '#title' => t('Denominator'),
         '#default_value' => $denominator,
-        '#element_validate' => array('element_validate_integer_positive'),
+        '#element_validate' => array('element_validate_integer'),
         '#size' => 15,
       );
       break;
@@ -286,7 +286,7 @@ function fraction_field_formatter_settings_form($field, $instance, $view_mode, $
       '#description' => t('Specify the number of digits after the decimal place to display. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
       '#default_value' => $settings['precision'],
       '#required' => TRUE,
-      '#element_validate' => array('element_validate_integer_positive'),
+      '#element_validate' => array('element_validate_integer'),
     );
 
     // Auto precision.
