@@ -172,7 +172,8 @@ class FractionEntityTestCase extends FractionBaseTestCase {
     );
     $entity_wrapped->save();
     // Check the value of fraction field.
-    $entity_created = reset(entity_load('fraction_entity_test', array($entity_wrapped->id->value())));
+    $entities = entity_load('fraction_entity_test', array($entity_wrapped->id->value()));
+    $entity_created = reset($entities);
     $entity_created_wrapped = entity_metadata_wrapper('fraction_entity_test', $entity_created);
     $fraction_first_created = fraction()
       ->setNumerator($entity_created_wrapped->fraction_field->numerator->value())
@@ -192,7 +193,8 @@ class FractionEntityTestCase extends FractionBaseTestCase {
     );
     $entity_wrapped->save();
     // Check the value of fraction field.
-    $entity_updated = reset(entity_load('fraction_entity_test', array($entity_wrapped->id->value())));
+    $entities = entity_load('fraction_entity_test', array($entity_wrapped->id->value()));
+    $entity_updated = reset($entities);
     $entity_updated_wrapped = entity_metadata_wrapper('fraction_entity_test', $entity_updated);
     $fraction_second_updated = fraction()
       ->setNumerator($entity_updated_wrapped->fraction_field->numerator->value())
