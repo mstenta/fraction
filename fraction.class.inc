@@ -34,8 +34,8 @@ class Fraction {
    * @param $value
    *   The numerator value.
    *
-   * @return
-   *   Returns this object.
+   * @return Fraction
+   *   Returns this Fraction object.
    */
   public function setNumerator($value) {
 
@@ -51,8 +51,8 @@ class Fraction {
    * @param $value
    *   The denominator value.
    *
-   * @return
-   *   Returns this object.
+   * @return Fraction
+   *   Returns this Fraction object.
    */
   public function setDenominator($value) {
 
@@ -80,7 +80,7 @@ class Fraction {
   /**
    * Get the numerator.
    *
-   * @return
+   * @return string
    *   Returns the numerator value.
    */
   public function getNumerator() {
@@ -90,7 +90,7 @@ class Fraction {
   /**
    * Get the denominator.
    *
-   * @return
+   * @return string
    *   Returns the denominator value.
    */
   public function getDenominator() {
@@ -103,7 +103,7 @@ class Fraction {
    * @param $separator
    *   The separator to place between the numerator and denominator.
    *
-   * @return
+   * @return string
    *   Returns a string with the numerator, separator, and denominator.
    */
   public function toString($separator = '/') {
@@ -128,7 +128,7 @@ class Fraction {
    *   (this only works if the denominator is base 10). If the resulting
    *   precision is greater than $precision, it will be used instead.
    *
-   * @return
+   * @return string
    *   Returns the decimal equivalent of the fraction as a PHP string.
    */
   public function toDecimal($precision = FRACTION_PRECISION_DEFAULT, $auto_precision = FALSE) {
@@ -160,7 +160,7 @@ class Fraction {
 
     // If BCMath is not available, use normal PHP float division and rounding.
     else {
-      return round($numerator / $denominator, $precision);
+      return (string) round($numerator / $denominator, $precision);
     }
   }
 
@@ -170,8 +170,8 @@ class Fraction {
    * @param $value
    *   The decimal value to start with.
    *
-   * @return
-   *   Returns this object.
+   * @return Fraction
+   *   Returns this Fraction object.
    */
   public function fromDecimal($value) {
 
@@ -204,7 +204,7 @@ class Fraction {
   /**
    * Calculate the fraction's greatest common divisor using Euclid's algorithm.
    *
-   * @return
+   * @return string
    *   Returns the greatest common divisor.
    */
   public function gcd() {
@@ -234,14 +234,14 @@ class Fraction {
       }
     }
 
-    return $a;
+    return (string) $a;
   }
 
   /**
    * Reduce the fraction to its simplest form.
    *
-   * @return
-   *   Returns this object.
+   * @return Fraction
+   *   Returns this Fraction object.
    */
   public function reduce() {
 
@@ -273,8 +273,8 @@ class Fraction {
   /**
    * Reciprocate the fraction.
    *
-   * @return
-   *   Returns this object.
+   * @return Fraction
+   *   Returns this Fraction object.
    */
   public function reciprocate() {
 
@@ -295,8 +295,8 @@ class Fraction {
    * @param Fraction $fraction
    *   Another fraction object to add to this one.
    *
-   * @return
-   *   Returns this object.
+   * @return Fraction
+   *   Returns this Fraction object.
    */
   public function add(Fraction $fraction) {
 
@@ -330,8 +330,8 @@ class Fraction {
    * @param Fraction $fraction
    *   Another fraction object to subtract this one.
    *
-   * @return
-   *   Returns this object.
+   * @return Fraction
+   *   Returns this Fraction object.
    */
   function subtract(Fraction $fraction) {
 
@@ -365,8 +365,8 @@ class Fraction {
    * @param Fraction $fraction
    *   Another fraction object to multiply with.
    *
-   * @return
-   *   Returns this object.
+   * @return Fraction
+   *   Returns this Fraction object.
    */
   function multiply(Fraction $fraction) {
 
@@ -400,8 +400,8 @@ class Fraction {
    * @param Fraction $fraction
    *   Another fraction object to divide by.
    *
-   * @return
-   *   Returns this object.
+   * @return Fraction
+   *   Returns this Fraction object.
    */
   function divide(Fraction $fraction) {
 
@@ -440,7 +440,7 @@ class Fraction {
    * @param $precision
    *   The desired decimal precision.
    *
-   * @return
+   * @return string
    *   Returns a rounded decimal value, as a PHP string.
    */
   protected function bcRound($value, $precision) {
