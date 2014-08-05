@@ -84,7 +84,7 @@ function fraction_field_is_empty($item, $field) {
 function fraction_field_widget_info() {
   return array(
     'fraction_default' => array(
-      'label' => t('Numerator and denominator'),
+      'label' => t('Fraction'),
       'field types' => array('fraction'),
       'settings' => array(),
       'behaviors' => array(
