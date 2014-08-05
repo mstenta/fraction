@@ -28,7 +28,7 @@ class FractionDecimalWidget extends FractionWidget {
    */
   public static function defaultSettings() {
     return array(
-      'precision' => 2,
+      'precision' => 0,
       'auto_precision' => TRUE,
     ) + parent::defaultSettings();
   }

@@ -125,7 +125,7 @@ class Fraction {
    * Calculate the decimal equivalent of the fraction.
    *
    * @param $precision
-   *   The desired decimal precision.
+   *   The desired decimal precision, defaults to 0.
    * @param $auto_precision
    *   Boolean, whether or not the precision should be automatically calculated.
    *   This option provides more precision when you need it, and less when you
@@ -136,7 +136,7 @@ class Fraction {
    * @return string
    *   Returns the decimal equivalent of the fraction as a PHP string.
    */
-  public function toDecimal($precision = 2, $auto_precision = FALSE) {
+  public function toDecimal($precision = 0, $auto_precision = FALSE) {
 
     // Get the numerator and denominator.
     $numerator = $this->getNumerator();
