@@ -7,8 +7,8 @@
 
 namespace Drupal\fraction\Plugin\views\field;
 
-use Drupal\Component\Annotation\PluginID;
 use Drupal\field\Plugin\views\field\Field;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Field handler for Fraction fields.
@@ -21,7 +21,7 @@ use Drupal\field\Plugin\views\field\Field;
  *
  * @ingroup views_field_handlers
  *
- * @PluginID("fraction")
+ * @ViewsField("fraction")
  */
 class Fraction extends Field {
 
@@ -44,7 +44,7 @@ class Fraction extends Field {
   /**
    * {@inheritdoc}
    */
-  public function buildOptionsForm(&$form, &$form_state) {
+  public function buildOptionsForm(&$form, FormStateInterface $form_state) {
 
     // Inherit the parent options form.
     parent::buildOptionsForm($form, $form_state);

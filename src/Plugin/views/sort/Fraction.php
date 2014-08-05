@@ -7,7 +7,6 @@
 
 namespace Drupal\fraction\Plugin\views\sort;
 
-use Drupal\Component\Annotation\PluginID;
 use Drupal\views\Plugin\views\sort\SortPluginBase;
 
 /**
@@ -18,7 +17,7 @@ use Drupal\views\Plugin\views\sort\SortPluginBase;
  *
  * @ingroup views_sort_handlers
  *
- * @PluginID("fraction")
+ * @ViewsSort("fraction")
  */
 class Fraction extends SortPluginBase {
 

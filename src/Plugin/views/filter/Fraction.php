@@ -7,7 +7,6 @@
 
 namespace Drupal\fraction\Plugin\views\filter;
 
-use Drupal\Component\Annotation\PluginID;
 use Drupal\views\Plugin\views\filter\Numeric;
 
 /**
@@ -22,7 +21,7 @@ use Drupal\views\Plugin\views\filter\Numeric;
  *
  * @ingroup views_filter_handlers
  *
- * @PluginID("fraction")
+ * @ViewsFilter("fraction")
  */
 class Fraction extends Numeric {
 

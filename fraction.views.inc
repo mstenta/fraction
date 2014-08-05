@@ -34,7 +34,7 @@ function fraction_field_views_data_alter(&$result, $field) {
 
     // Determine the field name.
     $field_name = $field->name;
-    if (strpos($table_alias, $entity_info['revision_table']) !== FALSE) {
+    if (strpos($table_alias, $entity_info->getRevisionTable()) !== FALSE) {
       $field_name .= '-revision_id';
     }
 
