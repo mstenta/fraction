@@ -17,7 +17,7 @@ require_once __DIR__ . '/fraction.field.inc';
  * *************************************************************/
 
 // Default decimal precision.
-define('FRACTION_PRECISION_DEFAULT', 2);
+define('FRACTION_PRECISION_DEFAULT', 0);
 
 /***************************************************************
  * Utility functions
