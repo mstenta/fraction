@@ -95,7 +95,10 @@ function fraction_field_widget_info() {
     'fraction_decimal' => array(
       'label' => t('Decimal'),
       'field types' => array('fraction'),
-      'settings' => array('precision' => FRACTION_PRECISION_DEFAULT),
+      'settings' => array(
+        'precision' => FRACTION_PRECISION_DEFAULT,
+        'auto_precision' => TRUE,
+      ),
       'behaviors' => array(
         'multiple values' => FIELD_BEHAVIOR_DEFAULT,
         'default value' => FIELD_BEHAVIOR_DEFAULT,
@@ -117,8 +120,14 @@ function fraction_field_widget_settings_form($field, $instance) {
     $form['precision'] = array(
       '#type' => 'textfield',
       '#title' => t('Precision'),
-      '#description' => t('Specify the number of digits after the decimal place to display when converting the fraction to a decimal.'),
+      '#description' => t('Specify the number of digits after the decimal place to display when converting the fraction to a decimal. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
       '#default_value' => $settings['precision'],
+    );
+    $form['auto_precision'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Auto precision'),
+      '#description' => t('Automatically determine the maximum precision if the fraction has a base-10 denominator. For example, 1/100 would have a precision of 2, 1/1000 would have a precision of 3, etc.'),
+      '#default_value' => $settings['auto_precision'],
     );
   }
 
@@ -156,14 +165,16 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
       break;
 
     // Decimal widget: a single textfield that accepts a decimal number.
+    // The default value is converted to a decimal with the specified precision.
     case 'fraction_decimal':
       $element += array(
         '#type' => 'fieldset',
         '#element_validate' => array('_fraction_decimal_widget_validate'),
       );
+      $auto_precision = !empty($settings['auto_precision']) ? TRUE : FALSE;
       $element['value'] = array(
         '#type' => 'textfield',
-        '#default_value' => fraction($numerator, $denominator)->toDecimal($settings['precision']),
+        '#default_value' => fraction($numerator, $denominator)->toDecimal($settings['precision'], $auto_precision),
         '#element_validate' => array('element_validate_number'),
         '#size' => 15,
       );
