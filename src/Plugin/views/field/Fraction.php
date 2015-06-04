@@ -7,7 +7,7 @@
 
 namespace Drupal\fraction\Plugin\views\field;
 
-use Drupal\field\Plugin\views\field\Field;
+use Drupal\views\Plugin\views\field\Field;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
