@@ -11,29 +11,31 @@
 function fraction_field_views_data_alter(&$result, $field) {
 
   // Only operate on fields defined by the Fraction module.
-  if ($field->module != 'fraction') {
+  if ($field->getTypeProvider() != 'fraction') {
     return;
   }
 
+  // Get the field name.
+  $field_name = $field->getName();
+
   // Grab information about the entity type tables.
   $entity_manager = \Drupal::entityManager();
-  $entity_type = $field->entity_type;
+  $entity_type = $field->getTargetEntityTypeId();
   $entity_info = $entity_manager->getDefinition($entity_type);
 
   // Look up the field's most used instance label.
-  list($field_label, $other_labels) = field_views_field_label($field->entity_type, $field->name);
+  list($field_label, $other_labels) = views_entity_field_label($entity_type, $field_name);
 
   // Build a list of additional fields for the sort and filter handlers.
   $additional_fields = array(
-    $field->name . '_numerator',
-    $field->name . '_denominator',
+    $field_name . '_numerator',
+    $field_name . '_denominator',
   );
 
   // Iterate through the results.
   foreach ($result as $table_alias => &$data) {
 
     // Determine the field name.
-    $field_name = $field->name;
     if (strpos($table_alias, $entity_info->getRevisionTable()) !== FALSE) {
       $field_name .= '-revision_id';
     }
