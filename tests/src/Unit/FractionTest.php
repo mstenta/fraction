@@ -37,7 +37,7 @@ class FractionTest extends UnitTestCase {
   /**
    * Test the Fraction class and it's methods.
    */
-  function testFraction() {
+  public function testFraction() {
 
     // Test creation of a fraction.
     $fraction = $this->fraction(1, 2);
