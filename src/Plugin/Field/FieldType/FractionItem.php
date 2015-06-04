@@ -17,8 +17,9 @@ use Drupal\Core\TypedData\MapDataDefinition;
  *
  * @FieldType(
  *   id = "fraction",
- *   label = @Translation("Fraction"),
+ *   label = @Translation("Fraction (two integers)"),
  *   description = @Translation("This field stores a decimal in fraction form (with a numerator and denominator) for maximum precision."),
+ *   category = @Translation("Number"),
  *   default_widget = "fraction",
  *   default_formatter = "fraction"
  * )
