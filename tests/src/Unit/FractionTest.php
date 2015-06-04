@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Definition of Drupal\fraction\Tests\FractionTest.
+ * Definition of Drupal\Tests\fraction\Unit\FractionTest.
  */
 
-namespace Drupal\fraction\Tests;
+namespace Drupal\Tests\fraction\Unit;
 
 use Drupal\Tests\UnitTestCase;
 use Drupal\fraction\Fraction;
