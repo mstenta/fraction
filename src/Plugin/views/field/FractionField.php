@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Definition of Drupal\fraction\Plugin\views\field\Fraction.
+ * Definition of Drupal\fraction\Plugin\views\field\FractionField.
  */
 
 namespace Drupal\fraction\Plugin\views\field;
@@ -21,9 +21,9 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @ingroup views_field_handlers
  *
- * @ViewsField("fraction")
+ * @ViewsField("fraction_field")
  */
-class Fraction extends Field {
+class FractionField extends Field {
 
   /**
    * {@inheritdoc}

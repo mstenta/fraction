@@ -42,7 +42,7 @@ function fraction_field_views_data_alter(&$result, $field) {
 
     // Override the field handler so that we can provide our own custom
     // click sort method (that uses the fraction's decimal equivalent).
-    $data[$field_name]['field']['id'] = 'fraction';
+    $data[$field_name]['field']['id'] = 'fraction_field';
 
     // Make the field click-sortable.
     $data[$field_name]['field']['click sortable'] = TRUE;
