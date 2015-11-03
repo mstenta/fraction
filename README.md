@@ -88,12 +88,116 @@ The numerator is represented as a signed BIGINT, which allows for a range of val
 
 The denominator is represented as an unsigned INT, which allows for a range of values between 0 and 4294967295.
 
+For modules that want to implement their own numerator and denominator columns in a database table, the following
+schema can be used as an example (for use in hook_schema()):
+
+    /**
+     * Implements hook_schema().
+     */
+    function mymodule_schema() {
+      $schema['mymodule_table'] = array(
+        'fields' => array(
+    
+          ...
+    
+          'value_numerator' => array(
+            'description' => 'Value numerator',
+            'type' => 'int',
+            'size' => 'big',
+            'not null' => TRUE,
+            'default' => 0,
+          ),
+          'value_denominator' => array(
+            'description' => 'Value denominator',
+            'type' => 'int',
+            'unsigned' => TRUE,
+            'not null' => TRUE,
+            'default' => 1,
+          ),
+    
+          ...
+    
+        ),
+      );
+      return $schema;
+    }
+
 VIEWS INTEGRATION
 -----------------
 
 Views integration is provided by Views itself on behalf of the core Field module. Fraction extends some of the field
 handlers to allow sorting and filtering by the decimal equivalent of the fraction value (calculated via formula in the
 database query).
+
+For modules that want to implement their own fraction-based database storage (see Database Storage above), Fraction
+also provides a general-purpose Views field handler that can be used in hook_views_data(). Using the same example
+described in Database Storage above, here is what that would look like:
+
+    /**
+     * Implements hook_views_data().
+     */
+    function mymodule_views_data() {
+    
+      ...
+    
+      // Value numerator.
+      $data['mymodule_table']['value_numerator'] = array(
+        'title' => t('Value numerator'),
+        'help' => t('The stored numerator value.'),
+        'field' => array(
+          'handler' => 'views_handler_field_numeric',
+          'click sortable' => TRUE,
+        ),
+        'filter' => array(
+          'handler' => 'views_handler_filter_numeric',
+        ),
+        'sort' => array(
+          'handler' => 'views_handler_sort',
+        ),
+      );
+    
+      // Value denominator.
+      $data['mymodule_table']['value_denominator'] = array(
+        'title' => t('Value denominator'),
+        'help' => t('The stored denominator value.'),
+        'field' => array(
+          'handler' => 'views_handler_field_numeric',
+          'click sortable' => TRUE,
+        ),
+        'filter' => array(
+          'handler' => 'views_handler_filter_numeric',
+        ),
+        'sort' => array(
+          'handler' => 'views_handler_sort',
+        ),
+      );
+    
+      // Create a new decimal column with fraction decimal handlers.
+      $fraction_fields = array(
+        'numerator' => 'value_numerator',
+        'denominator' => 'value_denominator',
+      );
+      $data['mymodule_table']['value_decimal'] = array(
+        'title' => t('Value (decimal)'),
+        'help' => t('Decimal equivalent of the value.'),
+        'real field' => 'value_numerator',
+        'field' => array(
+          'handler' => 'fraction_handler_field',
+          'additional fields' => $fraction_fields,
+          'click sortable' => TRUE,
+        ),
+        'sort' => array(
+          'handler' => 'fraction_handler_sort_decimal',
+          'additional fields' => $fraction_fields,
+        ),
+        'filter' => array(
+          'handler' => 'fraction_handler_filter_decimal',
+          'additional fields' => $fraction_fields,
+        )
+      );
+    
+      return $data;
+    }
 
 USING THIS MODULE FOR PRICE STORAGE
 -----------------------------------
