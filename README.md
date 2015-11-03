@@ -62,6 +62,22 @@ can be configured per-field.
 **Decimal** - Displays the fraction as a decimal with a fixed precision. For example, the fraction 1/3 can be
 represented with a precision of 5 as 0.33333.
 
+AUTOMATIC PRECISION
+-------------------
+
+Fraction can automatically determine the precision of a fraction, as long as the denominator is base 10.
+
+Automatic precision can be used in the fraction class's toDecimal() method by setting the second parameter to TRUE:
+
+    $precision = 2;
+    $auto_precision = TRUE;
+    $decimal =  $fraction->toDecimal($precision, TRUE);
+
+In the above example, if the fraction's denominator is not base 10, then the precision defined in the first parameter
+will be used. If the denominator is base 10, the precision will be automatically calculated.
+
+The "Decimal" widget and formatter both provide an option to enable automatic precision.
+
 DATABASE STORAGE
 ----------------
 
