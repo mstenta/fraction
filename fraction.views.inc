@@ -28,8 +28,8 @@ function fraction_field_views_data_alter(&$result, $field) {
 
   // Build a list of additional fields for the sort and filter handlers.
   $additional_fields = array(
-    $field_name . '_numerator',
-    $field_name . '_denominator',
+    'numerator' => $field_name . '_numerator',
+    'denominator' => $field_name . '_denominator',
   );
 
   // Iterate through the results.

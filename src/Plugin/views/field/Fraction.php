@@ -35,7 +35,7 @@ class Fraction extends Field {
 
     // Formula for calculating the final value, by dividing numerator by denominator.
     // These are available as additional fields.
-    $formula = $this->tableAlias . '.' . $this->field . '_numerator / ' . $this->tableAlias . '.' . $this->field . '_denominator';
+    $formula = $this->tableAlias . '.' . $this->definition['additional fields']['numerator'] . ' / ' . $this->tableAlias . '.' . $this->definition['additional fields']['denominator'];
 
     // Add the orderby.
     $this->query->addOrderBy(NULL, $formula, $order, $this->tableAlias . '_decimal');

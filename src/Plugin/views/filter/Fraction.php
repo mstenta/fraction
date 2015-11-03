@@ -35,7 +35,7 @@ class Fraction extends NumericFilter {
 
     // Formula for calculating the final value, by dividing numerator by denominator.
     // These are added as additional fields in hook_field_views_data_alter().
-    $formula = $this->tableAlias . '.' . $this->definition['additional fields'][0] . ' / ' . $this->tableAlias . '.' . $this->definition['additional fields'][1];
+    $formula = $this->tableAlias . '.' . $this->definition['additional fields']['numerator'] . ' / ' . $this->tableAlias . '.' . $this->definition['additional fields']['denominator'];
 
     // Perform the filter using the selected operator and the formula.
     $info = $this->operators();
