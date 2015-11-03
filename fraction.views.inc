@@ -48,9 +48,9 @@ function fraction_field_views_data_alter(&$result, $field) {
     $data[$field_name]['field']['click sortable'] = TRUE;
 
     // Create a new decimal column with custom sort and filter handlers.
-    $column_name = $field->name . '_decimal';
+    $column_name = $field_name . '_decimal';
     $data[$column_name] = array(
-      'group' => t($data[$field_name]['group']),
+      'group' => t($data[$field_name]['group']->getUntranslatedString()),
       'title' => t($field_label . ' (decimal)'),
       'title short' => t($field_label . ':decimal'),
       'help' => t('Decimal equivalent of Fraction field for sorting and filtering. ' . $data[$field_name]['help']),
