@@ -18,7 +18,7 @@ class fraction_handler_filter_decimal extends views_handler_filter_numeric {
 
     // Formula for calculating the final value, by dividing numerator by denominator.
     // These are added as additional fields in hook_field_views_data_alter().
-    $formula = $this->table_alias . '.' . $this->definition['additional fields'][0] . ' / ' . $this->table_alias . '.' . $this->definition['additional fields'][1];
+    $formula = $this->table_alias . '.' . $this->definition['additional fields']['numerator'] . ' / ' . $this->table_alias . '.' . $this->definition['additional fields']['denominator'];
 
     // Perform the filter using the selected operator and the formula.
     $info = $this->operators();

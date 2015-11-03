@@ -18,7 +18,7 @@ class fraction_handler_sort_decimal extends views_handler_sort {
 
     // Formula for calculating the final value, by dividing numerator by denominator.
     // These are added as additional fields in hook_field_views_data_alter().
-    $formula = $this->table_alias . '.' . $this->definition['additional fields'][0] . ' / ' . $this->table_alias . '.' . $this->definition['additional fields'][1];
+    $formula = $this->table_alias . '.' . $this->definition['additional fields']['numerator'] . ' / ' . $this->table_alias . '.' . $this->definition['additional fields']['denominator'];
 
     // Add the orderby.
     $this->query->add_orderby(NULL, $formula, $this->options['order'], $this->table_alias . '_decimal');
