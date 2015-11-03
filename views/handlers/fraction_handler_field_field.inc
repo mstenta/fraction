@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Contains the Fraction Views field handler.
+ * Contains the Fraction Field Views field handler.
  */
 
 /**
  * Field handler for Fraction fields.
  */
-class fraction_handler_field extends views_handler_field_field {
+class fraction_handler_field_field extends views_handler_field_field {
 
   /**
    * Use a query formula for click sorting.
