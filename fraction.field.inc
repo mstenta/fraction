@@ -167,15 +167,11 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
     // Decimal widget: a single textfield that accepts a decimal number.
     // The default value is converted to a decimal with the specified precision.
     case 'fraction_decimal':
-      $element += array(
-        '#type' => 'fieldset',
-        '#element_validate' => array('_fraction_decimal_widget_validate'),
-      );
       $auto_precision = !empty($settings['auto_precision']) ? TRUE : FALSE;
-      $element['value'] = array(
+      $element += array(
         '#type' => 'textfield',
         '#default_value' => fraction($numerator, $denominator)->toDecimal($settings['precision'], $auto_precision),
-        '#element_validate' => array('element_validate_number'),
+        '#element_validate' => array('_fraction_decimal_widget_validate'),
         '#size' => 15,
       );
       break;
@@ -189,13 +185,16 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
  */
 function _fraction_decimal_widget_validate($element, &$form_state) {
 
+  // Validate that the value is a number.
+  element_validate_number($element, $form_state);
+
   // Search through the form values to find the current field value.
   $parents = $element['#parents'];
   array_pop($parents);
   $values = drupal_array_get_nested_value($form_state['values'], $parents);
 
   // Convert the value to a fraction.
-  $fraction = fraction_from_decimal($values[0]['value']);
+  $fraction = fraction_from_decimal($values[0]);
   $values['numerator'] = $fraction->getNumerator();
   $values['denominator'] = $fraction->getDenominator();
 
