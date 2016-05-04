@@ -168,10 +168,13 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
     // The default value is converted to a decimal with the specified precision.
     case 'fraction_decimal':
       $auto_precision = !empty($settings['auto_precision']) ? TRUE : FALSE;
-      $element += array(
+      $element['#element_validate'] = array('_fraction_decimal_widget_validate');
+      $element['decimal'] = array(
         '#type' => 'textfield',
+        '#title' => $element['#title'],
+        '#description' => $element['#description'],
         '#default_value' => fraction($numerator, $denominator)->toDecimal($settings['precision'], $auto_precision),
-        '#element_validate' => array('_fraction_decimal_widget_validate'),
+        '#element_validate' => array('element_validate_number'),
         '#size' => 15,
       );
       break;
@@ -185,16 +188,12 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
  */
 function _fraction_decimal_widget_validate($element, &$form_state) {
 
-  // Validate that the value is a number.
-  element_validate_number($element, $form_state);
-
   // Search through the form values to find the current field value.
   $parents = $element['#parents'];
-  array_pop($parents);
   $values = drupal_array_get_nested_value($form_state['values'], $parents);
 
   // Convert the value to a fraction.
-  $fraction = fraction_from_decimal($values[0]);
+  $fraction = fraction_from_decimal($values['decimal']);
   $values['numerator'] = $fraction->getNumerator();
   $values['denominator'] = $fraction->getDenominator();
 
