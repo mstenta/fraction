@@ -43,8 +43,8 @@ class FractionWidget extends WidgetBase {
       '#default_value' => isset($items[$delta]->denominator) ? $items[$delta]->denominator : NULL,
     );
 
-    // Add denominator validation.
-    $element['#element_validate'][] = array($this, 'validateDenominator');
+    // Add validation.
+    $element['#element_validate'][] = array($this, 'validateFraction');
 
     return $element;
   }
@@ -52,9 +52,9 @@ class FractionWidget extends WidgetBase {
   /**
    * Form element validation handler for $this->formElement().
    *
-   * Validate the denominator.
+   * Validate the fraction.
    */
-  public function validateDenominator(&$element, &$form_state, $form) {
+  public function validateFraction(&$element, &$form_state, $form) {
 
     // If the denominator is empty, but the numerator isn't, print an error.
     if (empty($element['denominator']['#value']) && !empty($element['numerator']['#value'])) {

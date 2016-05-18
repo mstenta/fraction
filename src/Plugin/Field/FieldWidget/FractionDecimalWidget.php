@@ -98,7 +98,8 @@ class FractionDecimalWidget extends FractionWidget {
       '#size' => 15,
     );
 
-    // Convert the decimal value to a fraction during validation.
+    // Add decimal validation. This is also where we will convert the decimal
+    // to a fraction.
     $element['#element_validate'][] = array($this, 'validateDecimal');
 
     return $element;
@@ -106,23 +107,22 @@ class FractionDecimalWidget extends FractionWidget {
 
   /**
    * Form element validation handler for $this->formElement().
-   *
-   * Convert the decimal value to a numerator and denominator.
    */
   public function validateDecimal(&$element, &$form_state, $form) {
 
-    if (!empty($element['decimal']['#value'])) {
+    // Convert the value to a fraction.
+    $fraction = fraction_from_decimal($element['decimal']['#value']);
 
-      // Convert the value to a fraction.
-      $fraction = fraction_from_decimal($element['decimal']['#value']);
+    // Get the numerator and denominator.
+    $numerator = $fraction->getNumerator();
+    $denominator = $fraction->getDenominator();
 
-      // Set the numerator and denominator values for the form.
-      $values = array(
-        'decimal' => $element['decimal']['#value'],
-        'numerator' => $fraction->getNumerator(),
-        'denominator' => $fraction->getDenominator(),
-      );
-      $form_state->setValueForElement($element, $values);
-    }
+    // Set the numerator and denominator values for the form.
+    $values = array(
+      'decimal' => $element['decimal']['#value'],
+      'numerator' => $numerator,
+      'denominator' => $denominator,
+    );
+    $form_state->setValueForElement($element, $values);
   }
 }
