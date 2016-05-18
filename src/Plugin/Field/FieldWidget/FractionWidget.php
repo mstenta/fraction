@@ -60,5 +60,15 @@ class FractionWidget extends WidgetBase {
     if (empty($element['denominator']['#value']) && !empty($element['numerator']['#value'])) {
       $form_state->setError($element, t('The denominator of a fraction cannot be zero or empty (if a numerator is provided).'));
     }
+
+    // Numerators must be between -9223372036854775808 and 9223372036854775807.
+    if ($element['numerator']['#value'] < -9223372036854775808 || $element['numerator']['#value'] > 9223372036854775807) {
+      $form_state->setError($element, t('The numerator of a fraction must be between -9223372036854775808 and 9223372036854775807.'));
+    }
+
+    // Denominators must be between 0 and 4294967295.
+    if ($element['denominator']['#value'] < 0 || $element['denominator']['#value'] > 4294967295) {
+      $form_state->setError($element, t('The denominator of a fraction must be between 0 and 4294967295.'));
+    }
   }
 }

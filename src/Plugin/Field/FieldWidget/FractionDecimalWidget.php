@@ -124,5 +124,10 @@ class FractionDecimalWidget extends FractionWidget {
       'denominator' => $denominator,
     );
     $form_state->setValueForElement($element, $values);
+
+    // The maximum number of digits after the decimal place is 9.
+    if ($denominator > 1000000000) {
+      $form_state->setError($element, t('The maximum number of digits after the decimal place is 9.'));
+    }
   }
 }
