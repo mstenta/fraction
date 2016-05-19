@@ -135,5 +135,65 @@ class FractionDecimalWidget extends FractionWidget {
     if ((string) $denominator > '1000000000') {
       $form_state->setError($element, t('The maximum number of digits after the decimal place is 9.'));
     }
+
+    // Ensure that the decimal value is within an acceptable value range.
+    // Convert the fraction back to a decimal, because that is what will be
+    // stored. Explicitly perform a string comparison to ensure precision.
+    $decimal = (string) $fraction->toDecimal(0, TRUE);
+    $min_decimal = (string) fraction('-9223372036854775808', $denominator)->toDecimal(0, TRUE);
+    $max_decimal = (string) fraction('9223372036854775807', $denominator)->toDecimal(0, TRUE);
+    $scale = strlen($denominator) - 1;
+    $in_bounds = $this->checkInBounds($decimal, $min_decimal, $max_decimal, $scale);
+    if (!$in_bounds) {
+      $form_state->setError($element, t('The number you entered is outside the range of acceptable values. This limitation is related to the decimal precision, so reducing the precision may solve the problem.'));
+    }
+  }
+
+  /**
+   * Helper method to check if a given value is in between two other values,
+   * using BCMath and strings for arbitrary-precision operations where possible.
+   *
+   * @param string $value
+   *   The value to check.
+   * @param string $min
+   *   The minimum bound.
+   * @param string $max
+   *   The maximum bound.
+   * @param int $scale
+   *   Optional scale integer to pass into bcsub() if BCMath is used.
+   *
+   * @return bool
+   *   Returns TRUE if $number is between $min and $max, FALSE otherwise.
+   */
+  protected function checkInBounds($value, $min, $max, $scale = 0) {
+
+    // If BCMath isn't available, let PHP handle it via normal float comparison.
+    if (!function_exists('bcsub')) {
+      return ($value > $max || $value < $min) ? FALSE : TRUE;
+    }
+
+    // Subtract the minimum bound and maximum bounds from the value.
+    $diff_min = bcsub($value, $min, $scale);
+    $diff_max = bcsub($value, $max, $scale);
+
+    // If either have a difference of zero, then the value is in bounds.
+    if ($diff_min == 0 || $diff_max == 0) {
+      return TRUE;
+    }
+
+    // If the first character of $diff_min is a negative sign (-), then the
+    // value is less than the minimum, and therefore out of bounds.
+    if (substr($diff_min, 0, 1) == '-') {
+      return FALSE;
+    }
+
+    // If the first character of $diff_max is a number, then the value is
+    // greater than the maximum, and therefore out of bounds.
+    if (is_numeric(substr($diff_max, 0, 1))) {
+      return FALSE;
+    }
+
+    // Assume the value is in bounds if none of the above said otherwise.
+    return TRUE;
   }
 }
