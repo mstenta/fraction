@@ -125,6 +125,11 @@ class FractionDecimalWidget extends FractionWidget {
     );
     $form_state->setValueForElement($element, $values);
 
+    // Only continue with validation if the value is not empty.
+    if (empty($element['decimal']['#value'])) {
+      return;
+    }
+
     // The maximum number of digits after the decimal place is 9.
     // Explicitly perform a string comparison to ensure precision.
     if ((string) $denominator > '1000000000') {

@@ -63,13 +63,13 @@ class FractionWidget extends WidgetBase {
 
     // Numerators must be between -9223372036854775808 and 9223372036854775807.
     // Explicitly perform a string comparison to ensure precision.
-    if ((string) $element['numerator']['#value'] < '-9223372036854775808' || (string) $element['numerator']['#value'] > '9223372036854775807') {
+    if (!empty($element['numerator']['#value']) && ((string) $element['numerator']['#value'] < '-9223372036854775808' || (string) $element['numerator']['#value'] > '9223372036854775807')) {
       $form_state->setError($element, t('The numerator of a fraction must be between -9223372036854775808 and 9223372036854775807.'));
     }
 
     // Denominators must be between 0 and 4294967295.
     // Explicitly perform a string comparison to ensure precision.
-    if ((string) $element['denominator']['#value'] < '0' || (string) $element['denominator']['#value'] > '4294967295') {
+    if (!empty($element['denominator']['#value']) && ((string) $element['denominator']['#value'] < '0' || (string) $element['denominator']['#value'] > '4294967295')) {
       $form_state->setError($element, t('The denominator of a fraction must be between 0 and 4294967295.'));
     }
   }
