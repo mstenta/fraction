@@ -69,7 +69,10 @@ class FractionDecimalWidget extends FractionWidget {
     // Summarize the precision setting.
     $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? 'On' : 'Off';
-    $summary[] = t('Precision: @precision, Auto-precision: @auto_precision', array('@precision' => $precision, '@auto_precision' => $auto_precision));
+    $summary[] = t('Precision: @precision, Auto-precision: @auto_precision', array(
+      '@precision' => $precision,
+      '@auto_precision' => $auto_precision,
+    ));
 
     return $summary;
   }

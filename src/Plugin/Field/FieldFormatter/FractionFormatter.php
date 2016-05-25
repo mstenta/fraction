@@ -59,7 +59,9 @@ class FractionFormatter extends FormatterBase {
 
     // Summarize the separator setting.
     $separator = $this->getSetting('separator');
-    $summary[] = t('Separator: @separator', array('@separator' => $separator));
+    $summary[] = t('Separator: @separator', array(
+      '@separator' => $separator,
+    ));
 
     return $summary;
   }
