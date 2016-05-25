@@ -11,7 +11,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Plugin implementation of the 'fraction' formatter.
+ * Plugin implementation of the 'fraction_decimal' formatter.
  *
  * @FieldFormatter(
  *   id = "fraction_decimal",
