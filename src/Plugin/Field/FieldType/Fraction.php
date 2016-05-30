@@ -24,7 +24,7 @@ use Drupal\Core\TypedData\MapDataDefinition;
  *   default_formatter = "fraction"
  * )
  */
-class FractionItem extends FieldItemBase {
+class Fraction extends FieldItemBase {
 
   /**
    * Definitions of the contained properties.
