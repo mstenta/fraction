@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\Tests\fraction\Unit\FractionTest.
- */
-
 namespace Drupal\Tests\fraction\Unit;
 
 use Drupal\Tests\UnitTestCase;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\fraction\Plugin\Field\FieldWidget\FractionDecimalWidget.
- */
-
 namespace Drupal\fraction\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;

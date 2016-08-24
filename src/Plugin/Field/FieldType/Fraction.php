@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fraction\Plugin\Field\FieldType\FractionItem.
- */
-
 namespace Drupal\fraction\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;

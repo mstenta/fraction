@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\fraction\FractionProperty.
- */
-
 namespace Drupal\fraction;
 
 use Drupal\Core\TypedData\TypedData;

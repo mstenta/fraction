@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\fraction\Plugin\views\filter\Fraction.
- */
-
 namespace Drupal\fraction\Plugin\views\filter;
 
 use Drupal\views\Plugin\views\filter\NumericFilter;

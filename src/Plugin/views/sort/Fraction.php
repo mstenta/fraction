@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\fraction\Plugin\views\sort\Fraction.
- */
-
 namespace Drupal\fraction\Plugin\views\sort;
 
 use Drupal\views\Plugin\views\sort\SortPluginBase;

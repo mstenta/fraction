@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\fraction\Plugin\views\field\Fraction.
- */
-
 namespace Drupal\fraction\Plugin\views\field;
 
 use Drupal\views\Plugin\views\field\FieldPluginBase;

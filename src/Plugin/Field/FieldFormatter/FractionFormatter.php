@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\fraction\Plugin\Field\FieldFormatter\FractionFormatter.
- */
-
 namespace Drupal\fraction\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\fraction\Fraction.
- */
-
 namespace Drupal\fraction;
 
 /**
