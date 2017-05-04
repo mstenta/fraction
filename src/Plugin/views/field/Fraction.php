@@ -4,6 +4,7 @@ namespace Drupal\fraction\Plugin\views\field;
 
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ResultRow;
 
 /**
  * Field handler for Fraction database columns.
