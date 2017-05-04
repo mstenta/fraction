@@ -8,7 +8,7 @@
 /**
  * Implements hook_field_views_data_alter().
  */
-function fraction_field_views_data_alter(&$result, $field) {
+function fraction_field_views_data_alter(&$data, $field) {
 
   // Only operate on fields defined by the Fraction module.
   if ($field->getTypeProvider() != 'fraction') {
@@ -33,7 +33,7 @@ function fraction_field_views_data_alter(&$result, $field) {
   );
 
   // Iterate through the results.
-  foreach ($result as $table_alias => &$data) {
+  foreach ($data as $table_alias => &$definition) {
 
     // Determine the field name.
     if (strpos($table_alias, $entity_info->getRevisionTable()) !== FALSE) {
@@ -42,18 +42,18 @@ function fraction_field_views_data_alter(&$result, $field) {
 
     // Override the field handler so that we can provide our own custom
     // click sort method (that uses the fraction's decimal equivalent).
-    $data[$field_name]['field']['id'] = 'fraction_field';
+    $definition[$field_name]['field']['id'] = 'fraction_field';
 
     // Make the field click-sortable.
-    $data[$field_name]['field']['click sortable'] = TRUE;
+    $definition[$field_name]['field']['click sortable'] = TRUE;
 
     // Create a new decimal column with custom sort and filter handlers.
     $column_name = $field_name . '_decimal';
-    $data[$column_name] = array(
-      'group' => t($data[$field_name]['group']->getUntranslatedString()),
+    $definition[$column_name] = array(
+      'group' => t($definition[$field_name]['group']->getUntranslatedString()),
       'title' => t($field_label . ' (decimal)'),
       'title short' => t($field_label . ':decimal'),
-      'help' => t('Decimal equivalent of Fraction field for sorting and filtering. ' . $data[$field_name]['help']),
+      'help' => t('Decimal equivalent of Fraction field for sorting and filtering. ' . $definition[$field_name]['help']),
       'sort' => array(
         'id' => 'fraction',
         'additional fields' => $additional_fields,
