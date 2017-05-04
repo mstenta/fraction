@@ -18,10 +18,8 @@ function fraction_field_views_data_alter(&$data, $field) {
   // Get the field name.
   $field_name = $field->getName();
 
-  // Grab information about the entity type tables.
-  $entity_manager = \Drupal::entityManager();
+  // Get the entity type that this field is attached to.
   $entity_type = $field->getTargetEntityTypeId();
-  $entity_info = $entity_manager->getDefinition($entity_type);
 
   // Look up the field's most used instance label.
   list($field_label, $other_labels) = views_entity_field_label($entity_type, $field_name);
@@ -35,9 +33,21 @@ function fraction_field_views_data_alter(&$data, $field) {
   // Iterate through the results.
   foreach ($data as $table_alias => &$definition) {
 
-    // Determine the field name.
-    if (strpos($table_alias, $entity_info->getRevisionTable()) !== FALSE) {
-      $field_name .= '-revision_id';
+    // We will want to alter Views data for both the current field definition,
+    // and the field revision definition. The current field definition will be
+    // in $definition[$field_name], while the field revision definiton will be
+    // in $definition[$field_name . '-revision_id']. So we need to test for the
+    // presence of both and act accordingly. If neither exists, stop here and
+    // skip to the next definition.
+    /**
+     * @see views_field_default_views_data()
+     */
+    $field_revision_name = $field_name . '-revision_id';
+    if (empty($definition[$field_name]) && empty($definition[$field_revision_name])) {
+      continue;
+    }
+    elseif (!empty($definition[$field_name . '-revision_id'])) {
+      $field_name = $field_revision_name;
     }
 
     // Override the field handler so that we can provide our own custom
