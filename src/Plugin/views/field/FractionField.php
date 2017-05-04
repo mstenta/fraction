@@ -2,7 +2,7 @@
 
 namespace Drupal\fraction\Plugin\views\field;
 
-use Drupal\views\Plugin\views\field\Field;
+use Drupal\views\Plugin\views\field\EntityField;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -18,7 +18,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @ViewsField("fraction_field")
  */
-class FractionField extends Field {
+class FractionField extends EntityField {
 
   /**
    * {@inheritdoc}
