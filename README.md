@@ -206,10 +206,11 @@ This module aims to solve an outstanding issue with price storage in Drupal. Sto
 tricky if you don't know what the decimal precision will need to be from the beginning. This is often the case when
 multiple currencies need to be supported, or when you need extra flexibility with decimal precision.
 
-[Drupal Commerce](http://drupal.org/project/commerce, for instance, ties precision directly to currency. So if all of
-your products are sold with a two-decimal price, but you want to add one with three decimal places, you need to add a
-second (duplicate) currency for just those products. There is an outstanding issue in the Commerce queue that is
-discussing solutions (one of which is to use a Fraction-based approach): https://www.drupal.org/node/1125706
+The 7.x-1.x branch of [Drupal Commerce](http://drupal.org/project/commerce), for instance, ties precision directly to
+currency. So if all of your products are sold with a two-decimal price, but you want to add one with three decimal
+places, you need to add a second (duplicate) currency for just those products. There is an outstanding issue in the
+Commerce queue that is discussing solutions (one of which is to use a Fraction-based approach):
+https://www.drupal.org/node/1125706
 
 The alternative to using a decimal-based storage is to use floats. This brings more issues with precision, due to the
 way that floating-point numbers are represented in lower-level system storage. The limitations of float precision are
@@ -236,7 +237,7 @@ INSTALLATION
 ------------
 
 Install as you would normally install a contributed drupal module. See:
-http://drupal.org/documentation/install/modules-themes/modules-7 for further
+https://www.drupal.org/docs/8/extending-drupal-8/installing-modules for further
 information.
 
 MAINTAINERS
