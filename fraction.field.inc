@@ -359,4 +359,3 @@ function fraction_field_load($entity_type, $entities, $field, $instances, $langc
     }
   }
 }
-

@@ -51,4 +51,3 @@ class fraction_handler_filter_decimal extends views_handler_filter_numeric {
     $this->query->add_where_expression($this->options['group'], $expression, array(':value' => $this->value['value']));
   }
 }
-

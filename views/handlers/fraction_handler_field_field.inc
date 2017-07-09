@@ -38,4 +38,3 @@ class fraction_handler_field_field extends views_handler_field_field {
     unset($form['click_sort_column']);
   }
 }
-

@@ -58,4 +58,3 @@ function fraction_entity_test_entity_info() {
   );
   return $info;
 }
-

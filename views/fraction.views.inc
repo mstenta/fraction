@@ -68,4 +68,3 @@ function fraction_field_views_data_alter(&$result, $field, $module) {
     }
   }
 }
-

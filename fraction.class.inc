@@ -450,4 +450,3 @@ class Fraction {
     return bcsub($value, '0.' . str_repeat('0', $precision) . '5', $precision);
   }
 }
-

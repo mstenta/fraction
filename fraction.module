@@ -63,4 +63,3 @@ function fraction_views_api() {
     'path' => drupal_get_path('module', 'fraction') . '/views',
   );
 }
-

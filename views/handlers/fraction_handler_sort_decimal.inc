@@ -24,4 +24,3 @@ class fraction_handler_sort_decimal extends views_handler_sort {
     $this->query->add_orderby(NULL, $formula, $this->options['order'], $this->table_alias . '_decimal');
   }
 }
-
