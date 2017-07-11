@@ -34,7 +34,8 @@ define('FRACTION_PRECISION_DEFAULT', 0);
  * @param $denominator
  *   The fraction's denominator.
  *
- * Returns a new fraction object.
+ * @return \Fraction
+ *   Returns a new fraction object.
  */
 function fraction($numerator = 0, $denominator = 1) {
   return new Fraction($numerator, $denominator);
@@ -46,7 +47,7 @@ function fraction($numerator = 0, $denominator = 1) {
  * @param $value
  *   The decimal value to be converted.
  *
- * @return
+ * @return \Fraction
  *   Returns a new fraction object.
  */
 function fraction_from_decimal($value) {
