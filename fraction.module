@@ -12,6 +12,9 @@
 // Include the Fraction Field API functions.
 require_once __DIR__ . '/fraction.field.inc';
 
+// Include the Fraction Feeds integration code.
+require_once __DIR__ . '/fraction.feeds.inc';
+
 /***************************************************************
  * Constants
  * *************************************************************/
