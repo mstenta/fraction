@@ -14,7 +14,7 @@ function fraction_field_info() {
       'label' => t('Fraction'),
       'description' => t('This field stores a decimal in fraction form (with a numerator and denominator) for maximum precision.'),
       'settings' => array(),
-      'instance_settings' => array(),
+      'instance_settings' => array('min' => '', 'max' => '', 'prefix' => '', 'suffix' => ''),
       'default_widget' => 'fraction_default',
       'default_formatter' => 'fraction_default',
       // Entity API integration.
@@ -69,6 +69,78 @@ function fraction_data_property_info($name = NULL) {
     );
   }
   return $properties;
+}
+
+/**
+ * Implements hook_field_instance_settings_form().
+ */
+function fraction_field_instance_settings_form($field, $instance) {
+  $settings = $instance['settings'];
+
+  $form['min'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Minimum'),
+    '#default_value' => $settings['min'],
+    '#description' => t('The minimum value that should be allowed in this field. Leave blank for no minimum.'),
+    '#element_validate' => array('element_validate_number'),
+  );
+  $form['max'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Maximum'),
+    '#default_value' => $settings['max'],
+    '#description' => t('The maximum value that should be allowed in this field. Leave blank for no maximum.'),
+    '#element_validate' => array('element_validate_number'),
+  );
+  $form['prefix'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Prefix'),
+    '#default_value' => $settings['prefix'],
+    '#size' => 60,
+    '#description' => t("Define a string that should be prefixed to the value, like '$ ' or '&euro; '. Leave blank for none. Separate singular and plural values with a pipe ('pound|pounds')."),
+  );
+  $form['suffix'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Suffix'),
+    '#default_value' => $settings['suffix'],
+    '#size' => 60,
+    '#description' => t("Define a string that should be suffixed to the value, like ' m', ' kb/s'. Leave blank for none. Separate singular and plural values with a pipe ('pound|pounds')."),
+  );
+
+  return $form;
+}
+
+/**
+ * Implements hook_field_validate().
+ *
+ * Possible error codes:
+ * - 'fraction_min': The value is less than the allowed minimum value.
+ * - 'fraction_max': The value is greater than the allowed maximum value.
+ */
+function fraction_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+  foreach ($items as $delta => $item) {
+    $value = '';
+    if (!empty($item['decimal']) && is_numeric($item['decimal'])) {
+      $value = $item['decimal'];
+    }
+    if (!empty($item['numerator']) && is_numeric($item['numerator']) && !empty($item['denominator']) && is_numeric($item['denominator'])) {
+      $fraction = fraction($item['numerator'], $item['denominator']);
+      $value = $fraction->toDecimal(0, TRUE);
+    }
+    if ($value != '') {
+      if (is_numeric($instance['settings']['min']) && $value < $instance['settings']['min']) {
+        $errors[$field['field_name']][$langcode][$delta][] = array(
+          'error' => 'fraction_min',
+          'message' => t('%name: the value may be no less than %min.', array('%name' => $instance['label'], '%min' => $instance['settings']['min'])),
+        );
+      }
+      if (is_numeric($instance['settings']['max']) && $value > $instance['settings']['max']) {
+        $errors[$field['field_name']][$langcode][$delta][] = array(
+          'error' => 'fraction_max',
+          'message' => t('%name: the value may be no greater than %max.', array('%name' => $instance['label'], '%max' => $instance['settings']['max'])),
+        );
+      }
+    }
+  }
 }
 
 /**
@@ -177,6 +249,16 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
         '#element_validate' => array('element_validate_number'),
         '#size' => 15,
       );
+
+      // Add prefix and suffix.
+      if (!empty($instance['settings']['prefix'])) {
+        $prefixes = explode('|', $instance['settings']['prefix']);
+        $element['#field_prefix'] = field_filter_xss(array_pop($prefixes));
+      }
+      if (!empty($instance['settings']['suffix'])) {
+        $suffixes = explode('|', $instance['settings']['suffix']);
+        $element['#field_suffix'] = field_filter_xss(array_pop($suffixes));
+      }
       break;
   }
 
@@ -220,7 +302,10 @@ function fraction_field_formatter_info() {
     'fraction_default' => array(
       'label' => t('Fraction'),
       'field types' => array('fraction'),
-      'settings' => array('separator' => '/'),
+      'settings' => array(
+        'separator' => '/',
+        'prefix_suffix' => TRUE,
+      ),
     ),
     'fraction_decimal' => array(
       'label' => t('Decimal'),
@@ -228,6 +313,7 @@ function fraction_field_formatter_info() {
       'settings' => array(
         'precision' => FRACTION_PRECISION_DEFAULT,
         'auto_precision' => TRUE,
+        'prefix_suffix' => TRUE,
       ),
     ),
   );
@@ -240,18 +326,23 @@ function fraction_field_formatter_settings_summary($field, $instance, $view_mode
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
 
-  $summary = '';
+  $summary = [];
 
   if ($display['type'] == 'fraction_default') {
-    $summary = t('Separator: @separator', array('@separator' => $settings['separator']));
+    $summary[] = t('Separator: @separator', array('@separator' => $settings['separator']));
   }
 
   elseif ($display['type'] == 'fraction_decimal') {
     $auto_precision = !empty($settings['auto_precision']) ? 'On' : 'Off';
-    $summary = t('Precision: @precision, Auto-precision: @auto_precision', array('@precision' => $settings['precision'], '@auto_precision' => $auto_precision));
+    $summary[] = t('Precision: @precision', array('@precision' => $settings['precision']));
+    $summary[] = t('Auto-precision: @auto_precision', array('@auto_precision' => $auto_precision));
   }
 
-  return $summary;
+  if ($settings['prefix_suffix']) {
+    $summary[] = t('Display with prefix and suffix.');
+  }
+
+  return implode('<br />', $summary);
 }
 
 /**
@@ -296,6 +387,12 @@ function fraction_field_formatter_settings_form($field, $instance, $view_mode, $
     );
   }
 
+  $element['prefix_suffix'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Display prefix and suffix.'),
+    '#default_value' => $settings['prefix_suffix'],
+  );
+
   return $element;
 }
 
@@ -309,6 +406,9 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
   // Iterate through the items.
   foreach ($items as $delta => $item) {
 
+    // Start with empty output.
+    $output = '';
+
     // Merge the item with default values, in case it's empty.
     $defaults = array(
       'numerator' => 0,
@@ -316,26 +416,35 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
     );
     $item = array_merge($defaults, $item);
 
-    // Build markup based on display type.
+    // Build output based on display type.
     switch ($display['type']) {
 
       // This formatter simply outputs the field as a fraction ([numerator]/[denominator]).
       case 'fraction_default':
-        $element[$delta] = array(
-          '#type' => 'markup',
-          '#markup' => fraction($item['numerator'], $item['denominator'])->toString($settings['separator']),
-        );
+        $output = fraction($item['numerator'], $item['denominator'])->toString($settings['separator']);
         break;
 
       // This formatter outputs the field as a decimal value with a fixed or automatic precision.
       case 'fraction_decimal':
         $auto_precision = !empty($settings['auto_precision']) ? TRUE : FALSE;
-        $element[$delta] = array(
-          '#type' => 'markup',
-          '#markup' => fraction($item['numerator'], $item['denominator'])->toDecimal($settings['precision'], $auto_precision),
-        );
+        $output = fraction($item['numerator'], $item['denominator'])->toDecimal($settings['precision'], $auto_precision);
         break;
     }
+
+    // Add prefix and suffix, if desired.
+    if ($settings['prefix_suffix']) {
+      $prefixes = isset($instance['settings']['prefix']) ? array_map('field_filter_xss', explode('|', $instance['settings']['prefix'])) : array('');
+      $suffixes = isset($instance['settings']['suffix']) ? array_map('field_filter_xss', explode('|', $instance['settings']['suffix'])) : array('');
+      $prefix = (count($prefixes) > 1) ? format_plural($item['value'], $prefixes[0], $prefixes[1]) : $prefixes[0];
+      $suffix = (count($suffixes) > 1) ? format_plural($item['value'], $suffixes[0], $suffixes[1]) : $suffixes[0];
+      $output = $prefix . $output . $suffix;
+    }
+
+    // Create the markup element.
+    $element[$delta] = array(
+      '#type' => 'markup',
+      '#markup' => $output,
+    );
   }
 
   return $element;
