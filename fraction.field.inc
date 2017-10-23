@@ -239,13 +239,17 @@ function fraction_field_widget_form(&$form, &$form_state, $field, $instance, $la
     // Decimal widget: a single textfield that accepts a decimal number.
     // The default value is converted to a decimal with the specified precision.
     case 'fraction_decimal':
-      $auto_precision = !empty($settings['auto_precision']) ? TRUE : FALSE;
+      $default_value = '';
+      if (!empty($items[$delta]) && !fraction_field_is_empty($items[$delta], $field)) {
+        $auto_precision = !empty($settings['auto_precision']) ? TRUE : FALSE;
+        $default_value = fraction($numerator, $denominator)->toDecimal($settings['precision'], $auto_precision);
+      }
       $element['#element_validate'] = array('_fraction_decimal_widget_validate');
       $element['decimal'] = array(
         '#type' => 'textfield',
         '#title' => $element['#title'],
         '#description' => $element['#description'],
-        '#default_value' => fraction($numerator, $denominator)->toDecimal($settings['precision'], $auto_precision),
+        '#default_value' => $default_value,
         '#element_validate' => array('element_validate_number'),
         '#size' => 15,
       );
