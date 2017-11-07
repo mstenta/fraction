@@ -330,7 +330,7 @@ function fraction_field_formatter_settings_summary($field, $instance, $view_mode
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
 
-  $summary = [];
+  $summary = array();
 
   if ($display['type'] == 'fraction_default') {
     $summary[] = t('Separator: @separator', array('@separator' => $settings['separator']));
