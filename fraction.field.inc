@@ -425,7 +425,7 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
 
       // This formatter simply outputs the field as a fraction ([numerator]/[denominator]).
       case 'fraction_default':
-        $output = fraction($item['numerator'], $item['denominator'])->toString($settings['separator']);
+        $output = fraction($item['numerator'], $item['denominator'])->toString(field_filter_xss($settings['separator']));
         break;
 
       // This formatter outputs the field as a decimal value with a fixed or automatic precision.
