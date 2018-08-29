@@ -60,10 +60,16 @@ function fraction_field_views_data_alter(&$data, $field) {
     // Create a new decimal column with custom sort and filter handlers.
     $column_name = $field_name . '_decimal';
     $definition[$column_name] = array(
-      'group' => t($definition[$field_name]['group']->getUntranslatedString()),
-      'title' => t($field_label . ' (decimal)'),
-      'title short' => t($field_label . ':decimal'),
-      'help' => t('Decimal equivalent of Fraction field for sorting and filtering. ' . $definition[$field_name]['help']),
+      'group' => $definition[$field_name]['group']->getUntranslatedString(),
+      'title' => t('@field_label (decimal)', [
+        '@field_label' => $field_label,
+      ]),
+      'title short' => t('@field_label:decimal', [
+        '@field_label' => $field_label,
+      ]),
+      'help' => t('Decimal equivalent of Fraction field for sorting and filtering. @extra', [
+        '@extra' => $definition[$field_name]['help'],
+      ]),
       'sort' => array(
         'id' => 'fraction',
         'additional fields' => $additional_fields,
