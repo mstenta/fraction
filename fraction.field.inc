@@ -320,6 +320,15 @@ function fraction_field_formatter_info() {
         'prefix_suffix' => TRUE,
       ),
     ),
+    'fraction_percentage' => array(
+      'label' => t('Percentage'),
+      'field types' => array('fraction'),
+      'settings' => array(
+        'precision' => FRACTION_PRECISION_DEFAULT,
+        'auto_precision' => TRUE,
+        'prefix_suffix' => TRUE,
+      ),
+    ),
   );
 }
 
@@ -336,7 +345,7 @@ function fraction_field_formatter_settings_summary($field, $instance, $view_mode
     $summary[] = t('Separator: @separator', array('@separator' => $settings['separator']));
   }
 
-  elseif ($display['type'] == 'fraction_decimal') {
+  elseif (in_array($display['type'], array('fraction_decimal', 'fraction_percentage'))) {
     $auto_precision = !empty($settings['auto_precision']) ? 'On' : 'Off';
     $summary[] = t('Precision: @precision', array('@precision' => $settings['precision']));
     $summary[] = t('Auto-precision: @auto_precision', array('@auto_precision' => $auto_precision));
@@ -370,7 +379,7 @@ function fraction_field_formatter_settings_form($field, $instance, $view_mode, $
     );
   }
 
-  elseif ($display['type'] == 'fraction_decimal') {
+  elseif (in_array($display['type'], array('fraction_decimal', 'fraction_percentage'))) {
 
     // Decimal precision.
     $element['precision'] = array(
@@ -432,6 +441,12 @@ function fraction_field_formatter_view($entity_type, $entity, $field, $instance,
       case 'fraction_decimal':
         $auto_precision = !empty($settings['auto_precision']) ? TRUE : FALSE;
         $output = fraction($item['numerator'], $item['denominator'])->toDecimal($settings['precision'], $auto_precision);
+        break;
+
+      case 'fraction_percentage':
+        $output = fraction($item['numerator'], $item['denominator'])
+          ->multiply(fraction_from_decimal('100'))
+          ->toDecimal($settings['precision'], !empty($settings['auto_precision'])) . '%';
         break;
     }
 
