@@ -4,4 +4,4 @@ description: Provides a field for storing decimals as fractions, for maximum pre
 core: 8.x
 package: Field types
 dependencies:
-  - field
+  - drupal:field
