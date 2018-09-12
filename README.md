@@ -21,7 +21,7 @@ A Fraction class and field type for Drupal.
 This module provides two things:
 
  1. A Fraction PHP class for representing and working with fractions.
- 2. A Fraction field with 2 widgets and formatters.
+ 2. A Fraction field with 2 widgets and 3 formatters.
 
 For a full description of the module, visit the project page:
 https://www.drupal.org/project/fraction
@@ -98,6 +98,11 @@ separated by a slash, ie: 1/3. The separator can be configured per-field.
 
 **Decimal** - Displays the fraction as a decimal with a fixed precision. For
 example, the fraction 1/3 can be represented with a precision of 5 as 0.33333.
+
+**Percentage** - Displays the fraction as a percentage with a fixed precision.
+This works the same as the **Decimal** formatter, but the value is multiplied
+by 100. For example, the fraction 1/3 can be represented with a precision of
+5 as 33.33333%.
 
 ## AUTOMATIC PRECISION
 
