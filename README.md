@@ -1,5 +1,8 @@
-CONTENTS OF THIS FILE
----------------------
+# FRACTION
+
+A Fraction class and field type for Drupal.
+
+## CONTENTS OF THIS FILE
 
  * Introduction
  * Requirements
@@ -13,80 +16,62 @@ CONTENTS OF THIS FILE
  * Using This Module for Price Storage
  * Maintainers
 
-
-INTRODUCTION
-------------
-
-A Fraction class and field type for Drupal.
+## INTRODUCTION
 
 This module provides two things:
 
- * A Fraction PHP class for representing and working with fractions.
- * A Fraction field with 2 widgets and formatters.
+ 1. A Fraction PHP class for representing and working with fractions.
+ 2. A Fraction field with 2 widgets and formatters.
 
- * For a full description of the module, visit the project page:
-   https://www.drupal.org/project/fraction
+For a full description of the module, visit the project page:
+https://www.drupal.org/project/fraction
 
- * To submit bug reports and feature suggestions, or to track changes:
-   https://www.drupal.org/project/issues/fraction
+To submit bug reports and feature suggestions, or to track changes:
+https://www.drupal.org/project/issues/fraction
 
-
-REQUIREMENTS
-------------
+## REQUIREMENTS
 
 This module requires no modules outside of Drupal core.
 
+## INSTALLATION
 
-INSTALLATION
-------------
+Install the Fraction module as you would normally install a contribute Drupal
+module. Visit https://www.drupal.org/node/1897420 for further information.
 
- * Install the Fraction module as you would normally install a contribute
-   Drupal module. Visit https://www.drupal.org/node/1897420 for further
-   information.
-
-
-USAGE
------
-
-    1. Navigate to Administration > Extend and enable the module.
-
-
-FRACTION CLASS
---------------
+## FRACTION CLASS
 
 Usage:
 
 ```
-    $fraction = fraction(1, 2);
+$fraction = fraction(1, 2);
 ```
 
 Get the numerator and denominator (as strings):
 
 ```
-    $numerator = $fraction->getNumerator();
-    $denominator = $fraction->getDenominator();
+$numerator = $fraction->getNumerator();
+$denominator = $fraction->getDenominator();
 ```
 
 Convert the fraction to a decimal with precision 2:
 
 ```
-    $precision = 2;
-    $decimal =  $fraction->toDecimal($precision);
+$precision = 2;
+$decimal =  $fraction->toDecimal($precision);
 ```
 
 Multiply fractions:
 
 ```
-    $fraction1 = fraction(2, 3);
-    $fraction2 = fraction(1, 2);
-    $fraction1->multiply($fraction2);
+$fraction1 = fraction(2, 3);
+$fraction2 = fraction(1, 2);
+$fraction1->multiply($fraction2);
 ```
 
 Operations are performed using the BCMath PHP extension, when available.
 Otherwise, normal PHP float operations are used.
 
-FRACTION FIELD
---------------
+## FRACTION FIELD
 
 The Fraction field allows you to easily add fraction-based decimal storage to
 your entities using Drupal's Field API.
@@ -114,9 +99,7 @@ separated by a slash, ie: 1/3. The separator can be configured per-field.
 **Decimal** - Displays the fraction as a decimal with a fixed precision. For
 example, the fraction 1/3 can be represented with a precision of 5 as 0.33333.
 
-
-AUTOMATIC PRECISION
--------------------
+## AUTOMATIC PRECISION
 
 Fraction can automatically determine the precision of a fraction, as long as the
 denominator is base 10.
@@ -125,9 +108,9 @@ Automatic precision can be used in the fraction class's toDecimal() method by
 setting the second parameter to TRUE:
 
 ```
-    $precision = 2;
-    $auto_precision = TRUE;
-    $decimal =  $fraction->toDecimal($precision, TRUE);
+$precision = 2;
+$auto_precision = TRUE;
+$decimal =  $fraction->toDecimal($precision, TRUE);
 ```
 
 In the above example, if the fraction's denominator is not base 10, then the
@@ -137,9 +120,7 @@ base 10, the precision will be automatically calculated.
 The "Decimal" widget and formatter both provide an option to enable automatic
 precision.
 
-
-DATABASE STORAGE
-----------------
+## DATABASE STORAGE
 
 Fractions are stored in the database using two columns: a numerator and a
 denominator.
@@ -155,41 +136,39 @@ in a database table, the following schema can be used as an example (for use in
 hook_schema()):
 
 ```
-    /**
-     * Implements hook_schema().
-     */
-    function mymodule_schema() {
-      $schema['mymodule_table'] = array(
-        'fields' => array(
-    
-          ...
-    
-          'value_numerator' => array(
-            'description' => 'Value numerator',
-            'type' => 'int',
-            'size' => 'big',
-            'not null' => TRUE,
-            'default' => 0,
-          ),
-          'value_denominator' => array(
-            'description' => 'Value denominator',
-            'type' => 'int',
-            'unsigned' => TRUE,
-            'not null' => TRUE,
-            'default' => 1,
-          ),
-    
-          ...
-    
-        ),
-      );
-      return $schema;
-    }
+/**
+ * Implements hook_schema().
+ */
+function mymodule_schema() {
+  $schema['mymodule_table'] = array(
+    'fields' => array(
+
+      ...
+
+      'value_numerator' => array(
+        'description' => 'Value numerator',
+        'type' => 'int',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'value_denominator' => array(
+        'description' => 'Value denominator',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+
+      ...
+
+    ),
+  );
+  return $schema;
+}
 ```
 
-
-VIEWS INTEGRATION
------------------
+## VIEWS INTEGRATION
 
 Views integration is provided by Views itself on behalf of the core Field
 module. Fraction extends some of the field handlers to allow sorting and
@@ -202,76 +181,74 @@ field handler that can be used in hook_views_data(). Using the same example
 described in Database Storage above, here is what that would look like:
 
 ```
-    /**
-     * Implements hook_views_data().
-     */
-    function mymodule_views_data() {
-    
-      ...
-    
-      // Value numerator.
-      $data['mymodule_table']['value_numerator'] = array(
-        'title' => t('Value numerator'),
-        'help' => t('The stored numerator value.'),
-        'field' => array(
-          'id' => 'numeric',
-          'click sortable' => TRUE,
-        ),
-        'filter' => array(
-          'id' => 'numeric',
-        ),
-        'sort' => array(
-          'id' => 'standard',
-        ),
-      );
-    
-      // Value denominator.
-      $data['mymodule_table']['value_denominator'] = array(
-        'title' => t('Value denominator'),
-        'help' => t('The stored denominator value.'),
-        'field' => array(
-          'id' => 'numeric',
-          'click sortable' => TRUE,
-        ),
-        'filter' => array(
-          'id' => 'numeric',
-        ),
-        'sort' => array(
-          'id' => 'standard',
-        ),
-      );
-    
-      // Create a new decimal column with fraction decimal handlers.
-      $fraction_fields = array(
-        'numerator' => 'value_numerator',
-        'denominator' => 'value_denominator',
-      );
-      $data['mymodule_table']['value_decimal'] = array(
-        'title' => t('Value (decimal)'),
-        'help' => t('Decimal equivalent of the value.'),
-        'real field' => 'value_numerator',
-        'field' => array(
-          'id' => 'fraction',
-          'additional fields' => $fraction_fields,
-          'click sortable' => TRUE,
-        ),
-        'sort' => array(
-          'id' => 'fraction',
-          'additional fields' => $fraction_fields,
-        ),
-        'filter' => array(
-          'id' => 'fraction',
-          'additional fields' => $fraction_fields,
-        )
-      );
-    
-      return $data;
-    }
+/**
+ * Implements hook_views_data().
+ */
+function mymodule_views_data() {
+
+  ...
+
+  // Value numerator.
+  $data['mymodule_table']['value_numerator'] = array(
+    'title' => t('Value numerator'),
+    'help' => t('The stored numerator value.'),
+    'field' => array(
+      'id' => 'numeric',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'id' => 'numeric',
+    ),
+    'sort' => array(
+      'id' => 'standard',
+    ),
+  );
+
+  // Value denominator.
+  $data['mymodule_table']['value_denominator'] = array(
+    'title' => t('Value denominator'),
+    'help' => t('The stored denominator value.'),
+    'field' => array(
+      'id' => 'numeric',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'id' => 'numeric',
+    ),
+    'sort' => array(
+      'id' => 'standard',
+    ),
+  );
+
+  // Create a new decimal column with fraction decimal handlers.
+  $fraction_fields = array(
+    'numerator' => 'value_numerator',
+    'denominator' => 'value_denominator',
+  );
+  $data['mymodule_table']['value_decimal'] = array(
+    'title' => t('Value (decimal)'),
+    'help' => t('Decimal equivalent of the value.'),
+    'real field' => 'value_numerator',
+    'field' => array(
+      'id' => 'fraction',
+      'additional fields' => $fraction_fields,
+      'click sortable' => TRUE,
+    ),
+    'sort' => array(
+      'id' => 'fraction',
+      'additional fields' => $fraction_fields,
+    ),
+    'filter' => array(
+      'id' => 'fraction',
+      'additional fields' => $fraction_fields,
+    )
+  );
+
+  return $data;
+}
 ```
 
-
-USING THIS MODULE FOR PRICE STORAGE
------------------------------------
+## USING THIS MODULE FOR PRICE STORAGE
 
 This module aims to solve an outstanding issue with price storage in Drupal.
 Storing prices in the database can be tricky if you don't know what the decimal
@@ -316,8 +293,8 @@ Ultimately, the maximum numerator depends on the size of the denominator. But,
 using the maximum precision (of 9 decimal places), the biggest number this can
 store is 9,223,372,036.854775807.
 
-MAINTAINERS
------------
+## MAINTAINERS
 
 Current maintainers:
  * Michael Stenta (m.stenta) - https://drupal.org/user/581414
+
