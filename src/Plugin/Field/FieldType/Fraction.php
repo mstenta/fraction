@@ -74,6 +74,6 @@ class Fraction extends FieldItemBase {
   public function isEmpty() {
     $numerator = $this->get('numerator')->getValue();
     $denominator = $this->get('denominator')->getValue();
-    return empty($numerator) || empty($denominator);
+    return ((string) $numerator !== '0' && empty($numerator)) || empty($denominator);
   }
 }
