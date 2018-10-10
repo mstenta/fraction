@@ -147,7 +147,7 @@ function fraction_field_validate($entity_type, $entity, $field, $instance, $lang
  * Implements hook_field_is_empty().
  */
 function fraction_field_is_empty($item, $field) {
-  return empty($item['numerator']) || empty($item['denominator']);
+  return ((string) $item['numerator'] !== '0' && empty($item['numerator'])) || empty($item['denominator']);
 }
 
 /**
