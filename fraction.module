@@ -36,6 +36,7 @@ function fraction_help($route_name, RouteMatchInterface $route_match) {
  * @param $denominator
  *   The fraction's denominator.
  *
+ * @return Fraction
  * Returns a new fraction object.
  */
 function fraction($numerator = 0, $denominator = 1) {
@@ -48,7 +49,7 @@ function fraction($numerator = 0, $denominator = 1) {
  * @param $value
  *   The decimal value to be converted.
  *
- * @return
+ * @return Fraction
  *   Returns a new fraction object.
  */
 function fraction_from_decimal($value) {
