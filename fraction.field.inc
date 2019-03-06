@@ -483,7 +483,11 @@ function fraction_field_load($entity_type, $entities, $field, $instances, $langc
       $denominator = $items[$id][$delta]['denominator'];
 
       // Create a new Fraction object and add it to the field.
+      $fraction = fraction($numerator, $denominator);
       $items[$id][$delta]['fraction'] = fraction($numerator, $denominator);
+
+      // Calculate the decimal value of the fraction.
+      $items[$id][$delta]['decimal'] = $fraction->toDecimal();
     }
   }
 }
