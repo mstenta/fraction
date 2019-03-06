@@ -491,3 +491,18 @@ function fraction_field_load($entity_type, $entities, $field, $instances, $langc
     }
   }
 }
+
+/**
+ * Implements hook_field_presave().
+ */
+function fraction_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
+
+  // Convert decimal values to numerator and denominator.
+  foreach ($items as &$item) {
+    if (!empty($item['decimal'])) {
+      $fraction = fraction_from_decimal($item['decimal']);
+      $item['numerator'] = $fraction->getNumerator();
+      $item['denominator'] = $fraction->getDenominator();
+    }
+  }
+}
