@@ -2,7 +2,9 @@
 
 namespace Drupal\fraction\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -16,16 +18,18 @@ use Drupal\Core\Form\FormStateInterface;
  *   }
  * )
  */
-class FractionDecimalWidget extends FractionWidget {
+class FractionDecimalWidget extends WidgetBase {
 
   /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
+    return [
+      'min' => '',
+      'max' => '',
       'precision' => 0,
       'auto_precision' => TRUE,
-    ) + parent::defaultSettings();
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -34,23 +38,36 @@ class FractionDecimalWidget extends FractionWidget {
   public function settingsForm(array $form, FormStateInterface $form_state) {
 
     // Decimal precision.
-    $elements['precision'] = array(
+    $elements['precision'] = [
       '#type' => 'textfield',
-      '#title' => t('Decimal precision'),
-      '#description' => t('Specify the number of digits after the decimal place to display when converting the fraction to a decimal. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
+      '#title' => $this->t('Decimal precision'),
+      '#description' => $this->t('Specify the number of digits after the decimal place to display when converting the fraction to a decimal. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
       '#default_value' => $this->getSetting('precision'),
       '#required' => TRUE,
       '#weight' => 0,
-    );
+    ];
 
     // Auto precision.
-    $elements['auto_precision'] = array(
+    $elements['auto_precision'] = [
       '#type' => 'checkbox',
-      '#title' => t('Auto precision'),
-      '#description' => t('Automatically determine the maximum precision if the fraction has a base-10 denominator. For example, 1/100 would have a precision of 2, 1/1000 would have a precision of 3, etc.'),
+      '#title' => $this->t('Auto precision'),
+      '#description' => $this->t('Automatically determine the maximum precision if the fraction has a base-10 denominator. For example, 1/100 would have a precision of 2, 1/1000 would have a precision of 3, etc.'),
       '#default_value' => $this->getSetting('auto_precision'),
       '#weight' => 1,
-    );
+    ];
+
+    $elements['min'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Minimum'),
+      '#default_value' => $this->getSetting('min'),
+      '#description' => $this->t('The minimum value that should be allowed in this field. Leave blank for no minimum.'),
+    ];
+    $elements['max'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Maximum'),
+      '#default_value' => $this->getSetting('max'),
+      '#description' => $this->t('The maximum value that should be allowed in this field. Leave blank for no maximum.'),
+    ];
 
     return $elements;
   }
@@ -59,15 +76,27 @@ class FractionDecimalWidget extends FractionWidget {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = array();
+    $summary = parent::settingsSummary();
 
     // Summarize the precision setting.
     $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? 'On' : 'Off';
-    $summary[] = t('Precision: @precision, Auto-precision: @auto_precision', array(
+    $summary[] = $this->t('Precision: @precision, Auto-precision: @auto_precision', [
       '@precision' => $precision,
       '@auto_precision' => $auto_precision,
-    ));
+    ]);
+
+    if ($this->getSetting('min')) {
+      $summary[] = $this->t('Min: @min', [
+        '@min' => $this->getSetting('min'),
+      ]);
+    }
+
+    if ($this->getSetting('max')) {
+      $summary[] = $this->t('Max: @max', [
+        '@max' => $this->getSetting('max'),
+      ]);
+    }
 
     return $summary;
   }
@@ -76,7 +105,7 @@ class FractionDecimalWidget extends FractionWidget {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-
+    $field_settings = $this->getFieldSettings();
     // Pass the element through the parent's formElement method.
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
@@ -90,15 +119,33 @@ class FractionDecimalWidget extends FractionWidget {
     // Add a 'decimal' textfield for capturing the decimal value.
     // The default value is converted to a decimal with the specified precision.
     $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
-    $element['decimal'] = array(
-      '#type' => 'textfield',
+    $element['decimal'] = [
+      '#type' => 'number',
       '#default_value' => $items[$delta]->fraction->toDecimal($precision, $auto_precision),
       '#size' => 15,
-    );
+    ];
+
+    // Set minimum and maximum.
+    if (is_numeric($this->getSetting('min'))) {
+      $element['decimal']['#min'] = $this->getSetting('min');
+    }
+    if (is_numeric($this->getSetting('max'))) {
+      $element['decimal']['#max'] = $this->getSetting('max');
+    }
+
+    // Add prefix and suffix.
+    if ($field_settings['prefix']) {
+      $prefixes = explode('|', $field_settings['prefix']);
+      $element['decimal']['#field_prefix'] = FieldFilteredMarkup::create(array_pop($prefixes));
+    }
+    if ($field_settings['suffix']) {
+      $suffixes = explode('|', $field_settings['suffix']);
+      $element['decimal']['#field_suffix'] = FieldFilteredMarkup::create(array_pop($suffixes));
+    }
 
     // Add decimal validation. This is also where we will convert the decimal
     // to a fraction.
-    $element['#element_validate'][] = array($this, 'validateDecimal');
+    $element['#element_validate'][] = [$this, 'validateDecimal'];
 
     return $element;
   }
@@ -116,11 +163,11 @@ class FractionDecimalWidget extends FractionWidget {
     $denominator = $fraction->getDenominator();
 
     // Set the numerator and denominator values for the form.
-    $values = array(
+    $values = [
       'decimal' => $element['decimal']['#value'],
       'numerator' => $numerator,
       'denominator' => $denominator,
-    );
+    ];
     $form_state->setValueForElement($element, $values);
 
     // Only continue with validation if the value is not empty.
@@ -131,7 +178,7 @@ class FractionDecimalWidget extends FractionWidget {
     // The maximum number of digits after the decimal place is 9.
     // Explicitly perform a string comparison to ensure precision.
     if ((string) $denominator > '1000000000') {
-      $form_state->setError($element, t('The maximum number of digits after the decimal place is 9.'));
+      $form_state->setError($element, $this->t('The maximum number of digits after the decimal place is 9.'));
     }
 
     // Ensure that the decimal value is within an acceptable value range.
@@ -143,7 +190,7 @@ class FractionDecimalWidget extends FractionWidget {
     $scale = strlen($denominator) - 1;
     $in_bounds = $this->checkInBounds($decimal, $min_decimal, $max_decimal, $scale);
     if (!$in_bounds) {
-      $form_state->setError($element, t('The number you entered is outside the range of acceptable values. This limitation is related to the decimal precision, so reducing the precision may solve the problem.'));
+      $form_state->setError($element, $this->t('The number you entered is outside the range of acceptable values. This limitation is related to the decimal precision, so reducing the precision may solve the problem.'));
     }
   }
 
@@ -164,7 +211,6 @@ class FractionDecimalWidget extends FractionWidget {
    *   Returns TRUE if $number is between $min and $max, FALSE otherwise.
    */
   protected function checkInBounds($value, $min, $max, $scale = 0) {
-
     // If BCMath isn't available, let PHP handle it via normal float comparison.
     if (!function_exists('bcsub')) {
       return ($value > $max || $value < $min) ? FALSE : TRUE;

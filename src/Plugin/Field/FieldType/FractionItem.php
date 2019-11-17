@@ -4,6 +4,7 @@ namespace Drupal\fraction\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\TypedData\MapDataDefinition;
 
@@ -19,7 +20,7 @@ use Drupal\Core\TypedData\MapDataDefinition;
  *   default_formatter = "fraction"
  * )
  */
-class Fraction extends FieldItemBase {
+class FractionItem extends FieldItemBase {
 
   /**
    * Definitions of the contained properties.
@@ -27,6 +28,41 @@ class Fraction extends FieldItemBase {
    * @var array
    */
   static $propertyDefinitions;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultFieldSettings() {
+    return [
+        'prefix' => '',
+        'suffix' => '',
+      ] + parent::defaultFieldSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
+    $element = [];
+    $settings = $this->getSettings();
+
+    $element['prefix'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Prefix'),
+      '#default_value' => $settings['prefix'],
+      '#size' => 60,
+      '#description' => $this->t("Define a string that should be prefixed to the value, like '$ ' or '&euro; '. Leave blank for none. Separate singular and plural values with a pipe ('pound|pounds')."),
+    ];
+    $element['suffix'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Suffix'),
+      '#default_value' => $settings['suffix'],
+      '#size' => 60,
+      '#description' => $this->t("Define a string that should be suffixed to the value, like ' m', ' kb/s'. Leave blank for none. Separate singular and plural values with a pipe ('pound|pounds')."),
+    ];
+
+    return $element;
+  }
 
   /**
    * {@inheritdoc}
@@ -76,4 +112,5 @@ class Fraction extends FieldItemBase {
     $denominator = $this->get('denominator')->getValue();
     return ((string) $numerator !== '0' && empty($numerator)) || empty($denominator);
   }
+
 }
