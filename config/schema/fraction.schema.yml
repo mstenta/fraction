@@ -8,12 +8,6 @@ field.field_settings.fraction:
     suffix:
       type: label
       label: 'Suffix'
-    min:
-      type: float
-      label: 'Min'
-    max:
-      type: float
-      label: 'Max'
 
 field.formatter.settings.fraction:
   type: mapping
