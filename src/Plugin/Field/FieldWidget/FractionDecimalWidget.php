@@ -106,8 +106,6 @@ class FractionDecimalWidget extends WidgetBase {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $field_settings = $this->getFieldSettings();
-    // Pass the element through the parent's formElement method.
-    $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
     // Hide the numerator and denominator fields.
     $element['numerator']['#type'] = 'hidden';
