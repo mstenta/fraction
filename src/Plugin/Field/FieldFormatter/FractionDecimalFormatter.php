@@ -78,32 +78,21 @@ class FractionDecimalFormatter extends FractionFormatter {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    $settings = $this->getFieldSettings();
 
-    // Load the precision setting.
+    // Output fraction as a decimal with a fixed or automatic precision.
     $precision = $this->getSetting('precision');
+    $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
 
     // Iterate through the items.
     foreach ($items as $delta => $item) {
-
-      // Output fraction as a decimal with a fixed or automatic precision.
-      $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
       $output = $item->fraction->toDecimal($precision, $auto_precision);
 
-      // Account for prefix and suffix.
-      if ($this->getSetting('prefix_suffix')) {
-        $prefixes = isset($settings['prefix']) ? array_map(['Drupal\Core\Field\FieldFilteredMarkup', 'create'], explode('|', $settings['prefix'])) : [''];
-        $suffixes = isset($settings['suffix']) ? array_map(['Drupal\Core\Field\FieldFilteredMarkup', 'create'], explode('|', $settings['suffix'])) : [''];
-        $prefix = (count($prefixes) > 1) ? $this->formatPlural($item->value, $prefixes[0], $prefixes[1]) : $prefixes[0];
-        $suffix = (count($suffixes) > 1) ? $this->formatPlural($item->value, $suffixes[0], $suffixes[1]) : $suffixes[0];
-        $output = $prefix . $output . $suffix;
-      }
-
       $elements[$delta] = [
-        '#markup' => $output,
+        '#markup' => $this->viewOutput($item, $output),
       ];
     }
 
     return $elements;
   }
+
 }

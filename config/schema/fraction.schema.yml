@@ -8,6 +8,12 @@ field.field_settings.fraction:
     suffix:
       type: label
       label: 'Suffix'
+    min:
+      type: float
+      label: 'Min'
+    max:
+      type: float
+      label: 'Max'
 
 field.formatter.settings.fraction:
   type: mapping
@@ -53,23 +59,6 @@ field.formatter.settings.fraction_percentage:
     prefix_suffix:
       type: boolean
       label: 'Display prefix and suffix.'
-
-field.widget.settings.fraction:
-  type: mapping
-  label: 'Widget settings for Fraction'
-  mapping:
-    min_numerator:
-      type: integer
-      label: 'Min numerator'
-    max_numerator:
-      type: integer
-      label: 'Max numerator'
-    min_denominator:
-      type: integer
-      label: 'Min denominator'
-    max_denominator:
-      type: integer
-      label: 'Max denominator'
 
 field.widget.settings.fraction_decimal:
   type: mapping

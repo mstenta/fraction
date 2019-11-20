@@ -25,8 +25,6 @@ class FractionDecimalWidget extends WidgetBase {
    */
   public static function defaultSettings() {
     return [
-      'min' => '',
-      'max' => '',
       'precision' => 0,
       'auto_precision' => TRUE,
     ] + parent::defaultSettings();
@@ -56,19 +54,6 @@ class FractionDecimalWidget extends WidgetBase {
       '#weight' => 1,
     ];
 
-    $elements['min'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Minimum'),
-      '#default_value' => $this->getSetting('min'),
-      '#description' => $this->t('The minimum value that should be allowed in this field. Leave blank for no minimum.'),
-    ];
-    $elements['max'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Maximum'),
-      '#default_value' => $this->getSetting('max'),
-      '#description' => $this->t('The maximum value that should be allowed in this field. Leave blank for no maximum.'),
-    ];
-
     return $elements;
   }
 
@@ -86,18 +71,6 @@ class FractionDecimalWidget extends WidgetBase {
       '@auto_precision' => $auto_precision,
     ]);
 
-    if ($this->getSetting('min')) {
-      $summary[] = $this->t('Min: @min', [
-        '@min' => $this->getSetting('min'),
-      ]);
-    }
-
-    if ($this->getSetting('max')) {
-      $summary[] = $this->t('Max: @max', [
-        '@max' => $this->getSetting('max'),
-      ]);
-    }
-
     return $summary;
   }
 
@@ -111,11 +84,9 @@ class FractionDecimalWidget extends WidgetBase {
     $element['numerator']['#type'] = 'hidden';
     $element['denominator']['#type'] = 'hidden';
 
-    // Load the precision setting.
-    $precision = $this->getSetting('precision');
-
     // Add a 'decimal' textfield for capturing the decimal value.
     // The default value is converted to a decimal with the specified precision.
+    $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
     $element['decimal'] = [
       '#type' => 'number',
@@ -124,11 +95,11 @@ class FractionDecimalWidget extends WidgetBase {
     ];
 
     // Set minimum and maximum.
-    if (is_numeric($this->getSetting('min'))) {
-      $element['decimal']['#min'] = $this->getSetting('min');
+    if (is_numeric($field_settings['min'])) {
+      $element['decimal']['#min'] = $field_settings['min'];
     }
-    if (is_numeric($this->getSetting('max'))) {
-      $element['decimal']['#max'] = $this->getSetting('max');
+    if (is_numeric($field_settings['max'])) {
+      $element['decimal']['#max'] = $field_settings['max'];
     }
 
     // Add prefix and suffix.
@@ -238,4 +209,5 @@ class FractionDecimalWidget extends WidgetBase {
     // Assume the value is in bounds if none of the above said otherwise.
     return TRUE;
   }
+
 }

@@ -22,53 +22,6 @@ class FractionWidget extends WidgetBase {
   /**
    * {@inheritdoc}
    */
-  public static function defaultSettings() {
-    return [
-        'min_numerator' => '',
-        'max_numerator' => '',
-        'min_denominator' => '',
-        'max_denominator' => '',
-      ] + parent::defaultSettings();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-
-
-    $elements['min_numerator'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Denominator: Minimum'),
-      '#default_value' => $this->getSetting('min_numerator'),
-      '#description' => $this->t('The minimum value that should be allowed in this field. Leave blank for no minimum.'),
-    ];
-    $elements['max_numerator'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Denominator: Maximum'),
-      '#default_value' => $this->getSetting('max_numerator'),
-      '#description' => $this->t('The maximum value that should be allowed in this field. Leave blank for no maximum.'),
-    ];
-
-    $elements['min_denominator'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Numerator: Minimum'),
-      '#default_value' => $this->getSetting('min_denominator'),
-      '#description' => $this->t('The minimum value that should be allowed in this field. Leave blank for no minimum.'),
-    ];
-    $elements['max_denominator'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Numerator: Maximum'),
-      '#default_value' => $this->getSetting('max_denominator'),
-      '#description' => $this->t('The maximum value that should be allowed in this field. Leave blank for no maximum.'),
-    ];
-
-    return $elements;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function settingsSummary() {
     $summary = parent::settingsSummary();
 
@@ -117,20 +70,6 @@ class FractionWidget extends WidgetBase {
       '#title' => $this->t('Denominator'),
       '#default_value' => isset($items[$delta]->denominator) ? $items[$delta]->denominator : NULL,
     ];
-
-    // Set minimum and maximum.
-    if (is_numeric($this->getSetting('min_numerator'))) {
-      $element['numerator']['#min'] = $this->getSetting('min_numerator');
-    }
-    if (is_numeric($this->getSetting('max_numerator'))) {
-      $element['numerator']['#max'] = $this->getSetting('max_numerator');
-    }
-    if (is_numeric($this->getSetting('min_denominator'))) {
-      $element['denominator']['#min'] = $this->getSetting('min_denominator');
-    }
-    if (is_numeric($this->getSetting('max_denominator'))) {
-      $element['denominator']['#max'] = $this->getSetting('max_denominator');
-    }
 
     // Add validation.
     $element['#element_validate'][] = [$this, 'validateFraction'];

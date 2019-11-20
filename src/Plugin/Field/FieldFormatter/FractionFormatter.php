@@ -2,6 +2,7 @@
 
 namespace Drupal\fraction\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -78,7 +79,6 @@ class FractionFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    $settings = $this->getFieldSettings();
 
     // Load the separator setting.
     $separator = $this->getSetting('separator');
@@ -86,22 +86,37 @@ class FractionFormatter extends FormatterBase {
     // Iterate through the items.
     foreach ($items as $delta => $item) {
       $output = $item->fraction->toString($separator);
-
-      // Account for prefix and suffix.
-      if ($this->getSetting('prefix_suffix')) {
-        $prefixes = isset($settings['prefix']) ? array_map(['Drupal\Core\Field\FieldFilteredMarkup', 'create'], explode('|', $settings['prefix'])) : [''];
-        $suffixes = isset($settings['suffix']) ? array_map(['Drupal\Core\Field\FieldFilteredMarkup', 'create'], explode('|', $settings['suffix'])) : [''];
-        $prefix = (count($prefixes) > 1) ? $this->formatPlural($item->value, $prefixes[0], $prefixes[1]) : $prefixes[0];
-        $suffix = (count($suffixes) > 1) ? $this->formatPlural($item->value, $suffixes[0], $suffixes[1]) : $suffixes[0];
-        $output = $prefix . $output . $suffix;
-      }
-
-      // Output fraction as a string.
       $elements[$delta] = [
-        '#markup' => $output,
+        '#markup' => $this->viewOutput($item, $output),
       ];
     }
 
     return $elements;
   }
+
+  /**
+   * Account for extra output such as prefixes and suffixes.
+   *
+   * @param \Drupal\Core\Field\FieldItemInterface $item
+   *   The field item to evaluate.
+   * @param string $output
+   *   The output of the field.
+   *
+   * @return string
+   *   The output with all relevant additions.
+   */
+  protected function viewOutput(FieldItemInterface $item, $output = '') {
+    $field_settings = $this->getFieldSettings();
+    // Account for prefix and suffix.
+    if ($this->getSetting('prefix_suffix')) {
+      $prefixes = isset($field_settings['prefix']) ? array_map(['Drupal\Core\Field\FieldFilteredMarkup', 'create'], explode('|', $field_settings['prefix'])) : [''];
+      $suffixes = isset($field_settings['suffix']) ? array_map(['Drupal\Core\Field\FieldFilteredMarkup', 'create'], explode('|', $field_settings['suffix'])) : [''];
+      $prefix = (count($prefixes) > 1) ? $this->formatPlural($item->value, $prefixes[0], $prefixes[1]) : $prefixes[0];
+      $suffix = (count($suffixes) > 1) ? $this->formatPlural($item->value, $suffixes[0], $suffixes[1]) : $suffixes[0];
+      $output = $prefix . $output . $suffix;
+    }
+
+    return $output;
+  }
+
 }
