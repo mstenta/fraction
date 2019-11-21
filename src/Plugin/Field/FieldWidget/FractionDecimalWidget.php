@@ -2,6 +2,7 @@
 
 namespace Drupal\fraction\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -60,7 +61,7 @@ class FractionDecimalWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = [];
+    $summary = parent::settingsSummary();
 
     // Summarize the precision setting.
     $precision = $this->getSetting('precision');
@@ -77,25 +78,31 @@ class FractionDecimalWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-
-    // Pass the element through the parent's formElement method.
-    $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    $field_settings = $this->getFieldSettings();
 
     // Hide the numerator and denominator fields.
     $element['numerator']['#type'] = 'hidden';
     $element['denominator']['#type'] = 'hidden';
 
-    // Load the precision setting.
-    $precision = $this->getSetting('precision');
-
     // Add a 'decimal' textfield for capturing the decimal value.
     // The default value is converted to a decimal with the specified precision.
+    $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
     $element['decimal'] = [
       '#type' => 'number',
       '#default_value' => $items[$delta]->fraction->toDecimal($precision, $auto_precision),
       '#size' => 15,
     ];
+
+    // Add prefix and suffix.
+    if ($field_settings['prefix']) {
+      $prefixes = explode('|', $field_settings['prefix']);
+      $element['decimal']['#field_prefix'] = FieldFilteredMarkup::create(array_pop($prefixes));
+    }
+    if ($field_settings['suffix']) {
+      $suffixes = explode('|', $field_settings['suffix']);
+      $element['decimal']['#field_suffix'] = FieldFilteredMarkup::create(array_pop($suffixes));
+    }
 
     // Add decimal validation. This is also where we will convert the decimal
     // to a fraction.

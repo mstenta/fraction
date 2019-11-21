@@ -29,8 +29,10 @@ class PercentageFormatter extends FractionDecimalFormatter {
       $percentage->multiply(fraction_from_decimal('100'));
 
       $auto_precision = !empty($this->getSetting('auto_precision'));
+      $output = $percentage->toDecimal($this->getSetting('precision'), $auto_precision) . '%';
+
       $elements[$delta] = [
-        '#markup' => $percentage->toDecimal($this->getSetting('precision'), $auto_precision) . '%',
+        '#markup' => $this->viewOutput($item, $output),
       ];
     }
 

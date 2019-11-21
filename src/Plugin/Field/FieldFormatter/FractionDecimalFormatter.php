@@ -32,6 +32,7 @@ class FractionDecimalFormatter extends FractionFormatter {
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
+    $elements = parent::settingsForm($form, $form_state);
 
     // Decimal precision.
     $elements['precision'] = [
@@ -59,7 +60,7 @@ class FractionDecimalFormatter extends FractionFormatter {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = [];
+    $summary = parent::settingsSummary() ?? [];
 
     // Summarize the precision setting.
     $precision = $this->getSetting('precision');
@@ -78,16 +79,16 @@ class FractionDecimalFormatter extends FractionFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
 
-    // Load the precision setting.
+    // Output fraction as a decimal with a fixed or automatic precision.
     $precision = $this->getSetting('precision');
+    $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
 
     // Iterate through the items.
     foreach ($items as $delta => $item) {
+      $output = $item->fraction->toDecimal($precision, $auto_precision);
 
-      // Output fraction as a decimal with a fixed or automatic precision.
-      $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
       $elements[$delta] = [
-        '#markup' => $item->fraction->toDecimal($precision, $auto_precision),
+        '#markup' => $this->viewOutput($item, $output),
       ];
     }
 
