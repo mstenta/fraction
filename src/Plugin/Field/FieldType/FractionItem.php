@@ -22,9 +22,7 @@ use Drupal\Core\TypedData\MapDataDefinition;
 class FractionItem extends FieldItemBase {
 
   /**
-   * Definitions of the contained properties.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   static $propertyDefinitions;
 
