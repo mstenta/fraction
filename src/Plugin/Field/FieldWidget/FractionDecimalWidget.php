@@ -36,8 +36,8 @@ class FractionDecimalWidget extends FractionWidget {
     // Decimal precision.
     $elements['precision'] = [
       '#type' => 'textfield',
-      '#title' => t('Decimal precision'),
-      '#description' => t('Specify the number of digits after the decimal place to display when converting the fraction to a decimal. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
+      '#title' => $this->t('Decimal precision'),
+      '#description' => $this->t('Specify the number of digits after the decimal place to display when converting the fraction to a decimal. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
       '#default_value' => $this->getSetting('precision'),
       '#required' => TRUE,
       '#weight' => 0,
@@ -46,8 +46,8 @@ class FractionDecimalWidget extends FractionWidget {
     // Auto precision.
     $elements['auto_precision'] = [
       '#type' => 'checkbox',
-      '#title' => t('Auto precision'),
-      '#description' => t('Automatically determine the maximum precision if the fraction has a base-10 denominator. For example, 1/100 would have a precision of 2, 1/1000 would have a precision of 3, etc.'),
+      '#title' => $this->t('Auto precision'),
+      '#description' => $this->t('Automatically determine the maximum precision if the fraction has a base-10 denominator. For example, 1/100 would have a precision of 2, 1/1000 would have a precision of 3, etc.'),
       '#default_value' => $this->getSetting('auto_precision'),
       '#weight' => 1,
     ];
@@ -64,7 +64,7 @@ class FractionDecimalWidget extends FractionWidget {
     // Summarize the precision setting.
     $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? 'On' : 'Off';
-    $summary[] = t('Precision: @precision, Auto-precision: @auto_precision', [
+    $summary[] = $this->t('Precision: @precision, Auto-precision: @auto_precision', [
       '@precision' => $precision,
       '@auto_precision' => $auto_precision,
     ]);
@@ -131,7 +131,7 @@ class FractionDecimalWidget extends FractionWidget {
     // The maximum number of digits after the decimal place is 9.
     // Explicitly perform a string comparison to ensure precision.
     if ((string) $denominator > '1000000000') {
-      $form_state->setError($element, t('The maximum number of digits after the decimal place is 9.'));
+      $form_state->setError($element, $this->t('The maximum number of digits after the decimal place is 9.'));
     }
 
     // Ensure that the decimal value is within an acceptable value range.
@@ -143,7 +143,7 @@ class FractionDecimalWidget extends FractionWidget {
     $scale = strlen($denominator) - 1;
     $in_bounds = $this->checkInBounds($decimal, $min_decimal, $max_decimal, $scale);
     if (!$in_bounds) {
-      $form_state->setError($element, t('The number you entered is outside the range of acceptable values. This limitation is related to the decimal precision, so reducing the precision may solve the problem.'));
+      $form_state->setError($element, $this->t('The number you entered is outside the range of acceptable values. This limitation is related to the decimal precision, so reducing the precision may solve the problem.'));
     }
   }
 
