@@ -35,7 +35,7 @@ class FractionDecimalFormatter extends FractionFormatter {
 
     // Decimal precision.
     $elements['precision'] = [
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#title' => $this->t('Decimal precision'),
       '#description' => $this->t('Specify the number of digits after the decimal place to display. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
       '#default_value' => $this->getSetting('precision'),

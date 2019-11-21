@@ -27,13 +27,13 @@ class FractionWidget extends WidgetBase {
     $element['#type'] = 'fieldset';
 
     $element['numerator'] = [
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#title' => $this->t('Numerator'),
       '#default_value' => isset($items[$delta]->numerator) ? $items[$delta]->numerator : NULL,
     ];
 
     $element['denominator'] = [
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#title' => $this->t('Denominator'),
       '#default_value' => isset($items[$delta]->denominator) ? $items[$delta]->denominator : NULL,
     ];

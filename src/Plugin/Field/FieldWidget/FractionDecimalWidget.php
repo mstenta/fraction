@@ -91,7 +91,7 @@ class FractionDecimalWidget extends FractionWidget {
     // The default value is converted to a decimal with the specified precision.
     $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
     $element['decimal'] = [
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#default_value' => $items[$delta]->fraction->toDecimal($precision, $auto_precision),
       '#size' => 15,
     ];
