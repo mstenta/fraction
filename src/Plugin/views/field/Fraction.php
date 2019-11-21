@@ -22,8 +22,8 @@ class Fraction extends FieldPluginBase {
     $options = parent::defineOptions();
 
     // Default to automatic precision.
-    $options['precision'] = array('default' => 0);
-    $options['auto_precision'] = array('default' => TRUE);
+    $options['precision'] = ['default' => 0];
+    $options['auto_precision'] = ['default' => TRUE];
 
     return $options;
   }
@@ -34,18 +34,18 @@ class Fraction extends FieldPluginBase {
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
 
     // Add fields for configuring precision and auto_precision.
-    $form['precision'] = array(
+    $form['precision'] = [
       '#type' => 'textfield',
       '#title' => t('Precision'),
       '#description' => t('Specify the number of digits after the decimal place to display when converting the fraction to a decimal. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
       '#default_value' => $this->options['precision'],
-    );
-    $form['auto_precision'] = array(
+    ];
+    $form['auto_precision'] = [
       '#type' => 'checkbox',
       '#title' => t('Auto precision'),
       '#description' => t('Automatically determine the maximum precision if the fraction has a base-10 denominator. For example, 1/100 would have a precision of 2, 1/1000 would have a precision of 3, etc.'),
       '#default_value' => $this->options['auto_precision'],
-    );
+    ];
 
     // Merge into the parent form.
     parent::buildOptionsForm($form, $form_state);

@@ -25,10 +25,10 @@ function fraction_field_views_data_alter(&$data, $field) {
   list($field_label, $other_labels) = views_entity_field_label($entity_type, $field_name);
 
   // Build a list of additional fields for the sort and filter handlers.
-  $additional_fields = array(
+  $additional_fields = [
     'numerator' => $field_name . '_numerator',
     'denominator' => $field_name . '_denominator',
-  );
+  ];
 
   // Iterate through the results.
   foreach ($data as $table_alias => &$definition) {
@@ -59,7 +59,7 @@ function fraction_field_views_data_alter(&$data, $field) {
 
     // Create a new decimal column with custom sort and filter handlers.
     $column_name = $field_name . '_decimal';
-    $definition[$column_name] = array(
+    $definition[$column_name] = [
       'group' => $definition[$field_name]['group']->getUntranslatedString(),
       'title' => t('@field_label (decimal)', [
         '@field_label' => $field_label,
@@ -70,14 +70,14 @@ function fraction_field_views_data_alter(&$data, $field) {
       'help' => t('Decimal equivalent of Fraction field for sorting and filtering. @extra', [
         '@extra' => $definition[$field_name]['help'],
       ]),
-      'sort' => array(
+      'sort' => [
         'id' => 'fraction',
         'additional fields' => $additional_fields,
-      ),
-      'filter' => array(
+      ],
+      'filter' => [
         'id' => 'fraction',
         'additional fields' => $additional_fields,
-      )
-    );
+      ],
+    ];
   }
 }

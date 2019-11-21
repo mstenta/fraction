@@ -32,24 +32,24 @@ class FractionItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    return array(
-      'columns' => array(
-        'numerator' => array(
+    return [
+      'columns' => [
+        'numerator' => [
           'description' => 'Fraction numerator value',
           'type' => 'int',
           'size' => 'big',
           'not null' => TRUE,
           'default' => 0,
-        ),
-        'denominator' => array(
+        ],
+        'denominator' => [
           'description' => 'Fraction denominator value',
           'type' => 'int',
           'unsigned' => TRUE,
           'not null' => TRUE,
           'default' => 1,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
   /**

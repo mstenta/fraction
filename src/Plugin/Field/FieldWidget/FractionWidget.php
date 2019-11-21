@@ -26,20 +26,20 @@ class FractionWidget extends WidgetBase {
 
     $element['#type'] = 'fieldset';
 
-    $element['numerator'] = array(
+    $element['numerator'] = [
       '#type' => 'textfield',
       '#title' => t('Numerator'),
       '#default_value' => isset($items[$delta]->numerator) ? $items[$delta]->numerator : NULL,
-    );
+    ];
 
-    $element['denominator'] = array(
+    $element['denominator'] = [
       '#type' => 'textfield',
       '#title' => t('Denominator'),
       '#default_value' => isset($items[$delta]->denominator) ? $items[$delta]->denominator : NULL,
-    );
+    ];
 
     // Add validation.
-    $element['#element_validate'][] = array($this, 'validateFraction');
+    $element['#element_validate'][] = [$this, 'validateFraction'];
 
     return $element;
   }

@@ -23,9 +23,9 @@ class FractionFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
+    return [
       'separator' => '/',
-    ) + parent::defaultSettings();
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -34,14 +34,14 @@ class FractionFormatter extends FormatterBase {
   public function settingsForm(array $form, FormStateInterface $form_state) {
 
     // Numerator and denominator separator.
-    $elements['separator'] = array(
+    $elements['separator'] = [
       '#type' => 'textfield',
       '#title' => t('Separator'),
       '#description' => t('Specify the separator to display between the numerator and denominator.'),
       '#default_value' => $this->getSetting('separator'),
       '#required' => TRUE,
       '#weight' => 0,
-    );
+    ];
 
     return $elements;
   }
@@ -50,13 +50,13 @@ class FractionFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = array();
+    $summary = [];
 
     // Summarize the separator setting.
     $separator = $this->getSetting('separator');
-    $summary[] = t('Separator: @separator', array(
+    $summary[] = t('Separator: @separator', [
       '@separator' => $separator,
-    ));
+    ]);
 
     return $summary;
   }
@@ -65,7 +65,7 @@ class FractionFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = array();
+    $elements = [];
 
     // Load the separator setting.
     $separator = $this->getSetting('separator');
@@ -74,9 +74,9 @@ class FractionFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
 
       // Output fraction as a string.
-      $elements[$delta] = array(
+      $elements[$delta] = [
         '#markup' => $item->fraction->toString($separator),
-      );
+      ];
     }
 
     return $elements;
