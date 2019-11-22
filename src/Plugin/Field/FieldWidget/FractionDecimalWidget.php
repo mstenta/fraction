@@ -90,7 +90,7 @@ class FractionDecimalWidget extends WidgetBase {
     $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
     $element['decimal'] = [
       '#type' => 'number',
-      '#default_value' => $items[$delta]->fraction->toDecimal($precision, $auto_precision),
+      '#default_value' => $items->isEmpty() ? '' : $items[$delta]->fraction->toDecimal($precision, $auto_precision),
       '#size' => 15,
     ];
 
