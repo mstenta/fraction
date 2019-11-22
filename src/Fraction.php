@@ -188,7 +188,7 @@ class Fraction {
 
     // Calculate the numerator by multiplying the value by the denominator.
     if (function_exists('bcmul')) {
-      $numerator = bcmul($value, $denominator);
+      $numerator = bcmul($value, $denominator, 0);
     }
     else {
       $numerator = $value * $denominator;
@@ -255,8 +255,8 @@ class Fraction {
     // Divide the numerator and denominator by the gcd.
     // Use BCMath division if available.
     if (function_exists('bcdiv')) {
-      $numerator = bcdiv($numerator, $gcd);
-      $denominator = bcdiv($denominator, $gcd);
+      $numerator = bcdiv($numerator, $gcd, 0);
+      $denominator = bcdiv($denominator, $gcd, 0);
     }
     else {
       $numerator = $numerator / $gcd;
@@ -309,8 +309,8 @@ class Fraction {
     // Calculate the sum of the two fractions.
     // Use BCMath if available.
     if (function_exists('bcmul') && function_exists('bcadd')) {
-      $denominator = bcmul($denominator1, $denominator2);
-      $numerator = bcadd(bcmul($numerator1, $denominator2), bcmul($numerator2, $denominator1));
+      $denominator = bcmul($denominator1, $denominator2, 0);
+      $numerator = bcadd(bcmul($numerator1, $denominator2, 0), bcmul($numerator2, $denominator1, 0), 0);
     }
     else {
       $denominator = $denominator1 * $denominator2;
@@ -344,8 +344,8 @@ class Fraction {
     // Calculate the difference of the two fractions.
     // Use BCMath if available.
     if (function_exists('bcmul') && function_exists('bcsub')) {
-      $denominator = bcmul($denominator1, $denominator2);
-      $numerator = bcsub(bcmul($numerator1, $denominator2), bcmul($numerator2, $denominator1));
+      $denominator = bcmul($denominator1, $denominator2, 0);
+      $numerator = bcsub(bcmul($numerator1, $denominator2, 0), bcmul($numerator2, $denominator1, 0), 0);
     }
     else {
       $denominator = $denominator1 * $denominator2;
@@ -379,8 +379,8 @@ class Fraction {
     // Calculate the product of the two fractions.
     // Use BCMath if available.
     if (function_exists('bcmul')) {
-      $numerator = bcmul($numerator1, $numerator2);
-      $denominator = bcmul($denominator1, $denominator2);
+      $numerator = bcmul($numerator1, $numerator2, 0);
+      $denominator = bcmul($denominator1, $denominator2, 0);
     }
     else {
       $numerator = $numerator1 * $numerator2;
@@ -417,8 +417,8 @@ class Fraction {
     // Calculate the quotient of the two fractions.
     // Use BCMath if available.
     if (function_exists('bcmul')) {
-      $numerator = bcmul($numerator1, $numerator2);
-      $denominator = bcmul($denominator1, $denominator2);
+      $numerator = bcmul($numerator1, $numerator2, 0);
+      $denominator = bcmul($denominator1, $denominator2, 0);
     }
     else {
       $numerator = $numerator1 * $numerator2;
