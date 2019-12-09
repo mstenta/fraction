@@ -114,7 +114,12 @@ class FractionDecimalWidget extends WidgetBase {
   /**
    * Form element validation handler for $this->formElement().
    */
-  public function validateDecimal(&$element, &$form_state, $form) {
+  public function validateDecimal(array &$element, FormStateInterface &$form_state, array $form) {
+
+    // Only continue with validation if the value is not empty.
+    if ($element['decimal']['#value'] === '') {
+      return;
+    }
 
     // Convert the value to a fraction.
     $fraction = fraction_from_decimal($element['decimal']['#value']);
@@ -130,11 +135,6 @@ class FractionDecimalWidget extends WidgetBase {
       'denominator' => $denominator,
     ];
     $form_state->setValueForElement($element, $values);
-
-    // Only continue with validation if the value is not empty.
-    if (empty($element['decimal']['#value'])) {
-      return;
-    }
 
     // The maximum number of digits after the decimal place is 9.
     // Explicitly perform a string comparison to ensure precision.
