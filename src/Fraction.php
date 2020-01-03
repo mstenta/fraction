@@ -17,13 +17,11 @@ class Fraction {
    * Constructor.
    *
    * @param $numerator
-   *   The fraction's numerator.
+   *   The fraction's numerator. Defaults to 0.
    * @param $denominator
-   *   The fraction's denominator.
+   *   The fraction's denominator. Defaults to 1.
    */
-  public function __construct($numerator, $denominator) {
-
-    // Set the numerator and denominator.
+  public function __construct($numerator = 0, $denominator = 1) {
     $this->setNumerator($numerator);
     $this->setDenominator($denominator);
   }
