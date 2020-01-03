@@ -94,4 +94,5 @@ class FractionDecimalFormatter extends FractionFormatter {
 
     return $elements;
   }
+
 }

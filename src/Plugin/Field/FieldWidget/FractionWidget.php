@@ -68,4 +68,5 @@ class FractionWidget extends WidgetBase {
       $form_state->setError($element, $this->t('The denominator of a fraction must be between 0 and 4294967295.'));
     }
   }
+
 }

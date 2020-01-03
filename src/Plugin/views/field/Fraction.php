@@ -60,11 +60,11 @@ class Fraction extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function clickSort($order) {
-
     // Ensure the main table for this field is included.
     $this->ensureMyTable();
 
-    // Formula for calculating the final value, by dividing numerator by denominator.
+    // Formula for calculating the final value, by dividing numerator by
+    // denominator.
     // These are available as additional fields.
     $formula = $this->tableAlias . '.' . $this->definition['additional fields']['numerator'] . ' / ' . $this->tableAlias . '.' . $this->definition['additional fields']['denominator'];
 
@@ -73,10 +73,9 @@ class Fraction extends FieldPluginBase {
   }
 
   /**
-   * Load the numerator and denominator values and perform conversion to decimal.
+   * Loads the numerator and denominator values and converts to decimal.
    */
   public function getValue(ResultRow $values, $field = NULL) {
-
     // Find the numerator and denominator field aliases.
     $numerator_alias = $this->aliases[$this->definition['additional fields']['numerator']];
     $denominator_alias = $this->aliases[$this->definition['additional fields']['denominator']];
@@ -92,4 +91,5 @@ class Fraction extends FieldPluginBase {
       return fraction($numerator, $denominator)->toDecimal($precision, $auto_precision);
     }
   }
+
 }

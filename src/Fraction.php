@@ -8,13 +8,17 @@ namespace Drupal\fraction;
 class Fraction {
 
   /**
-   * Numerator and denominator properties.
+   * Numerator of the fraction.
    */
   protected $numerator;
+
+  /**
+   * Denominator of the fraction.
+   */
   protected $denominator;
 
   /**
-   * Constructor.
+   * Constructs a Fraction object.
    *
    * @param $numerator
    *   The fraction's numerator. Defaults to 0.
@@ -98,7 +102,7 @@ class Fraction {
   /**
    * Return a string representation of the fraction.
    *
-   * @param $separator
+   * @param string $separator
    *   The separator to place between the numerator and denominator.
    *
    * @return string
@@ -117,9 +121,9 @@ class Fraction {
   /**
    * Calculate the decimal equivalent of the fraction.
    *
-   * @param $precision
+   * @param int $precision
    *   The desired decimal precision, defaults to 0.
-   * @param $auto_precision
+   * @param bool $auto_precision
    *   Boolean, whether or not the precision should be automatically calculated.
    *   This option provides more precision when you need it, and less when you
    *   don't. If set to TRUE, it will try to determine the maximum precision
@@ -331,7 +335,7 @@ class Fraction {
    * @return Fraction
    *   Returns this Fraction object.
    */
-  function subtract(Fraction $fraction) {
+  public function subtract(Fraction $fraction) {
 
     // Get the numerator and denominator of each fraction.
     $numerator1 = $this->getNumerator();
@@ -366,7 +370,7 @@ class Fraction {
    * @return Fraction
    *   Returns this Fraction object.
    */
-  function multiply(Fraction $fraction) {
+  public function multiply(Fraction $fraction) {
 
     // Get the numerator and denominator of each fraction.
     $numerator1 = $this->getNumerator();
@@ -401,7 +405,7 @@ class Fraction {
    * @return Fraction
    *   Returns this Fraction object.
    */
-  function divide(Fraction $fraction) {
+  public function divide(Fraction $fraction) {
 
     // Reciprocate the fraction.
     $fraction->reciprocate();
@@ -435,7 +439,7 @@ class Fraction {
    *
    * @param $value
    *   The value to round.
-   * @param $precision
+   * @param int $precision
    *   The desired decimal precision.
    *
    * @return string
@@ -447,5 +451,5 @@ class Fraction {
     }
     return bcsub($value, '0.' . str_repeat('0', $precision) . '5', $precision);
   }
-}
 
+}

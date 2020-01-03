@@ -105,4 +105,5 @@ class FractionItem extends FieldItemBase {
     $denominator = $this->get('denominator')->getValue();
     return ((string) $numerator !== '0' && empty($numerator)) || empty($denominator);
   }
+
 }

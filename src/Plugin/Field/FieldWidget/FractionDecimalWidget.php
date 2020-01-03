@@ -156,8 +156,9 @@ class FractionDecimalWidget extends WidgetBase {
   }
 
   /**
-   * Helper method to check if a given value is in between two other values,
-   * using BCMath and strings for arbitrary-precision operations where possible.
+   * Helper method to check if a given value is in between two other values.
+   *
+   * Uses BCMath and strings for arbitrary-precision operations where possible.
    *
    * @param string $value
    *   The value to check.
@@ -202,4 +203,5 @@ class FractionDecimalWidget extends WidgetBase {
     // Assume the value is in bounds if none of the above said otherwise.
     return TRUE;
   }
+
 }

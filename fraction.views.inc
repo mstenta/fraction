@@ -39,9 +39,7 @@ function fraction_field_views_data_alter(&$data, $field) {
     // in $definition[$field_name . '-revision_id']. So we need to test for the
     // presence of both and act accordingly. If neither exists, stop here and
     // skip to the next definition.
-    /**
-     * @see views_field_default_views_data()
-     */
+    // @see views_field_default_views_data()
     $field_revision_name = $field_name . '-revision_id';
     if (empty($definition[$field_name]) && empty($definition[$field_revision_name])) {
       continue;

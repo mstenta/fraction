@@ -35,4 +35,5 @@ class FractionProperty extends TypedData {
     // Return it.
     return $this->fraction;
   }
+
 }

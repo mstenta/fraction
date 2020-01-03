@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Fraction
+ * Fraction module code.
  */
 
 use Drupal\fraction\Fraction;
@@ -24,10 +24,6 @@ function fraction_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
-/***************************************************************
- * Utility functions
- * *************************************************************/
-
 /**
  * Fraction factory function.
  *
@@ -36,8 +32,8 @@ function fraction_help($route_name, RouteMatchInterface $route_match) {
  * @param $denominator
  *   The fraction's denominator.
  *
- * @return Fraction
- * Returns a new fraction object.
+ * @return \Drupal\fraction\Fraction
+ *   Returns a new fraction object.
  */
 function fraction($numerator = 0, $denominator = 1) {
   return new Fraction($numerator, $denominator);
@@ -49,7 +45,7 @@ function fraction($numerator = 0, $denominator = 1) {
  * @param $value
  *   The decimal value to be converted.
  *
- * @return Fraction
+ * @return \Drupal\fraction\Fraction
  *   Returns a new fraction object.
  */
 function fraction_from_decimal($value) {

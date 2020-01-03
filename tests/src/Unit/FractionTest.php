@@ -13,7 +13,8 @@ use Drupal\fraction\Fraction;
 class FractionTest extends UnitTestCase {
 
   /**
-   * Takes a numerator and denominator and returns a Fraction object.
+   * Returns a Fraction object from a a numerator and denominator.
+   *
    * This method should be identical to the fraction() function in
    * fraction.module.
    *
@@ -22,7 +23,7 @@ class FractionTest extends UnitTestCase {
    * @param $denominator
    *   The fraction's denominator.
    *
-   * @return Fraction
+   * @return \Drupal\fraction\Fraction
    *   Returns a $this->fraction object.
    */
   protected function fraction($numerator = 0, $denominator = 1) {
@@ -138,9 +139,11 @@ class FractionTest extends UnitTestCase {
     $message = 'The reciprocal of 1/2 is 2/1.';
     $this->assertEquals($result, '2/1', $message);
 
-    // Test that reciprocation of a zero numerator does not result in division by zero.
+    // Test that reciprocation of a zero numerator does not result in division
+    // by zero.
     $result = $this->fraction(0, 1)->reciprocate()->toString();
     $message = 'The reciprocal of 0/1 is 0/1 (avoid division by zero).';
     $this->assertEquals($result, '0/1', $message);
   }
+
 }

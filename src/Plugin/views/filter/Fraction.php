@@ -68,4 +68,5 @@ class Fraction extends NumericFilter {
     $expression = $field . ' RLIKE :value';
     $this->query->addWhereExpression($this->options['group'], $expression, [':value' => $this->value['value']]);
   }
+
 }
