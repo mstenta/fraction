@@ -73,7 +73,7 @@ class FractionTarget extends FieldTargetBase implements ConfigurableTargetInterf
         // Pull out the numerator and denominator.
         $parts = explode('/', $item);
 
-        if (!empty($parts[0]) && is_numeric($parts[0]) && !empty($parts[1]) && is_numeric($parts[1])) {
+        if (!empty($parts[0]) && is_numeric($parts[0]) && !empty($parts[1]) && is_numeric($parts[1]) && $parts[1] >= 0) {
           $values['numerator'] = $parts[0];
           $values['denominator'] = $parts[1];
         }
