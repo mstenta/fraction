@@ -2,11 +2,13 @@
 
 namespace Drupal\fraction\Plugin\Field\FieldType;
 
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\TypedData\MapDataDefinition;
+use Drupal\fraction\Fraction;
 
 /**
  * Plugin implementation of the 'fraction' field type.
@@ -103,6 +105,22 @@ class FractionItem extends FieldItemBase {
     $numerator = $this->get('numerator')->getValue();
     $denominator = $this->get('denominator')->getValue();
     return ((string) $numerator !== '0' && empty($numerator)) || empty($denominator);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
+    // Generate random decimal (float) with a max of 9 decimal places and then
+    // convert it to fraction.
+    $divisor = pow(10, rand(0, 9));
+    $number = mt_rand(1, 20 * $divisor) / $divisor;
+    $fraction = new Fraction();
+    $fraction = $fraction->fromDecimal($number);
+    return [
+      'numerator' => $fraction->getNumerator(),
+      'denominator' => $fraction->getDenominator(),
+    ];
   }
 
 }
