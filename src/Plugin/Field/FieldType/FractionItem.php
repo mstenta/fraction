@@ -73,7 +73,6 @@ class FractionItem extends FieldItemBase {
         'denominator' => [
           'description' => 'Fraction denominator value',
           'type' => 'int',
-          'unsigned' => TRUE,
           'not null' => TRUE,
           'default' => 1,
         ],
