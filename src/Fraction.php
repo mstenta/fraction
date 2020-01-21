@@ -139,12 +139,19 @@ class Fraction {
     $numerator = $this->getNumerator();
     $denominator = $this->getDenominator();
 
-    // If auto precision is on and the denominator is base-10, figure out the
-    // maximum precision.
-    if ($auto_precision && $denominator % 10 == 0) {
+    // If auto precision is on figure out the maximum precision.
+    if ($auto_precision) {
 
-      // Max precision is the number of zeroes in the base-10 denominator.
-      $max_precision = strlen($denominator) - 1;
+      // If the denominator is base-10, max precision is the number of zeroes
+      // in the denominator.
+      if ($denominator % 10 == 0) {
+        $max_precision = strlen($denominator) - 1;
+      }
+
+      // Otherwise, max precision is the denominator length.
+      else {
+        $max_precision = strlen($denominator);
+      }
 
       // Use the greater of the two precisions.
       $precision = ($max_precision > $precision) ? $max_precision : $precision;
