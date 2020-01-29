@@ -148,6 +148,11 @@ class Fraction {
         $max_precision = strlen($denominator) - 1;
       }
 
+      // Or, if the denominator is 1, max precision is zero.
+      elseif ($denominator == 1) {
+        $max_precision = 0;
+      }
+
       // Otherwise, max precision is the denominator length.
       else {
         $max_precision = strlen($denominator);
