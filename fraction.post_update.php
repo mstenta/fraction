@@ -50,7 +50,7 @@ function fraction_post_update_make_denominator_signed() {
       else {
         \Drupal::service('entity.last_installed_schema.repository')->setLastInstalledFieldStorageDefinition($storage_definition);
         $field_schema = $entity_storage_schema->get("$entity_type_id.field_schema_data.$field_name");
-        $fields_to_update[] = compact('field_name', 'table_name', 'column_name', 'entity_type_id', 'field_schema');
+        $fields_to_update[] = compact('field_name', 'table_name', 'column_name', 'entity_type_id', 'field_schema', 'revision_table_name');
       }
     }
   }
@@ -63,7 +63,10 @@ function fraction_post_update_make_denominator_signed() {
     extract($field_to_update);
     fraction_alter_denominator_helper($table_name, $column_name);
     unset($field_schema[$table_name]['fields'][$column_name]['unsigned']);
-    // Ensure that the field schema is updatd accordingly to the change of
+    if (\Drupal::database()->schema()->tableExists($revision_table_name)) {
+      unset($field_schema[$revision_table_name]['fields'][$column_name]['unsigned']);
+    }
+    // Ensure that the field schema is updated accordingly to the change of
     // the field so the entity updates service does not alert of this
     // change.
     $entity_storage_schema->set("$entity_type_id.field_schema_data.$field_name", $field_schema);
