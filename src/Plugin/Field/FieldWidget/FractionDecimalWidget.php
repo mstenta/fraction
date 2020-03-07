@@ -35,10 +35,9 @@ class FractionDecimalWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-
     // Decimal precision.
     $elements['precision'] = [
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#title' => $this->t('Decimal precision'),
       '#description' => $this->t('Specify the number of digits after the decimal place to display when converting the fraction to a decimal. When "Auto precision" is enabled, this value essentially becomes a minimum fallback precision.'),
       '#default_value' => $this->getSetting('precision'),
@@ -79,21 +78,27 @@ class FractionDecimalWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $field_settings = $this->getFieldSettings();
-
-    // Hide the numerator and denominator fields.
-    $element['numerator']['#type'] = 'hidden';
-    $element['denominator']['#type'] = 'hidden';
-
     // Add a 'decimal' textfield for capturing the decimal value.
     // The default value is converted to a decimal with the specified precision.
     $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
     $element['decimal'] = [
+      '#title' => $element['#title'],
+      '#title_display' => $element['#title_display'],
       '#type' => 'number',
+      '#step' => 'any',
       '#default_value' => $items->isEmpty() ? '' : $items[$delta]->fraction->toDecimal($precision, $auto_precision),
       '#size' => 15,
     ];
+
+    $field_settings = $this->getFieldSettings();
+    // Set minimum and maximum.
+    if (is_numeric($field_settings['min'])) {
+      $element['#min'] = $field_settings['min'];
+    }
+    if (is_numeric($field_settings['max'])) {
+      $element['#max'] = $field_settings['max'];
+    }
 
     // Add prefix and suffix.
     if ($field_settings['prefix']) {

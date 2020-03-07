@@ -3,8 +3,8 @@
 namespace Drupal\fraction\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\NumericItemBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\TypedData\MapDataDefinition;
@@ -22,42 +22,7 @@ use Drupal\fraction\Fraction;
  *   default_formatter = "fraction"
  * )
  */
-class FractionItem extends FieldItemBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultFieldSettings() {
-    return [
-      'prefix' => '',
-      'suffix' => '',
-    ] + parent::defaultFieldSettings();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
-    $element = [];
-    $settings = $this->getSettings();
-
-    $element['prefix'] = [
-      '#type' => 'textfield',
-      '#title' => t('Prefix'),
-      '#default_value' => $settings['prefix'],
-      '#size' => 60,
-      '#description' => t("Define a string that should be prefixed to the value, like '$ ' or '&euro; '. Leave blank for none. Separate singular and plural values with a pipe ('pound|pounds')."),
-    ];
-    $element['suffix'] = [
-      '#type' => 'textfield',
-      '#title' => t('Suffix'),
-      '#default_value' => $settings['suffix'],
-      '#size' => 60,
-      '#description' => t("Define a string that should be suffixed to the value, like ' m', ' kb/s'. Leave blank for none. Separate singular and plural values with a pipe ('pound|pounds')."),
-    ];
-
-    return $element;
-  }
+class FractionItem extends NumericItemBase {
 
   /**
    * {@inheritdoc}
@@ -85,6 +50,18 @@ class FractionItem extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
+  public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
+    $element = parent::fieldSettingsForm($form, $form_state);
+
+    $element['min']['#step'] = 'any';
+    $element['max']['#step'] = 'any';
+
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     $property_definitions['numerator'] = DataDefinition::create('integer')
       ->setLabel(t('Numerator value'));
@@ -95,6 +72,11 @@ class FractionItem extends FieldItemBase {
       ->setDescription(t('A fraction object instance.'))
       ->setComputed(TRUE)
       ->setClass('\Drupal\fraction\FractionProperty');
+    $property_definitions['value'] = MapDataDefinition::create()
+      ->setLabel(t('Fraction Decimal'))
+      ->setDescription(t('Fraction decimal value.'))
+      ->setComputed(TRUE)
+      ->setClass('\Drupal\fraction\FractionDecimalProperty');
     return $property_definitions;
   }
 
