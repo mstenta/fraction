@@ -115,8 +115,7 @@ class FractionItem extends FieldItemBase {
     // convert it to fraction.
     $divisor = pow(10, rand(0, 9));
     $number = mt_rand(1, 20 * $divisor) / $divisor;
-    $fraction = new Fraction();
-    $fraction = $fraction->fromDecimal($number);
+    $fraction = Fraction::createFromDecimal($number);
     return [
       'numerator' => $fraction->getNumerator(),
       'denominator' => $fraction->getDenominator(),

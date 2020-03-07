@@ -31,6 +31,56 @@ class Fraction {
   }
 
   /**
+   * Constructs a new Fraction object from a decimal.
+   *
+   * @deprecated in drupal:8.8.0 and is removed from drupal:9.0.0. Use the
+   * static \Drupal\fraction\Fraction::createFromDecimal() instead.
+   *
+   * @param $value
+   *   The decimal value to start with.
+   *
+   * @return Fraction
+   *   Returns this object.
+   */
+  public function fromDecimal($value) {
+    @trigger_error(__METHOD__ . ' is deprecated in drupal:8.0.0 and is removed in drupal:9.0.0. Use the static \Drupal\fraction\Fraction::createFromDecimal() instead.', E_USER_DEPRECATED);
+    return self::createFromDecimal($value);
+  }
+
+  /**
+   * Constructs a new Fraction object from a decimal.
+   *
+   * @param $value
+   *   The decimal value to start with.
+   *
+   * @return Fraction
+   *   Returns this object.
+   */
+  public static function createFromDecimal($value) {
+
+    // Calculate the precision by counting the number of decimal places.
+    $precision = strlen(substr(strrchr($value, '.'), 1));
+
+    // Create the denominator by raising 10 to the power of the precision.
+    if (function_exists('bcpow')) {
+      $denominator = bcpow(10, $precision);
+    }
+    else {
+      $denominator = pow(10, $precision);
+    }
+
+    // Calculate the numerator by multiplying the value by the denominator.
+    if (function_exists('bcmul')) {
+      $numerator = bcmul($value, $denominator, 0);
+    }
+    else {
+      $numerator = $value * $denominator;
+    }
+
+    return new Fraction($numerator, $denominator);
+  }
+
+  /**
    * Set the numerator.
    *
    * @param $value
@@ -176,43 +226,6 @@ class Fraction {
     else {
       return (string) round($numerator / $denominator, $precision);
     }
-  }
-
-  /**
-   * Calculates the numerator and denominator from a decimal value.
-   *
-   * @param $value
-   *   The decimal value to start with.
-   *
-   * @return Fraction
-   *   Returns this object.
-   */
-  public function fromDecimal($value) {
-
-    // Calculate the precision by counting the number of decimal places.
-    $precision = strlen(substr(strrchr($value, '.'), 1));
-
-    // Create the denominator by raising 10 to the power of the precision.
-    if (function_exists('bcpow')) {
-      $denominator = bcpow(10, $precision);
-    }
-    else {
-      $denominator = pow(10, $precision);
-    }
-
-    // Calculate the numerator by multiplying the value by the denominator.
-    if (function_exists('bcmul')) {
-      $numerator = bcmul($value, $denominator, 0);
-    }
-    else {
-      $numerator = $value * $denominator;
-    }
-
-    // Set the numerator and denominator.
-    $this->setNumerator($numerator);
-    $this->setDenominator($denominator);
-
-    return $this;
   }
 
   /**

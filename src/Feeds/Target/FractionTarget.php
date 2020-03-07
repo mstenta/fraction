@@ -86,14 +86,13 @@ class FractionTarget extends FieldTargetBase implements ConfigurableTargetInterf
       case 'decimal':
 
         // If item is non-numeric or an empty string, create an empty fraction.
-        // Otherwise, pass the value to fromDecimal().
+        // Otherwise, pass the value to createFromDecimal().
         if (!is_numeric($item) || $item === '') {
           $values['numerator'] = '';
           $values['denominator'] = '';
         }
         else {
-          $fraction = new Fraction();
-          $fraction->fromDecimal($item);
+          $fraction = Fraction::createFromDecimal($item);
           $values['numerator'] = $fraction->getNumerator();
           $values['denominator'] = $fraction->getDenominator();
         }

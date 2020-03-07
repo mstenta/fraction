@@ -5,6 +5,7 @@ namespace Drupal\fraction\Plugin\views\field;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ResultRow;
+use Drupal\fraction\Fraction as FractionClass;
 
 /**
  * Field handler for Fraction database columns.
@@ -88,7 +89,8 @@ class Fraction extends FieldPluginBase {
       $denominator = $values->{$denominator_alias};
       $precision = $this->options['precision'];
       $auto_precision = $this->options['auto_precision'];
-      return fraction($numerator, $denominator)->toDecimal($precision, $auto_precision);
+      $fraction = new FractionClass($numerator, $denominator);
+      return $fraction->toDecimal($precision, $auto_precision);
     }
   }
 

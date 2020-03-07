@@ -6,6 +6,7 @@ use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\fraction\Fraction;
 
 /**
  * Plugin implementation of the 'fraction_decimal' widget.
@@ -122,7 +123,7 @@ class FractionDecimalWidget extends WidgetBase {
     }
 
     // Convert the value to a fraction.
-    $fraction = fraction_from_decimal($element['decimal']['#value']);
+    $fraction = Fraction::createFromDecimal($element['decimal']['#value']);
 
     // Get the numerator and denominator.
     $numerator = $fraction->getNumerator();
@@ -146,8 +147,10 @@ class FractionDecimalWidget extends WidgetBase {
     // Convert the fraction back to a decimal, because that is what will be
     // stored. Explicitly perform a string comparison to ensure precision.
     $decimal = (string) $fraction->toDecimal(0, TRUE);
-    $min_decimal = (string) fraction('-9223372036854775808', $denominator)->toDecimal(0, TRUE);
-    $max_decimal = (string) fraction('9223372036854775807', $denominator)->toDecimal(0, TRUE);
+    $min_decimal_fraction = new Fraction('-9223372036854775808', $denominator);
+    $min_decimal = (string) $min_decimal_fraction->toDecimal(0, TRUE);
+    $max_decimal_fraction = new Fraction('9223372036854775807', $denominator);
+    $max_decimal = (string) $max_decimal_fraction->toDecimal(0, TRUE);
     $scale = strlen($denominator) - 1;
     $in_bounds = $this->checkInBounds($decimal, $min_decimal, $max_decimal, $scale);
     if (!$in_bounds) {
