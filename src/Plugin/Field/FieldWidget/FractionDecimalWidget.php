@@ -82,9 +82,7 @@ class FractionDecimalWidget extends WidgetBase {
     // The default value is converted to a decimal with the specified precision.
     $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
-    $element['decimal'] = [
-      '#title' => $element['#title'],
-      '#title_display' => $element['#title_display'],
+    $element['decimal'] = $element + [
       '#type' => 'number',
       '#step' => 'any',
       '#default_value' => $items->isEmpty() ? '' : $items[$delta]->fraction->toDecimal($precision, $auto_precision),
@@ -93,10 +91,10 @@ class FractionDecimalWidget extends WidgetBase {
 
     $field_settings = $this->getFieldSettings();
     // Set minimum and maximum.
-    if (is_numeric($field_settings['min'])) {
+    if (isset($field_settings['min']) && is_numeric($field_settings['min'])) {
       $element['#min'] = $field_settings['min'];
     }
-    if (is_numeric($field_settings['max'])) {
+    if (isset($field_settings['max']) && is_numeric($field_settings['max'])) {
       $element['#max'] = $field_settings['max'];
     }
 
