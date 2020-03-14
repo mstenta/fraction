@@ -5,24 +5,28 @@ namespace Drupal\fraction;
 /**
  * A simple class for representing and acting upon a fraction.
  */
-class Fraction {
+class Fraction implements FractionInterface {
 
   /**
    * Numerator of the fraction.
+   *
+   * @var string|int
    */
   protected $numerator;
 
   /**
    * Denominator of the fraction.
+   *
+   * @var string|int
    */
   protected $denominator;
 
   /**
    * Constructs a Fraction object.
    *
-   * @param $numerator
+   * @param string|int $numerator
    *   The fraction's numerator. Defaults to 0.
-   * @param $denominator
+   * @param string|int $denominator
    *   The fraction's denominator. Defaults to 1.
    */
   public function __construct($numerator = 0, $denominator = 1) {
@@ -31,16 +35,7 @@ class Fraction {
   }
 
   /**
-   * Constructs a new Fraction object from a decimal.
-   *
-   * @deprecated in drupal:8.8.0 and is removed from drupal:9.0.0. Use the
-   * static \Drupal\fraction\Fraction::createFromDecimal() instead.
-   *
-   * @param $value
-   *   The decimal value to start with.
-   *
-   * @return Fraction
-   *   Returns this object.
+   * {@inheritdoc}
    */
   public function fromDecimal($value) {
     @trigger_error(__METHOD__ . ' is deprecated in drupal:8.0.0 and is removed in drupal:9.0.0. Use the static \Drupal\fraction\Fraction::createFromDecimal() instead.', E_USER_DEPRECATED);
@@ -48,13 +43,7 @@ class Fraction {
   }
 
   /**
-   * Constructs a new Fraction object from a decimal.
-   *
-   * @param $value
-   *   The decimal value to start with.
-   *
-   * @return Fraction
-   *   Returns this object.
+   * {@inheritdoc}
    */
   public static function createFromDecimal($value) {
 
@@ -81,13 +70,7 @@ class Fraction {
   }
 
   /**
-   * Set the numerator.
-   *
-   * @param $value
-   *   The numerator value.
-   *
-   * @return Fraction
-   *   Returns this Fraction object.
+   * {@inheritdoc}
    */
   public function setNumerator($value) {
 
@@ -98,13 +81,7 @@ class Fraction {
   }
 
   /**
-   * Set the denominator.
-   *
-   * @param $value
-   *   The denominator value.
-   *
-   * @return Fraction
-   *   Returns this Fraction object.
+   * {@inheritdoc}
    */
   public function setDenominator($value) {
 
@@ -140,25 +117,16 @@ class Fraction {
   }
 
   /**
-   * Get the denominator.
-   *
-   * @return string
-   *   Returns the denominator value.
+   * {@inheritdoc}
    */
   public function getDenominator() {
     return $this->denominator;
   }
 
   /**
-   * Return a string representation of the fraction.
-   *
-   * @param string $separator
-   *   The separator to place between the numerator and denominator.
-   *
-   * @return string
-   *   Returns a string with the numerator, separator, and denominator.
+   * {@inheritdoc}
    */
-  public function toString($separator = '/') {
+  public function toString(string $separator = '/') {
 
     // Get the numerator and denominator.
     $numerator = $this->getNumerator();
@@ -169,21 +137,9 @@ class Fraction {
   }
 
   /**
-   * Calculate the decimal equivalent of the fraction.
-   *
-   * @param int $precision
-   *   The desired decimal precision, defaults to 0.
-   * @param bool $auto_precision
-   *   Boolean, whether or not the precision should be automatically calculated.
-   *   This option provides more precision when you need it, and less when you
-   *   don't. If set to TRUE, it will try to determine the maximum precision
-   *   (this only works if the denominator is base 10). If the resulting
-   *   precision is greater than $precision, it will be used instead.
-   *
-   * @return string
-   *   Returns the decimal equivalent of the fraction as a PHP string.
+   * {@inheritdoc}
    */
-  public function toDecimal($precision = 0, $auto_precision = FALSE) {
+  public function toDecimal(int $precision = 0, bool $auto_precision = FALSE) {
 
     // Get the numerator and denominator.
     $numerator = $this->getNumerator();
@@ -229,10 +185,7 @@ class Fraction {
   }
 
   /**
-   * Calculate the fraction's greatest common divisor using Euclid's algorithm.
-   *
-   * @return string
-   *   Returns the greatest common divisor.
+   * {@inheritdoc}
    */
   public function gcd() {
 
@@ -265,10 +218,7 @@ class Fraction {
   }
 
   /**
-   * Reduce the fraction to its simplest form.
-   *
-   * @return Fraction
-   *   Returns this Fraction object.
+   * {@inheritdoc}
    */
   public function reduce() {
 
@@ -298,10 +248,7 @@ class Fraction {
   }
 
   /**
-   * Reciprocate the fraction.
-   *
-   * @return Fraction
-   *   Returns this Fraction object.
+   * {@inheritdoc}
    */
   public function reciprocate() {
 
@@ -317,13 +264,7 @@ class Fraction {
   }
 
   /**
-   * Add another fraction to this one.
-   *
-   * @param Fraction $fraction
-   *   Another fraction object to add to this one.
-   *
-   * @return Fraction
-   *   Returns this Fraction object.
+   * {@inheritdoc}
    */
   public function add(Fraction $fraction) {
 
@@ -352,13 +293,7 @@ class Fraction {
   }
 
   /**
-   * Subtract another fraction from this one.
-   *
-   * @param Fraction $fraction
-   *   Another fraction object to subtract this one.
-   *
-   * @return Fraction
-   *   Returns this Fraction object.
+   * {@inheritdoc}
    */
   public function subtract(Fraction $fraction) {
 
@@ -387,13 +322,7 @@ class Fraction {
   }
 
   /**
-   * Multiply this fraction with another one.
-   *
-   * @param Fraction $fraction
-   *   Another fraction object to multiply with.
-   *
-   * @return Fraction
-   *   Returns this Fraction object.
+   * {@inheritdoc}
    */
   public function multiply(Fraction $fraction) {
 
@@ -422,13 +351,7 @@ class Fraction {
   }
 
   /**
-   * Divide this fraction by another one.
-   *
-   * @param Fraction $fraction
-   *   Another fraction object to divide by.
-   *
-   * @return Fraction
-   *   Returns this Fraction object.
+   * {@inheritdoc}
    */
   public function divide(Fraction $fraction) {
 
