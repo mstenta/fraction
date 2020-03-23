@@ -25,6 +25,7 @@ class FractionDecimalFormatter extends FractionFormatter {
     return [
       'precision' => 0,
       'auto_precision' => TRUE,
+      'separator' => NULL,
     ] + parent::defaultSettings();
   }
 
@@ -53,6 +54,20 @@ class FractionDecimalFormatter extends FractionFormatter {
       '#weight' => 1,
     ];
 
+    // Separator.
+
+    $elements['separator'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Decimal separator'),
+      '#description' => $this->t('Specify the decimal separator that should be used.'),
+      '#options' => array(
+        NULL => $this->t('Period'),
+        ',' => $this->t('Comma'),
+      ),
+      '#default_value' => $this->getSetting('separator'),
+      '#weight' => 2,
+    ];
+
     return $elements;
   }
 
@@ -65,9 +80,11 @@ class FractionDecimalFormatter extends FractionFormatter {
     // Summarize the precision setting.
     $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? 'On' : 'Off';
-    $summary[] = $this->t('Precision: @precision, Auto-precision: @auto_precision', [
+    $separator = !empty($this->getSetting('separator')) ? $this->t('Comma') : $this->t('Period');
+    $summary[] = $this->t('Precision: @precision, Auto-precision: @auto_precision, Separator: @separator', [
       '@precision' => $precision,
       '@auto_precision' => $auto_precision,
+      '@separator' => $separator,
     ]);
 
     return $summary;
@@ -82,10 +99,11 @@ class FractionDecimalFormatter extends FractionFormatter {
     // Output fraction as a decimal with a fixed or automatic precision.
     $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
+    $separator = $this->getSetting('separator');
 
     // Iterate through the items.
     foreach ($items as $delta => $item) {
-      $output = $item->fraction->toDecimal($precision, $auto_precision);
+      $output = $item->fraction->toDecimal($precision, $auto_precision, $separator);
 
       $elements[$delta] = [
         '#markup' => $this->viewOutput($item, $output),
