@@ -45,10 +45,10 @@ class Fraction implements FractionInterface {
   /**
    * {@inheritdoc}
    */
-  public static function createFromDecimal($value) {
+  public static function createFromDecimal($value, string $separator = '.') {
 
     // Calculate the precision by counting the number of decimal places.
-    $precision = strlen(substr(strrchr($value, '.'), 1));
+    $precision = strlen(substr(strrchr($value, $separator), 1));
 
     // Create the denominator by raising 10 to the power of the precision.
     if (function_exists('bcpow')) {

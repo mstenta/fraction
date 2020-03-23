@@ -97,11 +97,14 @@ interface FractionInterface {
    *
    * @param string|int $value
    *   The decimal value to start with.
+   * @param string $separator
+   *   The character that is used as a decimal separator. If this is not set,
+   *   then the default separator is assumed to be a period.
    *
    * @return Fraction
    *   Returns this object.
    */
-  public static function createFromDecimal($value);
+  public static function createFromDecimal($value, string $separator = '.');
 
   /**
    * Calculate the fraction's greatest common divisor using Euclid's algorithm.
