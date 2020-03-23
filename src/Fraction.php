@@ -139,7 +139,7 @@ class Fraction implements FractionInterface {
   /**
    * {@inheritdoc}
    */
-  public function toDecimal(int $precision = 0, bool $auto_precision = FALSE) {
+  public function toDecimal(int $precision = 0, bool $auto_precision = FALSE, string $separator = NULL) {
 
     // Get the numerator and denominator.
     $numerator = $this->getNumerator();
@@ -175,13 +175,21 @@ class Fraction implements FractionInterface {
       $value = bcdiv($numerator, $denominator, $precision + 1);
 
       // Return a decimal string rounded to the final precision.
-      return $this->bcRound($value, $precision);
+      $output = $this->bcRound($value, $precision);
     }
 
     // If BCMath is not available, use normal PHP float division and rounding.
     else {
-      return (string) round($numerator / $denominator, $precision);
+      $output = (string) round($numerator / $denominator, $precision);
     }
+
+    // If the decimal separator character is set, perform a string replacement.
+    if (!empty($separator)) {
+      $output = str_replace('.', $separator, $output);
+    }
+
+    // Return the decimal value.
+    return $output;
   }
 
   /**
