@@ -16,7 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   }
  * )
  */
-class FractionDecimalFormatter extends FractionFormatter {
+class FractionDecimalFormatter extends FractionFormatterBase {
 
   /**
    * {@inheritdoc}
@@ -60,7 +60,7 @@ class FractionDecimalFormatter extends FractionFormatter {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = parent::settingsSummary() ?? [];
+    $summary = parent::settingsSummary();
 
     // Summarize the precision setting.
     $precision = $this->getSetting('precision');
@@ -85,7 +85,9 @@ class FractionDecimalFormatter extends FractionFormatter {
 
     // Iterate through the items.
     foreach ($items as $delta => $item) {
-      $output = $item->fraction->toDecimal($precision, $auto_precision);
+      /** @var \Drupal\fraction\FractionInterface $fraction */
+      $fraction = $item->fraction;
+      $output = $fraction->toDecimal($precision, $auto_precision);
 
       $elements[$delta] = [
         '#markup' => $this->viewOutput($item, $output),

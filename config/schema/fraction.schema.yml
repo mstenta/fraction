@@ -21,7 +21,7 @@ field.formatter.settings.fraction:
   mapping:
     separator:
       type: string
-      label: 'Decimal marker'
+      label: 'Separator'
     prefix_suffix:
       type: boolean
       label: 'Display prefix and suffix.'
@@ -30,9 +30,6 @@ field.formatter.settings.fraction_decimal:
   type: mapping
   label: 'Fraction decimal display format settings'
   mapping:
-    separator:
-      type: string
-      label: 'Decimal marker'
     precision:
       type: integer
       label: 'Precision'
@@ -47,9 +44,6 @@ field.formatter.settings.fraction_percentage:
   type: mapping
   label: 'Fraction percentage display format settings'
   mapping:
-    separator:
-      type: string
-      label: 'Decimal marker'
     precision:
       type: integer
       label: 'Precision'
