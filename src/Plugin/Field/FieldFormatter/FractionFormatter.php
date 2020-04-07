@@ -35,8 +35,8 @@ class FractionFormatter extends FractionFormatterBase {
     // Numerator and denominator separator.
     $elements['separator'] = [
       '#type' => 'textfield',
-      '#title' => t('Separator'),
-      '#description' => t('Specify the separator to display between the numerator and denominator.'),
+      '#title' => $this->t('Separator'),
+      '#description' => $this->t('Specify the separator to display between the numerator and denominator.'),
       '#default_value' => $this->getSetting('separator'),
       '#required' => TRUE,
       '#weight' => 0,
@@ -53,7 +53,7 @@ class FractionFormatter extends FractionFormatterBase {
 
     // Summarize the separator setting.
     $separator = $this->getSetting('separator');
-    $summary[] = t('Separator: @separator', [
+    $summary[] = $this->t('Separator: @separator', [
       '@separator' => $separator,
     ]);
 

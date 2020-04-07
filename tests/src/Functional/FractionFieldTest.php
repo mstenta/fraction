@@ -5,6 +5,7 @@ namespace Drupal\Tests\fraction\Functional;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Tests the creation of fraction fields.
@@ -13,6 +14,7 @@ use Drupal\Tests\BrowserTestBase;
  */
 class FractionFieldTest extends BrowserTestBase {
 
+  use StringTranslationTrait;
   /**
    * Modules to enable.
    *
@@ -86,10 +88,10 @@ class FractionFieldTest extends BrowserTestBase {
     $edit = [
       "{$field_name}[0][decimal]" => $value,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
     preg_match('|entity_test/manage/(\d+)|', $this->getUrl(), $match);
     $id = $match[1];
-    $this->assertText(t('entity_test @id has been created.', ['@id' => $id]), 'Entity was created');
+    $this->assertText($this->t('entity_test @id has been created.', ['@id' => $id]), 'Entity was created');
     $this->assertRaw($value, 'Value is displayed.');
 
     // Try to create entries with more than one decimal separator; assert fail.
@@ -106,8 +108,8 @@ class FractionFieldTest extends BrowserTestBase {
       $edit = [
         "{$field_name}[0][decimal]" => $wrong_entry,
       ];
-      $this->drupalPostForm(NULL, $edit, t('Save'));
-      $this->assertRaw(t('%name must be a number.', ['%name' => $field_name]), 'Correctly failed to save value with more than one decimal point.');
+      $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+      $this->assertRaw($this->t('%name must be a number.', ['%name' => $field_name]), 'Correctly failed to save value with more than one decimal point.');
     }
 
     // Try to create entries with minus sign not in the first position.
@@ -124,8 +126,8 @@ class FractionFieldTest extends BrowserTestBase {
       $edit = [
         "{$field_name}[0][decimal]" => $wrong_entry,
       ];
-      $this->drupalPostForm(NULL, $edit, t('Save'));
-      $this->assertRaw(t('%name must be a number.', ['%name' => $field_name]), 'Correctly failed to save value with minus sign in the wrong position.');
+      $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+      $this->assertRaw($this->t('%name must be a number.', ['%name' => $field_name]), 'Correctly failed to save value with minus sign in the wrong position.');
     }
 
     // Try to set a value above the maximum value.
@@ -133,16 +135,16 @@ class FractionFieldTest extends BrowserTestBase {
     $edit = [
       "{$field_name}[0][decimal]" => $max + 0.123,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save'));
-    $this->assertRaw(t('%name: the value may be no greater than %maximum.', ['%name' => $field_name, '%maximum' => $max]), 'Correctly failed to save value greater than maximum allowed value.');
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('%name: the value may be no greater than %maximum.', ['%name' => $field_name, '%maximum' => $max]), 'Correctly failed to save value greater than maximum allowed value.');
 
     // Try to set a value below the minimum value.
     $this->drupalGet('entity_test/add');
     $edit = [
       "{$field_name}[0][decimal]" => $min - 0.123,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save'));
-    $this->assertRaw(t('%name: the value may be no less than %minimum.', ['%name' => $field_name, '%minimum' => $min]), 'Correctly failed to save value less than minimum allowed value.');
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('%name: the value may be no less than %minimum.', ['%name' => $field_name, '%minimum' => $min]), 'Correctly failed to save value less than minimum allowed value.');
   }
 
   /**
@@ -189,10 +191,10 @@ class FractionFieldTest extends BrowserTestBase {
       "{$field_name}[0][numerator]" => 150,
       "{$field_name}[0][denominator]" => 10,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
     preg_match('|entity_test/manage/(\d+)|', $this->getUrl(), $match);
     $id = $match[1];
-    $this->assertText(t('entity_test @id has been created.', ['@id' => $id]), 'Entity was created');
+    $this->assertText($this->t('entity_test @id has been created.', ['@id' => $id]), 'Entity was created');
     $this->assertRaw('150', 'Numerator is displayed.');
     $this->assertRaw('10', 'Denominator is displayed.');
 
@@ -202,8 +204,8 @@ class FractionFieldTest extends BrowserTestBase {
       "{$field_name}[0][numerator]" => 15000,
       "{$field_name}[0][denominator]" => 10,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save'));
-    $this->assertRaw(t('%name: the value may be no greater than %maximum.', ['%name' => $field_name, '%maximum' => $max]), 'Correctly failed to save value greater than maximum allowed value.');
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('%name: the value may be no greater than %maximum.', ['%name' => $field_name, '%maximum' => $max]), 'Correctly failed to save value greater than maximum allowed value.');
 
     // Try to set a value below the minimum value.
     $this->drupalGet('entity_test/add');
@@ -211,8 +213,8 @@ class FractionFieldTest extends BrowserTestBase {
       "{$field_name}[0][numerator]" => 1,
       "{$field_name}[0][denominator]" => 10,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save'));
-    $this->assertRaw(t('%name: the value may be no less than %minimum.', ['%name' => $field_name, '%minimum' => $min]), 'Correctly failed to save value less than minimum allowed value.');
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('%name: the value may be no less than %minimum.', ['%name' => $field_name, '%minimum' => $min]), 'Correctly failed to save value less than minimum allowed value.');
   }
 
   /**

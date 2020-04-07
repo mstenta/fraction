@@ -30,7 +30,7 @@ abstract class FractionFormatterBase extends FormatterBase implements ContainerF
 
     $elements['prefix_suffix'] = [
       '#type' => 'checkbox',
-      '#title' => t('Display prefix and suffix'),
+      '#title' => $this->t('Display prefix and suffix'),
       '#default_value' => $this->getSetting('prefix_suffix'),
       '#weight' => 10,
     ];
@@ -45,7 +45,7 @@ abstract class FractionFormatterBase extends FormatterBase implements ContainerF
     $summary = parent::settingsSummary();
 
     if ($this->getSetting('prefix_suffix')) {
-      $summary[] = t('Display with prefix and suffix.');
+      $summary[] = $this->t('Display with prefix and suffix.');
     }
 
     return $summary;
