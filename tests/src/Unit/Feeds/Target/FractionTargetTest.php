@@ -3,7 +3,6 @@
 namespace Drupal\Tests\fraction\Unit\Feeds\Target;
 
 use Drupal\Core\Form\FormState;
-use Drupal\feeds\Feeds\Target\Text;
 use Drupal\fraction\Feeds\Target\FractionTarget;
 use Drupal\Tests\feeds\Unit\Feeds\Target\FieldTargetTestBase;
 
@@ -27,7 +26,7 @@ class FractionTargetTest extends FieldTargetTestBase {
     $method = $this->getMethod('Drupal\fraction\Feeds\Target\FractionTarget', 'prepareTarget')->getClosure();
 
     $configuration = [
-      'feed_type' => $this->getMock('Drupal\feeds\FeedTypeInterface'),
+      'feed_type' => $this->createMock('Drupal\feeds\FeedTypeInterface'),
       'target_definition' => $method($this->getMockFieldDefinition()),
       'type' => 'fraction',
     ];
@@ -83,7 +82,7 @@ class FractionTargetTest extends FieldTargetTestBase {
   public function testPrepareValueDecimal() {
     $method = $this->getMethod('Drupal\fraction\Feeds\Target\FractionTarget', 'prepareTarget')->getClosure();
     $configuration = [
-      'feed_type' => $this->getMock('Drupal\feeds\FeedTypeInterface'),
+      'feed_type' => $this->createMock('Drupal\feeds\FeedTypeInterface'),
       'target_definition' => $method($this->getMockFieldDefinition()),
       'type' => 'decimal',
     ];
@@ -127,7 +126,7 @@ class FractionTargetTest extends FieldTargetTestBase {
   public function testBuildConfigurationForm() {
     $method = $this->getMethod('Drupal\fraction\Feeds\Target\FractionTarget', 'prepareTarget')->getClosure();
     $configuration = [
-     'feed_type' => $this->getMock('Drupal\feeds\FeedTypeInterface'),
+     'feed_type' => $this->createMock('Drupal\feeds\FeedTypeInterface'),
      'target_definition' => $method($this->getMockFieldDefinition()),
     ];
     $target = new FractionTarget($configuration, 'fraction', []);
