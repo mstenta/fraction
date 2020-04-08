@@ -183,13 +183,13 @@ class FractionFieldTest extends BrowserTestBase {
 
     // Display creation form.
     $this->drupalGet('entity_test/add');
-    $this->assertFieldByName("{$field_name}[0][numerator]", '', 'Numerator is displayed');
-    $this->assertFieldByName("{$field_name}[0][denominator]", '', 'Denominator is displayed');
+    $this->assertFieldByName("{$field_name}[0][fraction][numerator]", '', 'Numerator is displayed');
+    $this->assertFieldByName("{$field_name}[0][fraction][denominator]", '', 'Denominator is displayed');
 
     // Submit fraction value.
     $edit = [
-      "{$field_name}[0][numerator]" => 150,
-      "{$field_name}[0][denominator]" => 10,
+      "{$field_name}[0][fraction][numerator]" => 150,
+      "{$field_name}[0][fraction][denominator]" => 10,
     ];
     $this->drupalPostForm(NULL, $edit, $this->t('Save'));
     preg_match('|entity_test/manage/(\d+)|', $this->getUrl(), $match);
@@ -201,8 +201,8 @@ class FractionFieldTest extends BrowserTestBase {
     // Try to set a value above the maximum value.
     $this->drupalGet('entity_test/add');
     $edit = [
-      "{$field_name}[0][numerator]" => 15000,
-      "{$field_name}[0][denominator]" => 10,
+      "{$field_name}[0][fraction][numerator]" => 15000,
+      "{$field_name}[0][fraction][denominator]" => 10,
     ];
     $this->drupalPostForm(NULL, $edit, $this->t('Save'));
     $this->assertRaw($this->t('%name: the value may be no greater than %maximum.', ['%name' => $field_name, '%maximum' => $max]), 'Correctly failed to save value greater than maximum allowed value.');
@@ -210,11 +210,51 @@ class FractionFieldTest extends BrowserTestBase {
     // Try to set a value below the minimum value.
     $this->drupalGet('entity_test/add');
     $edit = [
-      "{$field_name}[0][numerator]" => 1,
-      "{$field_name}[0][denominator]" => 10,
+      "{$field_name}[0][fraction][numerator]" => 1,
+      "{$field_name}[0][fraction][denominator]" => 10,
     ];
     $this->drupalPostForm(NULL, $edit, $this->t('Save'));
     $this->assertRaw($this->t('%name: the value may be no less than %minimum.', ['%name' => $field_name, '%minimum' => $min]), 'Correctly failed to save value less than minimum allowed value.');
+
+    // Empty denominator.
+    $this->drupalGet('entity_test/add');
+    $edit = [
+      "{$field_name}[0][fraction][numerator]" => 1,
+    ];
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('The denominator of a fraction cannot be zero or empty (if a numerator is provided).'));
+
+    // Numerators must be between -9223372036854775808 and 9223372036854775807.
+    $this->drupalGet('entity_test/add');
+    $edit = [
+      "{$field_name}[0][fraction][numerator]" => -9223372036854775809,
+      "{$field_name}[0][fraction][denominator]" => 10,
+    ];
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('The numerator of a fraction must be between -9223372036854775808 and 9223372036854775807.'));
+    $this->drupalGet('entity_test/add');
+    $edit = [
+      "{$field_name}[0][fraction][numerator]" => 9223372036854775808,
+      "{$field_name}[0][fraction][denominator]" => 10,
+    ];
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('The numerator of a fraction must be between -9223372036854775808 and 9223372036854775807.'));
+
+    // Denominators must be between 0 and 2147483647.
+    $this->drupalGet('entity_test/add');
+    $edit = [
+      "{$field_name}[0][fraction][numerator]" => 10,
+      "{$field_name}[0][fraction][denominator]" => -1,
+    ];
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('The denominator of a fraction must be greater than 0 and less than 2147483647.'));
+    $this->drupalGet('entity_test/add');
+    $edit = [
+      "{$field_name}[0][fraction][numerator]" => 10,
+      "{$field_name}[0][fraction][denominator]" => 2147483648,
+    ];
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('The denominator of a fraction must be greater than 0 and less than 2147483647.'));
   }
 
   /**
