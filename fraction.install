@@ -21,10 +21,65 @@ function fraction_field_schema($field) {
       'denominator' => array(
         'description' => 'Fraction denominator value',
         'type' => 'int',
-        'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 1,
       ),
     ),
   );
+}
+
+/**
+ * Alter schema to make denominator signed.
+ *
+ * This is done so the field is leveled between MySQL and Postgres and migration
+ * is possible between the two. When an integer is unsigned in Postges, Drupal
+ * will create a bigint for it, while with MySQL, it would create a regular int.
+ *
+ * @see https://www.drupal.org/project/fraction/issues/2729315
+ */
+function fraction_update_7001(&$sandbox) {
+
+  // Get all fraction fields in the system.
+  $fraction_fields = field_read_fields(['type' => 'fraction']);
+  $table_names = [];
+  foreach ($fraction_fields as $field_name => $field_info) {
+    $table_name = _field_sql_storage_tablename($field_info);
+    $revision_table_name = _field_sql_storage_revision_tablename($field_info);
+    $column_name = $field_name . '_denominator';
+    $max_denominator = db_query('SELECT MAX(' . $column_name . ') FROM {' . $table_name . '}')->fetchField();
+    $max_revision_denominator = db_query('SELECT MAX(' . $column_name . ') FROM {' . $revision_table_name . '}')->fetchField();
+    $max_denominator = max($max_denominator, $max_revision_denominator);
+
+    // Max value on signed int for MySQL or int in PostgreSQL is 2147483648.
+    if ($max_denominator >= 2147483648) {
+
+      // If the max value is bigger than the limits for MySQL/Postgres, warn
+      // the user.
+      throw new DrupalUpdateException('Fraction works with signed integer schema fields for denominator, some of your values in the database exceed this limit, please check the fraction field tables and review the data before running this update. See https://www.drupal.org/project/fraction/issues/2729315 for further details.');
+    }
+    else {
+      $table_names[$field_name][] = $table_name;
+      $table_names[$field_name][] = $revision_table_name;
+    }
+  }
+
+  if (empty($table_names)) {
+    return 'No fraction fields found to update.';
+  }
+
+  // Query all fraction field tables and get the MAX value.
+  foreach ($table_names as $field_name => $field_table_names) {
+    $column_name = $field_name . '_denominator';
+    foreach ($field_table_names as $table_name) {
+      db_change_field($table_name, $column_name, $column_name, array(
+        'description' => 'Fraction denominator value',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+      ));
+    }
+  }
+
+  // Return a message.
+  return 'Fraction fields updated: ' . implode(',', array_keys($table_names));
 }
