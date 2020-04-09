@@ -500,6 +500,17 @@ function fraction_field_presave($entity_type, $entity, $field, $instance, $langc
   // Convert decimal values to numerator and denominator.
   foreach ($items as &$item) {
     if (!empty($item['decimal'])) {
+
+      // Only proceed if this is a base-10 number. This prevents accidentally
+      // overwriting non-base-10 numerator/denominator fractions.
+      // A base-10 number will have a denominator of 1 or no remainder when
+      // divided by 10.
+      // See https://www.drupal.org/project/fraction/issues/3109864
+      if (!empty($item['denominator']) && !($item['denominator'] == 1 || $item['denominator'] % 10 == 0)) {
+        continue;
+      }
+
+      // Recalculate the numerator and denominator from the decimal value.
       $fraction = fraction_from_decimal($item['decimal']);
       $item['numerator'] = $fraction->getNumerator();
       $item['denominator'] = $fraction->getDenominator();
