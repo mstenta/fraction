@@ -114,11 +114,6 @@ class FractionTest extends UnitTestCase {
     $message = 'The createFromDecimal() method should create a fraction of 5/10 from a decimal of 0.5.';
     $this->assertEquals($result, '5/10', $message);
 
-    // Test creation of a fraction from a decimal (old constructor).
-    $result = $this->fraction()->fromDecimal(0.5)->toString();
-    $message = 'The fromDecimal() method should create a fraction of 5/10 from a decimal of 0.5.';
-    $this->assertEquals($result, '5/10', $message);
-
     // Test calculation of greatest common divisor.
     $result = $this->fraction(5, 10)->gcd();
     $message = 'The greatest common divisor of 1/2 is 5.';

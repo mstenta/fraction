@@ -78,20 +78,6 @@ interface FractionInterface {
   /**
    * Calculates the numerator and denominator from a decimal value.
    *
-   * @deprecated in drupal:8.8.0 and is removed from drupal:9.0.0. Use the
-   * static \Drupal\fraction\Fraction::createFromDecimal() instead.
-   *
-   * @param string|int $value
-   *   The decimal value to start with.
-   *
-   * @return Fraction
-   *   Returns this object.
-   */
-  public function fromDecimal($value);
-
-  /**
-   * Calculates the numerator and denominator from a decimal value.
-   *
    * @param string|int $value
    *   The decimal value to start with.
    *

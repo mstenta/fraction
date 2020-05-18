@@ -37,14 +37,6 @@ class Fraction implements FractionInterface {
   /**
    * {@inheritdoc}
    */
-  public function fromDecimal($value) {
-    @trigger_error(__METHOD__ . ' is deprecated in drupal:8.0.0 and is removed in drupal:9.0.0. Use the static \Drupal\fraction\Fraction::createFromDecimal() instead.', E_USER_DEPRECATED);
-    return self::createFromDecimal($value);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public static function createFromDecimal($value) {
 
     // Calculate the precision by counting the number of decimal places.
