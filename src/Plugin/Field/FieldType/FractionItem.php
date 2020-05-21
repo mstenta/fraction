@@ -19,7 +19,8 @@ use Drupal\fraction\Fraction;
  *   description = @Translation("This field stores a decimal in fraction form (with a numerator and denominator) for maximum precision."),
  *   category = @Translation("Number"),
  *   default_widget = "fraction",
- *   default_formatter = "fraction"
+ *   default_formatter = "fraction",
+*    constraints = {"FractionConstraint" = {}}
  * )
  */
 class FractionItem extends NumericItemBase {
@@ -86,7 +87,7 @@ class FractionItem extends NumericItemBase {
   public function isEmpty() {
     $numerator = $this->get('numerator')->getValue();
     $denominator = $this->get('denominator')->getValue();
-    return ((string) $numerator !== '0' && empty($numerator)) || empty($denominator);
+    return (((string) $numerator !== '0' && empty($numerator)) || ((string) $denominator !== '0' && empty($denominator)));
   }
 
   /**
