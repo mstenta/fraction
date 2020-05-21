@@ -15,6 +15,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 class FractionFieldTest extends BrowserTestBase {
 
   use StringTranslationTrait;
+
   /**
    * Modules to enable.
    *
@@ -274,6 +275,64 @@ class FractionFieldTest extends BrowserTestBase {
     $page->fillField('settings[max]', 100.5);
     $page->pressButton('Save settings');
     $assert_session->pageTextContains('Saved Fraction field configuration.');
+  }
+
+  /**
+   * Tests that editing an empty fraction doesn't show a 0.
+   *
+   * @see https://www.drupal.org/project/fraction/issues/3096236
+   */
+  public function testFractionWidgetDecimalEditNull() {
+    // Create a field with settings to validate.
+    $field_name = mb_strtolower($this->randomMachineName());
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'entity_test',
+      'type' => 'fraction',
+    ])->save();
+    FieldConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'entity_test',
+      'bundle' => 'entity_test',
+    ])->save();
+
+    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+    $display_repository = \Drupal::service('entity_display.repository');
+
+    $display_repository->getFormDisplay('entity_test', 'entity_test')
+      ->setComponent($field_name, ['type' => 'fraction_decimal'])
+      ->save();
+    $display_repository->getViewDisplay('entity_test', 'entity_test')
+      ->setComponent($field_name, ['type' => 'fraction_decimal'])
+      ->save();
+
+    // Display creation form.
+    $this->drupalGet('entity_test/add');
+    $this->assertFieldByName("{$field_name}[0][decimal]", '', 'Widget is displayed');
+
+    // Submit decimal value.
+    $value = '1.234';
+    $edit = [
+      "{$field_name}[0][decimal]" => $value,
+    ];
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    preg_match('|entity_test/manage/(\d+)|', $this->getUrl(), $match);
+    $id = $match[1];
+    $this->assertText($this->t('entity_test @id has been created.', ['@id' => $id]), 'Entity was created');
+    $this->assertRaw($value, 'Value is displayed.');
+
+    // Empty the field.
+    $edit = [
+      "{$field_name}[0][decimal]" => NULL,
+    ];
+    $this->drupalPostForm("entity_test/manage/$id/edit", $edit, $this->t('Save'));
+    $this->assertNoRaw($value, 'Value is removed.');
+
+    // The field should have no value (not 0, just empty).
+    $this->drupalGet("entity_test/manage/$id/edit");
+    $elements = $this->xpath($this->constructFieldXpath('name', "{$field_name}[0][decimal]"));
+    $element = reset($elements);
+    $this->assertIdentical($element->getValue(), '', 'Field is empty');
   }
 
 }
