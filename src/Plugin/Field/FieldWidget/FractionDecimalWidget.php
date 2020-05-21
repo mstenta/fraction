@@ -6,7 +6,6 @@ use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\fraction\Fraction;
 
 /**
  * Plugin implementation of the 'fraction_decimal' widget.
@@ -83,10 +82,8 @@ class FractionDecimalWidget extends WidgetBase {
     $precision = $this->getSetting('precision');
     $auto_precision = !empty($this->getSetting('auto_precision')) ? TRUE : FALSE;
     $element['decimal'] = $element + [
-      '#type' => 'number',
-      '#step' => 'any',
+      '#type' => 'fraction_decimal',
       '#default_value' => $items->isEmpty() ? '' : $items[$delta]->fraction->toDecimal($precision, $auto_precision),
-      '#size' => 15,
     ];
 
     $field_settings = $this->getFieldSettings();
@@ -108,106 +105,19 @@ class FractionDecimalWidget extends WidgetBase {
       $element['decimal']['#field_suffix'] = FieldFilteredMarkup::create(array_pop($suffixes));
     }
 
-    // Add decimal validation. This is also where we will convert the decimal
-    // to a fraction.
-    $element['#element_validate'][] = [$this, 'validateDecimal'];
-
     return $element;
   }
 
   /**
-   * Form element validation handler for $this->formElement().
+   * {@inheritdoc}
    */
-  public function validateDecimal(array &$element, FormStateInterface &$form_state, array $form) {
-
-    // Only continue with validation if the value is not empty.
-    if ($element['decimal']['#value'] === '') {
-      return;
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    foreach ($values as &$value) {
+      // Remove the fraction form element wrapper if it exists to make the
+      // FractionItem::setValue method more consistent.
+      $value = $value['decimal'] ?? $value;
     }
-
-    // Convert the value to a fraction.
-    $fraction = Fraction::createFromDecimal($element['decimal']['#value']);
-
-    // Get the numerator and denominator.
-    $numerator = $fraction->getNumerator();
-    $denominator = $fraction->getDenominator();
-
-    // Set the numerator and denominator values for the form.
-    $values = [
-      'decimal' => $element['decimal']['#value'],
-      'numerator' => $numerator,
-      'denominator' => $denominator,
-    ];
-    $form_state->setValueForElement($element, $values);
-
-    // The maximum number of digits after the decimal place is 9.
-    // Explicitly perform a string comparison to ensure precision.
-    if ((string) $denominator > '1000000000') {
-      $form_state->setError($element, $this->t('The maximum number of digits after the decimal place is 9.'));
-    }
-
-    // Ensure that the decimal value is within an acceptable value range.
-    // Convert the fraction back to a decimal, because that is what will be
-    // stored. Explicitly perform a string comparison to ensure precision.
-    $decimal = (string) $fraction->toDecimal(0, TRUE);
-    $min_decimal_fraction = new Fraction('-9223372036854775808', $denominator);
-    $min_decimal = (string) $min_decimal_fraction->toDecimal(0, TRUE);
-    $max_decimal_fraction = new Fraction('9223372036854775807', $denominator);
-    $max_decimal = (string) $max_decimal_fraction->toDecimal(0, TRUE);
-    $scale = strlen($denominator) - 1;
-    $in_bounds = $this->checkInBounds($decimal, $min_decimal, $max_decimal, $scale);
-    if (!$in_bounds) {
-      $form_state->setError($element, $this->t('The number you entered is outside the range of acceptable values. This limitation is related to the decimal precision, so reducing the precision may solve the problem.'));
-    }
-  }
-
-  /**
-   * Helper method to check if a given value is in between two other values.
-   *
-   * Uses BCMath and strings for arbitrary-precision operations where possible.
-   *
-   * @param string $value
-   *   The value to check.
-   * @param string $min
-   *   The minimum bound.
-   * @param string $max
-   *   The maximum bound.
-   * @param int $scale
-   *   Optional scale integer to pass into bcsub() if BCMath is used.
-   *
-   * @return bool
-   *   Returns TRUE if $number is between $min and $max, FALSE otherwise.
-   */
-  protected function checkInBounds($value, $min, $max, $scale = 0) {
-
-    // If BCMath isn't available, let PHP handle it via normal float comparison.
-    if (!function_exists('bcsub')) {
-      return ($value > $max || $value < $min) ? FALSE : TRUE;
-    }
-
-    // Subtract the minimum bound and maximum bounds from the value.
-    $diff_min = bcsub($value, $min, $scale);
-    $diff_max = bcsub($value, $max, $scale);
-
-    // If either have a difference of zero, then the value is in bounds.
-    if ($diff_min == 0 || $diff_max == 0) {
-      return TRUE;
-    }
-
-    // If the first character of $diff_min is a negative sign (-), then the
-    // value is less than the minimum, and therefore out of bounds.
-    if (substr($diff_min, 0, 1) == '-') {
-      return FALSE;
-    }
-
-    // If the first character of $diff_max is a number, then the value is
-    // greater than the maximum, and therefore out of bounds.
-    if (is_numeric(substr($diff_max, 0, 1))) {
-      return FALSE;
-    }
-
-    // Assume the value is in bounds if none of the above said otherwise.
-    return TRUE;
+    return $values;
   }
 
 }

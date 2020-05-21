@@ -4,6 +4,7 @@ namespace Drupal\Tests\fraction\Functional;
 
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\fraction\Fraction;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
@@ -146,6 +147,57 @@ class FractionFieldTest extends BrowserTestBase {
     ];
     $this->drupalPostForm(NULL, $edit, $this->t('Save'));
     $this->assertRaw($this->t('%name: the value may be no less than %minimum.', ['%name' => $field_name, '%minimum' => $min]), 'Correctly failed to save value less than minimum allowed value.');
+
+    // Test the fraction decimal element limits.
+    $this->drupalGet('entity_test/add');
+    $edit = [
+      "{$field_name}[0][decimal]" => 10.1234567891,
+    ];
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    $this->assertRaw($this->t('The maximum number of digits after the decimal place is 9.'));
+  }
+
+  /**
+   * Test decimal widget field with negative values.
+   */
+  public function testFractionWidgetDecimalNegative() {
+    // Create the test field.
+    $field_name = mb_strtolower($this->randomMachineName());
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'entity_test',
+      'type' => 'fraction',
+    ])->save();
+    FieldConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'entity_test',
+      'bundle' => 'entity_test',
+    ])->save();
+
+    /** @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface $display_repository */
+    $display_repository = \Drupal::service('entity_display.repository');
+
+    $display_repository->getFormDisplay('entity_test', 'entity_test')
+      ->setComponent($field_name, ['type' => 'fraction_decimal'])
+      ->save();
+    $display_repository->getViewDisplay('entity_test', 'entity_test')
+      ->setComponent($field_name, ['type' => 'fraction_decimal'])
+      ->save();
+
+    // Display creation form.
+    $this->drupalGet('entity_test/add');
+    $this->assertFieldByName("{$field_name}[0][decimal]", '', 'Widget is displayed');
+
+    // Submit negative decimal value.
+    $value = '-14.5678';
+    $edit = [
+      "{$field_name}[0][decimal]" => $value,
+    ];
+    $this->drupalPostForm(NULL, $edit, $this->t('Save'));
+    preg_match('|entity_test/manage/(\d+)|', $this->getUrl(), $match);
+    $id = $match[1];
+    $this->assertText($this->t('entity_test @id has been created.', ['@id' => $id]), 'Entity was created');
+    $this->assertRaw($value, 'Value is displayed.');
   }
 
   /**
