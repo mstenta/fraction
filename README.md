@@ -161,7 +161,6 @@ function mymodule_schema() {
       'value_denominator' => [
         'description' => 'Value denominator',
         'type' => 'int',
-        'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 1,
       ],
