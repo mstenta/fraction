@@ -78,7 +78,7 @@ interface FractionInterface {
   /**
    * Calculates the numerator and denominator from a decimal value.
    *
-   * @param string|int $value
+   * @param string|int|float $value
    *   The decimal value to start with.
    *
    * @return Fraction
