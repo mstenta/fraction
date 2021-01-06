@@ -302,4 +302,4 @@ store is 9,223,372,036.854775807.
 
 Current maintainers:
  * Michael Stenta (m.stenta) - https://drupal.org/user/581414
-
+ * Pedro Cambra (pcambra) - https://drupal.org/user/122101
