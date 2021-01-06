@@ -146,30 +146,30 @@ hook_schema()):
  * Implements hook_schema().
  */
 function mymodule_schema() {
-  $schema['mymodule_table'] = array(
-    'fields' => array(
+  $schema['mymodule_table'] = [
+    'fields' => [
 
       ...
 
-      'value_numerator' => array(
+      'value_numerator' => [
         'description' => 'Value numerator',
         'type' => 'int',
         'size' => 'big',
         'not null' => TRUE,
         'default' => 0,
-      ),
-      'value_denominator' => array(
+      ],
+      'value_denominator' => [
         'description' => 'Value denominator',
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 1,
-      ),
+      ],
 
       ...
 
-    ),
-  );
+    ],
+  ];
   return $schema;
 }
 ```
@@ -195,60 +195,60 @@ function mymodule_views_data() {
   ...
 
   // Value numerator.
-  $data['mymodule_table']['value_numerator'] = array(
+  $data['mymodule_table']['value_numerator'] = [
     'title' => t('Value numerator'),
     'help' => t('The stored numerator value.'),
-    'field' => array(
+    'field' => [
       'id' => 'numeric',
       'click sortable' => TRUE,
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'numeric',
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-  );
+    ],
+  ];
 
   // Value denominator.
-  $data['mymodule_table']['value_denominator'] = array(
+  $data['mymodule_table']['value_denominator'] = [
     'title' => t('Value denominator'),
     'help' => t('The stored denominator value.'),
-    'field' => array(
+    'field' => [
       'id' => 'numeric',
       'click sortable' => TRUE,
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'numeric',
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'standard',
-    ),
-  );
+    ],
+  ];
 
   // Create a new decimal column with fraction decimal handlers.
-  $fraction_fields = array(
+  $fraction_fields = [
     'numerator' => 'value_numerator',
     'denominator' => 'value_denominator',
-  );
-  $data['mymodule_table']['value_decimal'] = array(
+  ];
+  $data['mymodule_table']['value_decimal'] = [
     'title' => t('Value (decimal)'),
     'help' => t('Decimal equivalent of the value.'),
     'real field' => 'value_numerator',
-    'field' => array(
+    'field' => [
       'id' => 'fraction',
       'additional fields' => $fraction_fields,
       'click sortable' => TRUE,
-    ),
-    'sort' => array(
+    ],
+    'sort' => [
       'id' => 'fraction',
       'additional fields' => $fraction_fields,
-    ),
-    'filter' => array(
+    ],
+    'filter' => [
       'id' => 'fraction',
       'additional fields' => $fraction_fields,
-    )
-  );
+    ]
+  ];
 
   return $data;
 }
