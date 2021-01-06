@@ -99,10 +99,7 @@ class Fraction implements FractionInterface {
   }
 
   /**
-   * Get the numerator.
-   *
-   * @return string
-   *   Returns the numerator value.
+   * {@inheritdoc}
    */
   public function getNumerator() {
     return $this->numerator;
