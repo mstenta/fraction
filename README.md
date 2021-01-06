@@ -116,7 +116,7 @@ setting the second parameter to TRUE:
 ```
 $precision = 2;
 $auto_precision = TRUE;
-$decimal =  $fraction->toDecimal($precision, TRUE);
+$decimal = $fraction->toDecimal($precision, TRUE);
 ```
 
 In the above example, if the fraction's denominator is not base 10, then the
