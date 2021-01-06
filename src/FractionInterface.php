@@ -34,7 +34,7 @@ interface FractionInterface {
   /**
    * Gets the numerator.
    *
-   * @return string|int
+   * @return string
    *   Returns the numerator value.
    */
   public function getNumerator();
@@ -42,7 +42,7 @@ interface FractionInterface {
   /**
    * Gets the denominator.
    *
-   * @return string|int
+   * @return string
    *   Returns the denominator value.
    */
   public function getDenominator();

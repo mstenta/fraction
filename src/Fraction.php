@@ -10,16 +10,16 @@ class Fraction implements FractionInterface {
   /**
    * Numerator of the fraction.
    *
-   * @var string|int
+   * @var string
    */
-  protected $numerator;
+  protected string $numerator;
 
   /**
    * Denominator of the fraction.
    *
-   * @var string|int
+   * @var string
    */
-  protected $denominator;
+  protected string $denominator;
 
   /**
    * Constructs a Fraction object.
