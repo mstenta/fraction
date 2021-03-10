@@ -75,3 +75,17 @@ field.value.fraction:
     denominator:
       type: integer
       label: 'Denominator'
+
+views.filter_value.fraction:
+  type: mapping
+  label: 'Fraction'
+  mapping:
+    min:
+      type: string
+      label: 'Min'
+    max:
+      type: string
+      label: 'And max'
+    value:
+      type: string
+      label: 'Value'
