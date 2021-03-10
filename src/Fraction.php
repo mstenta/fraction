@@ -12,14 +12,14 @@ class Fraction implements FractionInterface {
    *
    * @var string
    */
-  protected string $numerator;
+  protected $numerator;
 
   /**
    * Denominator of the fraction.
    *
    * @var string
    */
-  protected string $denominator;
+  protected $denominator;
 
   /**
    * Constructs a Fraction object.
