@@ -134,8 +134,9 @@ denominator.
 The numerator is represented as a signed BIGINT, which allows for a range of
 values between -9223372036854775808 and 9223372036854775807.
 
-The denominator is represented as an unsigned INT, which allows for a range of
-values between 0 and 4294967295.
+The denominator is represented as a signed INT, which allows for a range of
+values between -2147483648 to +2147483647, but a constraint is added to ensure
+it is always a positive non-zero integer.
 
 For modules that want to implement their own numerator and denominator columns
 in a database table, the following schema can be used as an example (for use in
