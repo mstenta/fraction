@@ -155,14 +155,12 @@ function mymodule_schema() {
         'description' => 'Value numerator',
         'type' => 'int',
         'size' => 'big',
-        'not null' => TRUE,
-        'default' => 0,
+        'not null' => FALSE,
       ],
       'value_denominator' => [
         'description' => 'Value denominator',
         'type' => 'int',
-        'not null' => TRUE,
-        'default' => 1,
+        'not null' => FALSE,
       ],
 
       ...

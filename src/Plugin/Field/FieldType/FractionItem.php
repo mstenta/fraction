@@ -35,14 +35,12 @@ class FractionItem extends NumericItemBase {
           'description' => 'Fraction numerator value',
           'type' => 'int',
           'size' => 'big',
-          'not null' => TRUE,
-          'default' => 0,
+          'not null' => FALSE,
         ],
         'denominator' => [
           'description' => 'Fraction denominator value',
           'type' => 'int',
-          'not null' => TRUE,
-          'default' => 1,
+          'not null' => FALSE,
         ],
       ],
     ];
