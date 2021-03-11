@@ -76,6 +76,35 @@ field.value.fraction:
       type: integer
       label: 'Denominator'
 
+views.field.fraction:
+  type: views_field
+  label: 'Fraction'
+  mapping:
+    precision:
+      type: integer
+      label: 'Precision'
+    auto_precision:
+      type: boolean
+      label: 'Auto precision'
+
+views.filter.fraction:
+  type: views_filter
+  label: 'Numeric'
+  mapping:
+    expose:
+      type: mapping
+      label: 'Exposed'
+      mapping:
+        min_placeholder:
+          type: label
+          label: 'Min placeholder'
+        max_placeholder:
+          type: label
+          label: 'Max placeholder'
+        placeholder:
+          type: label
+          label: 'Placeholder'
+
 views.filter_value.fraction:
   type: mapping
   label: 'Fraction'
