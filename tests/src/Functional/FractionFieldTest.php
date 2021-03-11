@@ -280,14 +280,14 @@ class FractionFieldTest extends BrowserTestBase {
     // Numerators must be between -9223372036854775808 and 9223372036854775807.
     $this->drupalGet('entity_test/add');
     $edit = [
-      "{$field_name}[0][fraction][numerator]" => -9223372036854775809,
+      "{$field_name}[0][fraction][numerator]" => '-9223372036854775809',
       "{$field_name}[0][fraction][denominator]" => 10,
     ];
     $this->drupalPostForm(NULL, $edit, $this->t('Save'));
     $this->assertRaw($this->t('The numerator of a fraction must be between -9223372036854775808 and 9223372036854775807.'));
     $this->drupalGet('entity_test/add');
     $edit = [
-      "{$field_name}[0][fraction][numerator]" => 9223372036854775808,
+      "{$field_name}[0][fraction][numerator]" => '9223372036854775808',
       "{$field_name}[0][fraction][denominator]" => 10,
     ];
     $this->drupalPostForm(NULL, $edit, $this->t('Save'));
