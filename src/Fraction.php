@@ -278,6 +278,9 @@ class Fraction implements FractionInterface {
     $this->setNumerator($numerator);
     $this->setDenominator($denominator);
 
+    // Reduce.
+    $this->reduce();
+
     return $this;
   }
 
@@ -307,6 +310,9 @@ class Fraction implements FractionInterface {
     $this->setNumerator($numerator);
     $this->setDenominator($denominator);
 
+    // Reduce.
+    $this->reduce();
+
     return $this;
   }
 
@@ -335,6 +341,9 @@ class Fraction implements FractionInterface {
     // Save the numerator and denominator.
     $this->setNumerator($numerator);
     $this->setDenominator($denominator);
+
+    // Reduce.
+    $this->reduce();
 
     return $this;
   }
@@ -367,6 +376,9 @@ class Fraction implements FractionInterface {
     // Save the numerator and denominator.
     $this->setNumerator($numerator);
     $this->setDenominator($denominator);
+
+    // Reduce.
+    $this->reduce();
 
     return $this;
   }

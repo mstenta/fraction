@@ -136,8 +136,8 @@ class FractionTest extends UnitTestCase {
 
     // Test fraction multiplication.
     $result = $this->fraction(2, 5)->multiply($this->fraction(1, 4))->toString();
-    $message = '2/5 * 1/4 = 2/20';
-    $this->assertEquals($result, '2/20', $message);
+    $message = '2/5 * 1/4 = 1/10';
+    $this->assertEquals($result, '1/10', $message);
 
     // Test fraction division.
     $result = $this->fraction(5, 7)->divide($this->fraction(1, 5))->toString();
@@ -154,6 +154,11 @@ class FractionTest extends UnitTestCase {
     $result = $this->fraction(0, 1)->reciprocate()->toString();
     $message = 'The reciprocal of 0/1 is 0/1 (avoid division by zero).';
     $this->assertEquals($result, '0/1', $message);
+
+    // Test that decimal arithmetic results are reduced.
+    $result = Fraction::createFromDecimal('0.1')->add(Fraction::createFromDecimal('0.2'))->toDecimal(0, TRUE);
+    $message = '0.1 + 0.2 = 0.3';
+    $this->assertEquals('0.3', $result, $message);
   }
 
 }
