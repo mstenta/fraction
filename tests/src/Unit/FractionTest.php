@@ -159,6 +159,11 @@ class FractionTest extends UnitTestCase {
     $result = Fraction::createFromDecimal('0.1')->add(Fraction::createFromDecimal('0.2'))->toDecimal(0, TRUE);
     $message = '0.1 + 0.2 = 0.3';
     $this->assertEquals('0.3', $result, $message);
+
+    // Test floating point arithmetic.
+    $result = Fraction::createFromDecimal('3')->subtract(Fraction::createFromDecimal('2.99'))->toDecimal(0, TRUE);
+    $message = '3 - 2.99 = 0.01';
+    $this->assertEquals('0.01', $result, $message);
   }
 
 }
