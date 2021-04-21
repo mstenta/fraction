@@ -30,7 +30,11 @@ class FractionField extends EntityField {
 
     // Formula for calculating the final value, by dividing numerator by denominator.
     // These are available as additional fields.
-    $formula = $this->tableAlias . '.' . $this->field . '_numerator / ' . $this->tableAlias . '.' . $this->field . '_denominator';
+    $numerator = $this->tableAlias . '.' . $this->field . '_numerator';
+    $denominator = $this->tableAlias . '.' . $this->field . '_denominator';
+    // Multiply the numerator field by 1.0 so the database returns a decimal
+    // from the computation.
+    $formula = '1.0 * ' . $numerator . ' / ' . $denominator;
 
     // Add the orderby.
     $this->query->addOrderBy(NULL, $formula, $order, $this->tableAlias . '_decimal');

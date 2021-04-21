@@ -67,7 +67,11 @@ class Fraction extends FieldPluginBase {
     // Formula for calculating the final value, by dividing numerator by
     // denominator.
     // These are available as additional fields.
-    $formula = $this->tableAlias . '.' . $this->definition['additional fields']['numerator'] . ' / ' . $this->tableAlias . '.' . $this->definition['additional fields']['denominator'];
+    $numerator = $this->tableAlias . '.' . $this->definition['additional fields']['numerator'];
+    $denominator = $this->tableAlias . '.' . $this->definition['additional fields']['denominator'];
+    // Multiply the numerator field by 1.0 so the database returns a decimal
+    // from the computation.
+    $formula = '1.0 * ' . $numerator . ' / ' . $denominator;
 
     // Add the orderby.
     $this->query->addOrderBy(NULL, $formula, $order, $this->tableAlias . '_decimal');
