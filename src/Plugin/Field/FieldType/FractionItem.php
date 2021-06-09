@@ -103,4 +103,11 @@ class FractionItem extends NumericItemBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public static function mainPropertyName() {
+    return NULL;
+  }
+
 }
