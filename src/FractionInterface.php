@@ -69,11 +69,14 @@ interface FractionInterface {
    *   don't. If set to TRUE, it will try to determine the maximum precision
    *   (this only works if the denominator is base 10). If the resulting
    *   precision is greater than $precision, it will be used instead.
+   * @param string $separator
+   *   The character that should be used as a decimal separator. Defaults to a
+   *   period.
    *
    * @return string
    *   Returns the decimal equivalent of the fraction as a PHP string.
    */
-  public function toDecimal(int $precision, bool $auto_precision = FALSE);
+  public function toDecimal(int $precision, bool $auto_precision = FALSE, string $separator = '.');
 
   /**
    * Calculates the numerator and denominator from a decimal value.
@@ -94,11 +97,14 @@ interface FractionInterface {
    *
    * @param string|int $value
    *   The decimal value to start with.
+   * @param string $separator
+   *   The character that is used as a decimal separator. If this is not set,
+   *   then the default separator is assumed to be a period.
    *
    * @return Fraction
    *   Returns this object.
    */
-  public static function createFromDecimal($value);
+  public static function createFromDecimal($value, string $separator = '.');
 
   /**
    * Calculate the fraction's greatest common divisor using Euclid's algorithm.
