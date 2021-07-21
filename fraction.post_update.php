@@ -93,3 +93,63 @@ function fraction_alter_denominator_helper($table_name, $column_name) {
     'default' => 1,
   ]);
 }
+
+/**
+ * Alter schema for the not null changes.
+ *
+ * @see https://www.drupal.org/project/fraction/issues/3223868
+ */
+function fraction_post_update_not_null_field_schema_fix() {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $entity_storage_schema = \Drupal::keyValue('entity.storage_schema.sql');
+  $last_installed_schema_repository = \Drupal::service('entity.last_installed_schema.repository');
+  $database_schema = \Drupal::database()->schema();
+  $updated_fields = $fields_to_update = [];
+
+  $entity_field_manager->clearCachedFieldDefinitions();
+  // Get all fraction fields in the system.
+  $fraction_fields = $entity_field_manager->getFieldMapByFieldType('fraction');
+  foreach ($fraction_fields as $entity_type_id => $fields) {
+    $table_mapping = $entity_type_manager->getStorage($entity_type_id)->getTableMapping();
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    foreach ($fields as $field_name => $field_info) {
+      $storage_definition = $field_storage_definitions[$field_name];
+      $column_names = [$field_name . '_denominator', $field_name . '_numerator'];
+      $table_name = $table_mapping->getFieldTableName($field_name);
+      $revision_table_name = $table_mapping->getDedicatedRevisionTableName($field_storage_definitions[$field_name]);
+
+      $last_installed_schema_repository->setLastInstalledFieldStorageDefinition($storage_definition);
+      $field_schema = $entity_storage_schema->get("$entity_type_id.field_schema_data.$field_name");
+      $fields_to_update[] = compact('field_name', 'table_name', 'column_names', 'entity_type_id', 'field_schema', 'revision_table_name');
+    }
+  }
+
+  if (empty($fields_to_update)) {
+    return 'No fraction fields found to update.';
+  }
+
+  foreach ($fields_to_update as $field_to_update) {
+    extract($field_to_update);
+
+    foreach ($column_names as $column_name) {
+      $database_schema->changeField($table_name, $column_name, $column_name, [
+        'description' => 'Fraction ' . $column_name .' value',
+        'type' => 'int',
+        'not null' => FALSE,
+      ]);
+      unset($field_schema[$table_name]['fields'][$column_name]['default']);
+      if ($database_schema->tableExists($revision_table_name)) {
+        unset($field_schema[$revision_table_name]['fields'][$column_name]['default']);
+      }
+    }
+    // Ensure that the field schema is updated accordingly to the change of
+    // the field so the entity updates service does not alert of this
+    // change.
+    $entity_storage_schema->set("$entity_type_id.field_schema_data.$field_name", $field_schema);
+    $updated_fields[] = $field_name;
+  }
+
+  $entity_field_manager->clearCachedFieldDefinitions();
+  return 'Fraction fields updated: ' . implode(',', $updated_fields);
+}
