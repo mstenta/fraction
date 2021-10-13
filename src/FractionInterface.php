@@ -98,7 +98,7 @@ interface FractionInterface {
    * Reduces the fraction to its simplest form.
    *
    * @return Fraction
-   *   Returns this Fraction object.
+   *   Returns the reduced fraction as a new Fraction object.
    */
   public function reduce();
 
@@ -106,7 +106,7 @@ interface FractionInterface {
    * Reciprocates the fraction.
    *
    * @return Fraction
-   *   Returns this Fraction object.
+   *   Returns the reciprocal as a new Fraction object.
    */
   public function reciprocate();
 
@@ -117,7 +117,7 @@ interface FractionInterface {
    *   Another fraction object to add to this one.
    *
    * @return Fraction
-   *   Returns this Fraction object.
+   *   Returns the arithmetic result as a new Fraction object.
    */
   public function add(Fraction $fraction);
 
@@ -128,7 +128,7 @@ interface FractionInterface {
    *   Another fraction object to subtract this one.
    *
    * @return Fraction
-   *   Returns this Fraction object.
+   *   Returns the arithmetic result as a new Fraction object.
    */
   public function subtract(Fraction $fraction);
 
@@ -139,7 +139,7 @@ interface FractionInterface {
    *   Another fraction object to multiply with.
    *
    * @return Fraction
-   *   Returns this Fraction object.
+   *   Returns the arithmetic result as a new Fraction object.
    */
   public function multiply(Fraction $fraction);
 
@@ -150,7 +150,7 @@ interface FractionInterface {
    *   Another fraction object to divide by.
    *
    * @return Fraction
-   *   Returns this Fraction object.
+   *   Returns the arithmetic result as a new Fraction object.
    */
   public function divide(Fraction $fraction);
 

@@ -27,8 +27,7 @@ class PercentageFormatter extends FractionDecimalFormatter {
     // Iterate through the items.
     foreach ($items as $delta => $item) {
       /** @var \Drupal\fraction\Fraction $percentage */
-      $percentage = clone $item->fraction;
-      $percentage->multiply(Fraction::createFromDecimal('100'));
+      $percentage = $item->fraction->multiply(Fraction::createFromDecimal('100'));
 
       $auto_precision = !empty($this->getSetting('auto_precision'));
       $output = $percentage->toDecimal($this->getSetting('precision'), $auto_precision) . '%';

@@ -229,11 +229,8 @@ class Fraction implements FractionInterface {
       $denominator = $denominator / $gcd;
     }
 
-    // Save the numerator and denominator.
-    $this->setNumerator($numerator);
-    $this->setDenominator($denominator);
-
-    return $this;
+    // Create a new Fraction object.
+    return new Fraction($numerator, $denominator);
   }
 
   /**
@@ -245,11 +242,8 @@ class Fraction implements FractionInterface {
     $numerator = $this->getDenominator();
     $denominator = $this->getNumerator();
 
-    // Save the numerator and denominator.
-    $this->setNumerator($numerator);
-    $this->setDenominator($denominator);
-
-    return $this;
+    // Create a new Fraction object.
+    return new Fraction($numerator, $denominator);
   }
 
   /**
@@ -274,14 +268,10 @@ class Fraction implements FractionInterface {
       $numerator = $numerator1 * $denominator2 + $numerator2 * $denominator1;
     }
 
-    // Save the numerator and denominator.
-    $this->setNumerator($numerator);
-    $this->setDenominator($denominator);
-
-    // Reduce.
-    $this->reduce();
-
-    return $this;
+    // Create a new Fraction object and reduce it.
+    $fraction = new Fraction($numerator, $denominator);
+    $fraction = $fraction->reduce();
+    return $fraction;
   }
 
   /**
@@ -306,14 +296,10 @@ class Fraction implements FractionInterface {
       $numerator = $numerator1 * $denominator2 - $numerator2 * $denominator1;
     }
 
-    // Save the numerator and denominator.
-    $this->setNumerator($numerator);
-    $this->setDenominator($denominator);
-
-    // Reduce.
-    $this->reduce();
-
-    return $this;
+    // Create a new Fraction object and reduce it.
+    $fraction = new Fraction($numerator, $denominator);
+    $fraction = $fraction->reduce();
+    return $fraction;
   }
 
   /**
@@ -338,14 +324,10 @@ class Fraction implements FractionInterface {
       $denominator = $denominator1 * $denominator2;
     }
 
-    // Save the numerator and denominator.
-    $this->setNumerator($numerator);
-    $this->setDenominator($denominator);
-
-    // Reduce.
-    $this->reduce();
-
-    return $this;
+    // Create a new Fraction object and reduce it.
+    $fraction = new Fraction($numerator, $denominator);
+    $fraction = $fraction->reduce();
+    return $fraction;
   }
 
   /**
@@ -354,13 +336,13 @@ class Fraction implements FractionInterface {
   public function divide(Fraction $fraction) {
 
     // Reciprocate the fraction.
-    $fraction->reciprocate();
+    $reciprocal = $fraction->reciprocate();
 
     // Get the numerator and denominator of each fraction.
     $numerator1 = $this->getNumerator();
     $denominator1 = $this->getDenominator();
-    $numerator2 = $fraction->getNumerator();
-    $denominator2 = $fraction->getDenominator();
+    $numerator2 = $reciprocal->getNumerator();
+    $denominator2 = $reciprocal->getDenominator();
 
     // Calculate the quotient of the two fractions.
     // Use BCMath if available.
@@ -373,14 +355,10 @@ class Fraction implements FractionInterface {
       $denominator = $denominator1 * $denominator2;
     }
 
-    // Save the numerator and denominator.
-    $this->setNumerator($numerator);
-    $this->setDenominator($denominator);
-
-    // Reduce.
-    $this->reduce();
-
-    return $this;
+    // Create a new Fraction object and reduce it.
+    $fraction = new Fraction($numerator, $denominator);
+    $fraction = $fraction->reduce();
+    return $fraction;
   }
 
   /**
