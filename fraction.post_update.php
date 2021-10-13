@@ -115,7 +115,10 @@ function fraction_post_update_not_null_field_schema_fix() {
     $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
     foreach ($fields as $field_name => $field_info) {
       $storage_definition = $field_storage_definitions[$field_name];
-      $column_names = [$field_name . '_denominator', $field_name . '_numerator'];
+      $column_names = [
+        $table_mapping->getFieldColumnName($storage_definition, 'numerator'),
+        $table_mapping->getFieldColumnName($storage_definition, 'denominator'),
+      ];
       $table_name = $table_mapping->getFieldTableName($field_name);
       $revision_table_name = $table_mapping->getDedicatedRevisionTableName($field_storage_definitions[$field_name]);
 
