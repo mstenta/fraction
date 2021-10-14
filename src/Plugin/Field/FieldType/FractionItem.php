@@ -108,8 +108,8 @@ class FractionItem extends NumericItemBase {
       $decimal = $values['value'];
     }
 
-    // Populate the fraction field from a decimal.
-    if (isset($decimal) && $fraction = Fraction::createFromDecimal($decimal)) {
+    // Populate the fraction field if decimal is numeric.
+    if (is_numeric($decimal) && $fraction = Fraction::createFromDecimal($decimal)) {
       $values = [
         'numerator' => $fraction->getNumerator(),
         'denominator' => $fraction->getDenominator(),
