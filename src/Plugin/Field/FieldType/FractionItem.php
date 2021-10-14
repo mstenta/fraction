@@ -92,6 +92,36 @@ class FractionItem extends NumericItemBase {
   /**
    * {@inheritdoc}
    */
+  public function setValue($values, $notify = TRUE) {
+
+    // Determine if we populate the fraction numerator and denominator field
+    // properties from a single value.
+    $decimal = NULL;
+
+    // Treat the values as a decimal if no array is given.
+    if (isset($values) && !is_array($values)) {
+      $decimal = $values;
+    }
+
+    // If the value property is specified, use it.
+    if (is_array($values) && isset($values['value'])) {
+      $decimal = $values['value'];
+    }
+
+    // Populate the fraction field from a decimal.
+    if (isset($decimal) && $fraction = Fraction::createFromDecimal($decimal)) {
+      $values = [
+        'numerator' => $fraction->getNumerator(),
+        'denominator' => $fraction->getDenominator(),
+      ];
+    }
+
+    parent::setValue($values, $notify);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getConstraints() {
     /** @var \Symfony\Component\Validator\Constraint[] $constraints */
     $constraints = parent::getConstraints();
