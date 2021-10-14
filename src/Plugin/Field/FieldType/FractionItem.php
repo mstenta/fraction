@@ -75,6 +75,7 @@ class FractionItem extends NumericItemBase {
       ->setLabel(t('Fraction Decimal'))
       ->setDescription(t('Fraction decimal value.'))
       ->setComputed(TRUE)
+      ->setInternal(FALSE)
       ->setClass('\Drupal\fraction\FractionDecimalProperty');
     return $property_definitions;
   }
