@@ -4,16 +4,17 @@ namespace Drupal\Tests\fraction\Kernel;
 
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\fraction\Plugin\Field\FieldType\FractionItem;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\field\Kernel\FieldKernelTestBase;
 
 /**
- * Class to test generating and setting sample values.
+ * Class to test the FractionItem field.
  *
  * @group Fraction
  */
-class FractionGenerateSampleValueTest extends FieldKernelTestBase {
+class FractionFieldTest extends FieldKernelTestBase {
 
   /**
    * Field name to use.
@@ -39,17 +40,38 @@ class FractionGenerateSampleValueTest extends FieldKernelTestBase {
       'label' => 'Article',
     ])->save();
 
-    FieldStorageConfig::create([
+    $this->fieldTestData->{$this::FIELD_NAME . '_storage'} = FieldStorageConfig::create([
       'entity_type' => 'node',
       'field_name' => self::FIELD_NAME,
       'type' => 'fraction',
-    ])->save();
+    ]);
+    $this->fieldTestData->{$this::FIELD_NAME . '_storage'}->save();
 
-    FieldConfig::create([
+    $this->fieldTestData->{$this::FIELD_NAME} = FieldConfig::create([
       'entity_type' => 'node',
       'field_name' => self::FIELD_NAME,
       'bundle' => 'article',
-    ])->save();
+    ]);
+    $this->fieldTestData->{$this::FIELD_NAME}->save();
+  }
+
+  /**
+   * Test field properties.
+   */
+  public function testFieldProperties() {
+
+    // Check for the correct main property name.
+    $this->assertNull(FractionItem::mainPropertyName(), 'The fraction item main property name is NULL.');
+
+    // Check for correct property definitions.
+    $definitions = FractionItem::propertyDefinitions($this->fieldTestData->{$this::FIELD_NAME . '_storage'});
+    $properties = ['numerator', 'denominator', 'fraction', 'decimal'];
+    foreach ($properties as $property) {
+      $this->assertNotEmpty($definitions[$property], "The fraction item has a $property property.");
+    }
+
+    // Ensure the decimal property is not internal to be included in JSON:API.
+    $this->assertFalse($definitions['decimal']->isInternal(), 'The fraction item decimal property is not internal.');
   }
 
   /**
