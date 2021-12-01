@@ -31,7 +31,7 @@ function fraction_post_update_make_denominator_signed() {
     $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
     foreach ($fields as $field_name => $field_info) {
       $storage_definition = $entity_field_manager->getFieldStorageDefinitions($entity_type_id)[$field_name];
-      $column_name = $field_name . '_denominator';
+      $column_name = $table_mapping->getFieldColumnName($storage_definition, 'denominator');
       $table_name = $table_mapping->getFieldTableName($field_name);
       $max_denominator = \Drupal::database()->query('SELECT MAX(' . $column_name . ') FROM {' . $table_name . '}')->fetchField();
 

@@ -37,6 +37,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
    */
   public static $modules = [
     'fraction',
+    'fraction_test',
     'node',
   ];
 
@@ -84,6 +85,13 @@ class FractionUpdateTest extends EntityKernelTestBase {
 
     $this->fieldsToUpdate = [
       [
+        'table_name' => 'node_field_data',
+        'columns' => [
+          'numerator' => 'fraction__numerator',
+          'denominator' => 'fraction__denominator',
+        ],
+      ],
+      [
         'table_name' => 'node__field_fraction_node',
         'columns' => [
           'numerator' => 'field_fraction_node_numerator',
@@ -117,6 +125,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
   public function testUpdateDenominatorSigned() {
     // Unsigned fields should reject negative values.
     foreach ($this->fieldsToUpdate as $field) {
+      if ($field['table_name'] == 'node_field_data') continue;
       $this->assertFalse($this->tryUnsignedInsert($field['table_name'], $field['columns']), 'Column rejected a negative value.');
     }
 
@@ -131,6 +140,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
     // checking that there's a change on behaviour regarding signed/unsigned is
     // the fastest way to check.
     foreach ($this->fieldsToUpdate as $field) {
+      if ($field['table_name'] == 'node_field_data') continue;
       $this->assertTrue($this->tryUnsignedInsert($field['table_name'], $field['columns']), 'Column accepted a negative value.');
     }
   }
@@ -141,6 +151,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
   public function testUpdateDenominatorSignedException() {
     // Unsigned fields should reject negative values.
     foreach ($this->fieldsToUpdate as $field) {
+      if ($field['table_name'] == 'node_field_data') continue;
       $this->assertFalse($this->tryUnsignedInsert($field['table_name'], $field['columns']), 'Column rejected a negative value.');
     }
 
@@ -169,6 +180,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
     catch (UpdateException $e) {
       $this->pass('Updating with field values higher than the limit thows a message.');
       foreach ($this->fieldsToUpdate as $field) {
+        if ($field['table_name'] == 'node_field_data') continue;
         $this->assertFalse($this->tryUnsignedInsert($field['table_name'], $field['columns']), 'Column rejected a negative value.');
       }
     }
@@ -180,6 +192,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
    * @see \Drupal\KernelTests\Core\Database\SchemaTest::tryUnsignedInsert()
    */
   public function tryUnsignedInsert($table_name, $columns) {
+
     try {
       $this->container->get('database')->insert($table_name)
         ->fields(
