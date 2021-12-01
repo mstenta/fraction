@@ -15,8 +15,7 @@ class FractionTest extends UnitTestCase {
   /**
    * Returns a Fraction object from a a numerator and denominator.
    *
-   * This method should be identical to the fraction() function in
-   * fraction.module.
+   * This allows for easier chaining of Fraction methods in tests.
    *
    * @param $numerator
    *   The fraction's numerator.
