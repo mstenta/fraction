@@ -20,6 +20,7 @@ class FractionDecimalProperty extends TypedData {
    * Implements \Drupal\Core\TypedData\TypedDataInterface::getValue().
    */
   public function getValue($langcode = NULL) {
+
     // If a value is already available, return it.
     if ($this->decimal !== NULL) {
       return $this->decimal;
@@ -27,8 +28,10 @@ class FractionDecimalProperty extends TypedData {
 
     // Load the parent item.
     $item = $this->getParent();
+
     // Otherwise, create a Fraction object.
     $fraction = new Fraction($item->numerator, $item->denominator);
+
     // Generate decimal value with automatic precision.
     $this->decimal = $fraction->toDecimal(0, TRUE);
 
