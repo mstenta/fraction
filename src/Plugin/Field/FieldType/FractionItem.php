@@ -95,7 +95,7 @@ class FractionItem extends NumericItemBase {
   public function setValue($values, $notify = TRUE) {
 
     // Determine if we populate the fraction numerator and denominator field
-    // properties from a single value.
+    // properties from a single decimal value.
     $decimal = NULL;
 
     // Treat the values as a decimal if no array is given.
@@ -103,9 +103,9 @@ class FractionItem extends NumericItemBase {
       $decimal = $values;
     }
 
-    // If the value property is specified, use it.
-    if (is_array($values) && isset($values['value'])) {
-      $decimal = $values['value'];
+    // If the decimal property is specified, use it.
+    if (is_array($values) && isset($values['decimal'])) {
+      $decimal = $values['decimal'];
     }
 
     // Populate the fraction field if decimal is numeric.
