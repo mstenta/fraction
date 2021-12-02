@@ -29,8 +29,8 @@ class FractionDecimalProperty extends TypedData {
     $item = $this->getParent();
     // Otherwise, create a Fraction object.
     $fraction = new Fraction($item->numerator, $item->denominator);
-    // Fallback to precision 9 to ensure validation.
-    $this->decimal = $fraction->toDecimal(9, TRUE);
+    // Generate decimal value with automatic precision.
+    $this->decimal = $fraction->toDecimal(0, TRUE);
 
     return $this->decimal;
   }
