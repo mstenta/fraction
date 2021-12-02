@@ -92,6 +92,23 @@ class FractionItem extends NumericItemBase {
   /**
    * {@inheritdoc}
    */
+  public function getConstraints() {
+    /** @var \Symfony\Component\Validator\Constraint[] $constraints */
+    $constraints = parent::getConstraints();
+    foreach ($constraints as $delta => &$constraint) {
+
+      // Replace 'value' with 'decimal' in min/max range constraints.
+      if (!empty($constraint->properties['value'])) {
+        $constraint->properties['decimal'] = $constraint->properties['value'];
+        unset($constraint->properties['value']);
+      }
+    }
+    return $constraints;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
     // Generate random decimal (float) with a max of 9 decimal places and then
     // convert it to fraction.
