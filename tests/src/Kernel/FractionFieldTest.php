@@ -75,6 +75,29 @@ class FractionFieldTest extends FieldKernelTestBase {
   }
 
   /**
+   * Tests setting the fraction field item from a decimal.
+   */
+  public function testSetValue() {
+    // Setup the entity and field.
+    $node = Node::create([
+      'type' => 'article',
+      'title' => 'test',
+    ]);
+    $node->save();
+    $fraction_field = $node->get(self::FIELD_NAME);
+
+    // Set value with a decimal.
+    $fraction_field->set(0, 12.3);
+    $this->assertEquals(123, $fraction_field->first()->numerator);
+    $this->assertEquals(10, $fraction_field->first()->denominator);
+
+    // Set value with the decimal property.
+    $fraction_field->set(0, ['decimal' => 45.6]);
+    $this->assertEquals(456, $fraction_field->first()->numerator);
+    $this->assertEquals(10, $fraction_field->first()->denominator);
+  }
+
+  /**
    * Tests setting the sample value.
    */
   public function testGenerateSampleValue() {
