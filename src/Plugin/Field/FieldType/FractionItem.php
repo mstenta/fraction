@@ -71,10 +71,11 @@ class FractionItem extends NumericItemBase {
       ->setDescription(t('A fraction object instance.'))
       ->setComputed(TRUE)
       ->setClass('\Drupal\fraction\FractionProperty');
-    $property_definitions['value'] = MapDataDefinition::create()
+    $property_definitions['decimal'] = MapDataDefinition::create()
       ->setLabel(t('Fraction Decimal'))
       ->setDescription(t('Fraction decimal value.'))
       ->setComputed(TRUE)
+      ->setInternal(FALSE)
       ->setClass('\Drupal\fraction\FractionDecimalProperty');
     return $property_definitions;
   }
