@@ -125,7 +125,9 @@ class FractionUpdateTest extends EntityKernelTestBase {
   public function testUpdateDenominatorSigned() {
     // Unsigned fields should reject negative values.
     foreach ($this->fieldsToUpdate as $field) {
-      if ($field['table_name'] == 'node_field_data') continue;
+      if ($field['table_name'] == 'node_field_data') {
+        continue;
+      }
       $this->assertFalse($this->tryUnsignedInsert($field['table_name'], $field['columns']), 'Column rejected a negative value.');
     }
 
@@ -140,7 +142,9 @@ class FractionUpdateTest extends EntityKernelTestBase {
     // checking that there's a change on behaviour regarding signed/unsigned is
     // the fastest way to check.
     foreach ($this->fieldsToUpdate as $field) {
-      if ($field['table_name'] == 'node_field_data') continue;
+      if ($field['table_name'] == 'node_field_data') {
+        continue;
+      }
       $this->assertTrue($this->tryUnsignedInsert($field['table_name'], $field['columns']), 'Column accepted a negative value.');
     }
   }
@@ -151,7 +155,9 @@ class FractionUpdateTest extends EntityKernelTestBase {
   public function testUpdateDenominatorSignedException() {
     // Unsigned fields should reject negative values.
     foreach ($this->fieldsToUpdate as $field) {
-      if ($field['table_name'] == 'node_field_data') continue;
+      if ($field['table_name'] == 'node_field_data') {
+        continue;
+      }
       $this->assertFalse($this->tryUnsignedInsert($field['table_name'], $field['columns']), 'Column rejected a negative value.');
     }
 
@@ -179,7 +185,9 @@ class FractionUpdateTest extends EntityKernelTestBase {
     }
     catch (UpdateException $e) {
       foreach ($this->fieldsToUpdate as $field) {
-        if ($field['table_name'] == 'node_field_data') continue;
+        if ($field['table_name'] == 'node_field_data') {
+          continue;
+        }
         $this->assertFalse($this->tryUnsignedInsert($field['table_name'], $field['columns']), 'Column rejected a negative value.');
       }
     }

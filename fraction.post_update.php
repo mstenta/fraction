@@ -147,7 +147,7 @@ function fraction_post_update_not_null_field_schema_fix() {
 
     foreach ($column_names as $column_name) {
       $database_schema->changeField($table_name, $column_name, $column_name, [
-        'description' => 'Fraction ' . $column_name .' value',
+        'description' => 'Fraction ' . $column_name . ' value',
         'type' => 'int',
         'not null' => FALSE,
       ]);
