@@ -131,7 +131,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
 
     // Run the fraction update only.
     $post_update_registry = $this->container->get('update.post_update_registry');
-    foreach ($post_update_registry->getModuleUpdateFunctions('fraction') as $function) {
+    foreach ($post_update_registry->getUpdateFunctions('fraction') as $function) {
       $function();
     }
 
@@ -171,7 +171,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
     try {
       // Run the fraction update only.
       $post_update_registry = $this->container->get('update.post_update_registry');
-      foreach ($post_update_registry->getModuleUpdateFunctions('fraction') as $function) {
+      foreach ($post_update_registry->getUpdateFunctions('fraction') as $function) {
         $function();
       }
       // If the code reach this point, means that the update succeeded.
