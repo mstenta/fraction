@@ -383,7 +383,8 @@ class FractionFieldTest extends BrowserTestBase {
 
     // The field should have no value (not 0, just empty).
     $this->drupalGet("entity_test/manage/$id/edit");
-    $elements = $this->xpath($this->getSession()->getPage()->findField("{$field_name}[0][decimal]"));
+    $xpath = $this->assertSession()->buildXPathQuery('//input[@name=:value]', [':value' => "{$field_name}[0][decimal]"]);
+    $elements = $this->xpath($xpath);
     $element = reset($elements);
     $this->assertSame($element->getValue(), '', 'Field is empty');
   }
