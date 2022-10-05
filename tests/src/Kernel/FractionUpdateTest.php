@@ -35,7 +35,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'fraction',
     'fraction_test',
     'node',
@@ -51,7 +51,7 @@ class FractionUpdateTest extends EntityKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->connection = Database::getConnection();
     $this->schema = $this->connection->schema();
@@ -178,7 +178,6 @@ class FractionUpdateTest extends EntityKernelTestBase {
       $this->fail('Failed due to update going through when it should not.');
     }
     catch (UpdateException $e) {
-      $this->pass('Updating with field values higher than the limit thows a message.');
       foreach ($this->fieldsToUpdate as $field) {
         if ($field['table_name'] == 'node_field_data') continue;
         $this->assertFalse($this->tryUnsignedInsert($field['table_name'], $field['columns']), 'Column rejected a negative value.');
