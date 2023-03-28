@@ -71,7 +71,7 @@ class FractionTarget extends FieldTargetBase implements ConfigurableTargetInterf
     switch ($this->configuration['type']) {
       case 'fraction':
         // Pull out the numerator and denominator.
-        $parts = explode('/', $item);
+        $parts = is_string($item) ? explode('/', $item) : [];
 
         if (!empty($parts[0]) && is_numeric($parts[0]) && !empty($parts[1]) && is_numeric($parts[1]) && $parts[1] >= 0) {
           $values['numerator'] = $parts[0];
