@@ -65,7 +65,7 @@ class FractionTarget extends FieldTargetBase implements ConfigurableTargetInterf
    * {@inheritdoc}
    */
   protected function prepareValue($delta, array &$values) {
-    $item = trim($values['value']);
+    $item = is_string($values['value']) ? trim($values['value']) : $values['value'];
     unset($values['value']);
 
     switch ($this->configuration['type']) {
