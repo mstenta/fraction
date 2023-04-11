@@ -137,7 +137,10 @@ class FractionFieldTest extends BrowserTestBase {
       "{$field_name}[0][decimal]" => $max + 0.123,
     ];
     $this->submitForm($edit, $this->t('Save'));
-    $this->assertSession()->responseContains($this->t('%name: the value may be no greater than %maximum.', ['%name' => $field_name, '%maximum' => $max]));
+    $this->assertSession()->responseContains($this->t('%name: the value may be no greater than %maximum.', [
+      '%name' => $field_name,
+      '%maximum' => $max,
+    ]));
 
     // Try to set a value below the minimum value.
     $this->drupalGet('entity_test/add');
@@ -145,7 +148,10 @@ class FractionFieldTest extends BrowserTestBase {
       "{$field_name}[0][decimal]" => $min - 0.123,
     ];
     $this->submitForm($edit, $this->t('Save'));
-    $this->assertSession()->responseContains($this->t('%name: the value may be no less than %minimum.', ['%name' => $field_name, '%minimum' => $min]));
+    $this->assertSession()->responseContains($this->t('%name: the value may be no less than %minimum.', [
+      '%name' => $field_name,
+      '%minimum' => $min,
+    ]));
 
     // Test the fraction decimal element limits.
     $this->drupalGet('entity_test/add');
@@ -257,7 +263,10 @@ class FractionFieldTest extends BrowserTestBase {
       "{$field_name}[0][fraction][denominator]" => 10,
     ];
     $this->submitForm($edit, $this->t('Save'));
-    $this->assertSession()->responseContains($this->t('%name: the value may be no greater than %maximum.', ['%name' => $field_name, '%maximum' => $max]));
+    $this->assertSession()->responseContains($this->t('%name: the value may be no greater than %maximum.', [
+      '%name' => $field_name,
+      '%maximum' => $max,
+    ]));
 
     // Try to set a value below the minimum value.
     $this->drupalGet('entity_test/add');
@@ -266,7 +275,10 @@ class FractionFieldTest extends BrowserTestBase {
       "{$field_name}[0][fraction][denominator]" => 10,
     ];
     $this->submitForm($edit, $this->t('Save'));
-    $this->assertSession()->responseContains($this->t('%name: the value may be no less than %minimum.', ['%name' => $field_name, '%minimum' => $min]));
+    $this->assertSession()->responseContains($this->t('%name: the value may be no less than %minimum.', [
+      '%name' => $field_name,
+      '%minimum' => $min,
+    ]));
 
     // Empty denominator.
     $this->drupalGet('entity_test/add');
