@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\fraction\Functional;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Tests the creation of fraction fields.
