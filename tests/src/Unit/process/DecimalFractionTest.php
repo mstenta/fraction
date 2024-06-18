@@ -38,7 +38,7 @@ class DecimalFractionTest extends MigrateProcessTestCase {
    * @return array
    *   Array of input values and expected output values.
    */
-  public function decimalFractionDataProvider() {
+  public static function decimalFractionDataProvider() {
     return [
       'basic decimal' => [
         'input' => 0.5,
