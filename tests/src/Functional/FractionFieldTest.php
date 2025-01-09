@@ -329,10 +329,11 @@ class FractionFieldTest extends BrowserTestBase {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
     $this->drupalGet('/admin/structure/types/manage/article/fields/add-field');
-    $page->selectFieldOption('new_storage_type', 'fraction');
+    $page->selectFieldOption('new_storage_type', 'number');
     $page->pressButton('Continue');
     $page->fillField('label', 'Fraction field');
     $page->fillField('field_name', 'fraction_field');
+    $page->fillField('group_field_options_wrapper', 'fraction');
     $page->pressButton('Continue');
     $page->fillField('settings[min]', 10.5);
     $page->fillField('settings[max]', 100.5);
