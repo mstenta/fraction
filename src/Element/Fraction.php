@@ -3,7 +3,7 @@
 namespace Drupal\fraction\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element\FormElementBase;
+use Drupal\Core\Render\Element\FormElement;
 
 /**
  * Provides a fraction form element.
@@ -21,7 +21,7 @@ use Drupal\Core\Render\Element\FormElementBase;
  *
  * @FormElement("fraction")
  */
-class Fraction extends FormElementBase {
+class Fraction extends FormElement {
 
   /**
    * {@inheritdoc}

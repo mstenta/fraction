@@ -4,7 +4,7 @@ namespace Drupal\fraction\Element;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Element\FormElementBase;
+use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Render\Element\Number;
 use Drupal\fraction\Fraction;
 
@@ -24,7 +24,7 @@ use Drupal\fraction\Fraction;
  *
  * @FormElement("fraction_decimal")
  */
-class FractionDecimal extends FormElementBase {
+class FractionDecimal extends FormElement {
 
   /**
    * {@inheritdoc}
