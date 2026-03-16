@@ -35,7 +35,7 @@ function fraction_field_views_data_alter(&$data, $field) {
 
     // We will want to alter Views data for both the current field definition,
     // and the field revision definition. The current field definition will be
-    // in $definition[$field_name], while the field revision definiton will be
+    // in $definition[$field_name], while the field revision definition will be
     // in $definition[$field_name . '-revision_id']. So we need to test for the
     // presence of both and act accordingly. If neither exists, stop here and
     // skip to the next definition.

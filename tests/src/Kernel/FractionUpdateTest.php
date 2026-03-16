@@ -138,8 +138,8 @@ class FractionUpdateTest extends EntityKernelTestBase {
     }
 
     // Once the field is changed, negative values should be accepted. There's
-    // no unintrusive way to consistently check the actual SQL schema, so
-    // checking that there's a change on behaviour regarding signed/unsigned is
+    // no unobtrusive way to consistently check the actual SQL schema, so
+    // checking that there's a change on behavior regarding signed/unsigned is
     // the fastest way to check.
     foreach ($this->fieldsToUpdate as $field) {
       if ($field['table_name'] == 'node_field_data') {

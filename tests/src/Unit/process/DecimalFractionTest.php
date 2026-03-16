@@ -27,7 +27,7 @@ class DecimalFractionTest extends MigrateProcessTestCase {
    * @dataProvider decimalFractionDataProvider
    */
   public function testDecimalFraction($input, $expected_output) {
-    $output = $this->plugin->transform($input, $this->migrateExecutable, $this->row, 'destinationproperty');
+    $output = $this->plugin->transform($input, $this->migrateExecutable, $this->row, 'destination_property');
     $this->assertSame($output['numerator'], $expected_output['numerator']);
     $this->assertSame($output['denominator'], $expected_output['denominator']);
   }

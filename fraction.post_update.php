@@ -11,7 +11,7 @@ use Drupal\Core\Utility\UpdateException;
  * Alter schema to make denominator signed.
  *
  * This is done so the field is leveled between MySQL and Postgres and migration
- * is possible between the two. When a integer is unsigned in Postges, Drupal
+ * is possible between the two. When an integer is unsigned in Postgres, Drupal
  * will create a bigint for it, while with MySQL, it would create a regular int.
  *
  * @see \Drupal\Core\Database\Driver\pgsql\Schema::processField()
